@@ -1,5 +1,5 @@
 {
-  "name": "photo-resize-pro",
+  "name": "photoresizepro",
   "version": "1.0.0",
   "description": "PhotoResize Pro - Precision Image Reducer & Resizer in KB",
   "main": "server.js",
@@ -9,9 +9,7 @@
   "keywords": [
     "photo-resize-pro",
     "image-compressor",
-    "reduce-image-size-in-kb",
-    "passport-photo"
+    "reduce-image-size-in-kb"
   ],
-  "author": "",
   "license": "MIT"
 }
