@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KBPix | Reduce Image Size In KB - Smart Photo Reducer & Resizer</title>
+  <meta name="description" content="KBPix: Free online tool to compress image size in KB for government portals, job applications, college admissions, SSC, UPSC, and IBPS. Reduce JPG, PNG to 20KB, 50KB, 100KB with high quality.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234449a6'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="logo-badge">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm-9 9h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg>
+          KB
+        </span>
+        <div class="brand-text">KB<span>PIX</span></div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link active">Reduce Size (KB)</a></li>
+        <li><a href="increase-size.html" class="nav-link">Increase Size (KB)</a></li>
+        <li><a href="passport-tool.html" class="nav-link">Passport Photo Maker</a></li>
+        <li><a href="passport-tool.html" class="nav-link">Resize Pixels</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Tool Switcher Bar -->
+  <div class="tool-switcher-bar">
+    <div class="switcher-container">
+      <a href="index.html" class="switcher-tab active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
+        Reduce Image Size (KB)
+      </a>
+      <a href="increase-size.html" class="switcher-tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+        Increase Image Size (KB)
+      </a>
+      <a href="passport-tool.html" class="switcher-tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Passport Size Photo
+      </a>
+      <a href="passport-tool.html" class="switcher-tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3H3v18h18V3zM9 9h6v6H9V9z"/></svg>
+        Resize Pixels (Width x Height)
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <main class="main-content">
+
+    <!-- Hero Header -->
+    <section class="hero-section">
+      <h1 class="hero-title">Reduce Image Size In <span>KB</span></h1>
+      <p class="hero-subtitle">
+        Compress JPG, PNG, and WebP photos to <strong>20KB, 50KB, 100KB, 200KB</strong> or any target size while preserving crystal clear quality. Guaranteed size limit for Government Portals, SSC, UPSC, NEET, and Job forms.
+      </p>
+
+      <div class="trust-badges">
+        <span class="trust-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          100% Private (Processed in Browser)
+        </span>
+        <span class="trust-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Instant Speed
+        </span>
+        <span class="trust-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Exact Target Size Guarantee
+        </span>
+        <span class="trust-pill">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Batch Multi-Image Support
+        </span>
+      </div>
+    </section>
+
+    <!-- App Card -->
+    <div class="app-card">
+
+      <!-- Dropzone -->
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" multiple accept="image/*,.heic,.heif" style="display: none;">
+        
+        <div class="dropzone-icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+
+        <h2 class="dropzone-title">Select Or Drag & Drop Images Here</h2>
+        <p class="dropzone-desc">Choose photos from your computer, phone, or drag them into this box</p>
+
+        <span class="btn-select-file">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Select Images
+        </span>
+
+        <p class="dropzone-hints">
+          Supports <strong>JPG, JPEG, PNG, WEBP</strong> &bull; Paste screenshot directly with <kbd>Ctrl + V</kbd>
+        </p>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="settings-panel">
+        <div class="settings-grid">
+          <div class="size-control-group">
+            <div class="size-header-row">
+              <label class="setting-label" for="sizeInput">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                Target File Size:
+              </label>
+
+              <div class="size-input-wrapper">
+                <div class="stepper-box">
+                  <input type="number" id="sizeInput" class="size-number-input" value="100" min="1" max="99999" aria-label="Target Size">
+                  <div class="stepper-btns">
+                    <button type="button" class="step-btn" id="stepUpBtn" aria-label="Increase Size">▲</button>
+                    <button type="button" class="step-btn" id="stepDownBtn" aria-label="Decrease Size">▼</button>
+                  </div>
+                </div>
+
+                <select id="unitSelect" class="unit-select" aria-label="Select Unit">
+                  <option value="KB" selected>KB</option>
+                  <option value="MB">MB</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Quick Presets -->
+            <div class="presets-row">
+              <span class="preset-title">Quick Presets:</span>
+              <button type="button" class="preset-btn" data-size="20" data-unit="KB">20 KB (Signature)</button>
+              <button type="button" class="preset-btn" data-size="50" data-unit="KB">50 KB (Passport)</button>
+              <button type="button" class="preset-btn active" data-size="100" data-unit="KB">100 KB</button>
+              <button type="button" class="preset-btn" data-size="200" data-unit="KB">200 KB</button>
+              <button type="button" class="preset-btn" data-size="500" data-unit="KB">500 KB</button>
+              <button type="button" class="preset-btn" data-size="1" data-unit="MB">1 MB</button>
+            </div>
+
+            <!-- Exam Presets -->
+            <div class="exam-select-box">
+              <span class="preset-title">Govt Exam Preset:</span>
+              <select id="examSelect" class="exam-select">
+                <option value="">⚡ Select Exam / Portal Requirement...</option>
+                <option value="ssc-photo">SSC CGL / CHSL / MTS Photo (Under 50 KB)</option>
+                <option value="ssc-sign">SSC Signature (Under 20 KB)</option>
+                <option value="upsc-photo">UPSC Civil Services Photo (Under 50 KB)</option>
+                <option value="upsc-sign">UPSC Signature (Under 20 KB)</option>
+                <option value="ibps-photo">IBPS / SBI Bank PO Photo (Under 50 KB)</option>
+                <option value="ibps-sign">IBPS / SBI Bank Signature (Under 20 KB)</option>
+                <option value="neet-photo">NEET / JEE Application Photo (Under 80 KB)</option>
+                <option value="pan-photo">PAN Card / NSDL Portal (Under 45 KB)</option>
+              </select>
+            </div>
+
+            <!-- Advanced Accordion Toggle -->
+            <button type="button" class="accordion-toggle" id="accordionToggle">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+              Advanced Settings (Format, Dimensions, Strict Limit)
+            </button>
+
+            <!-- Advanced Content -->
+            <div class="accordion-content" id="accordionContent">
+              <div class="adv-field">
+                <label for="formatSelect">Output Format:</label>
+                <select id="formatSelect" class="adv-select">
+                  <option value="auto" selected>Auto (Same as Original)</option>
+                  <option value="image/jpeg">JPG / JPEG</option>
+                  <option value="image/webp">WEBP (Highest Compression)</option>
+                  <option value="image/png">PNG</option>
+                </select>
+              </div>
+
+              <div class="adv-field">
+                <label for="maxWidthInput">Max Width (px, optional):</label>
+                <input type="number" id="maxWidthInput" class="adv-input" placeholder="e.g. 1200">
+              </div>
+
+              <div class="adv-field">
+                <label for="maxHeightInput">Max Height (px, optional):</label>
+                <input type="number" id="maxHeightInput" class="adv-input" placeholder="e.g. 1600">
+              </div>
+
+              <div class="adv-field" style="justify-content: center;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-top: 1.25rem;">
+                  <input type="checkbox" id="strictCheck" checked style="width: 18px; height: 18px; accent-color: var(--primary);">
+                  Strictly under target KB (Govt Portals)
+                </label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="action-cta-row">
+          <button type="button" class="btn-compress-now" id="compressBtn" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
+            Reduce Size Now
+          </button>
+          <button type="button" class="btn-clear-all" id="clearAllBtn" style="display: none;">
+            Clear All
+          </button>
+        </div>
+
+        <!-- Processing Indicator -->
+        <div class="progress-card" id="progressCard">
+          <div class="spinner"></div>
+          <div class="progress-status" id="progressStatus">Optimizing & Compressing image...</div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Results Section -->
+    <section class="results-section" id="resultsSection">
+      <div class="results-header">
+        <h2 class="results-title">
+          Compressed Photos
+          <span class="file-badge-count" id="fileCountBadge">0 Images</span>
+        </h2>
+        <div class="batch-actions">
+          <button type="button" class="btn-download-all" id="downloadAllBtn" style="display: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download All (ZIP)
+          </button>
+        </div>
+      </div>
+
+      <div class="file-cards-list" id="fileCardsList">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- Visual Comparison Modal -->
+    <div class="modal-overlay" id="compareModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <div class="modal-title">Before & After Quality Comparison</div>
+          <button type="button" class="modal-close-btn" id="compareCloseBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="compare-container" id="compareContainer">
+            <img id="compareCompImg" class="compare-img" alt="Compressed Image">
+            <img id="compareOrigImg" class="compare-img compare-img-orig" alt="Original Image">
+            <div class="compare-slider-line" id="compareSliderLine">
+              <div class="compare-slider-handle">↔</div>
+            </div>
+            <span class="compare-badge orig">Original</span>
+            <span class="compare-badge comp">Compressed</span>
+          </div>
+          <div class="compare-info-bar">
+            <span id="compareOrigSize">Original: --</span>
+            <span id="compareCompSize">Compressed: --</span>
+            <span id="compareSavedPct" class="saved-pill">-- Saved</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informational Article & Guide (Pi7 Style) -->
+    <section class="article-section">
+      <h2 class="section-heading">How to Reduce Image Size in KB Online</h2>
+      
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Upload Your Image</h3>
+          <p class="step-desc">Click "Select Images", drag and drop photos, or paste directly with Ctrl+V from clipboard.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Set Target Size (KB)</h3>
+          <p class="step-desc">Enter your required size like 20 KB, 50 KB, 100 KB or pick an exam preset from the dropdown.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Click "Reduce Size"</h3>
+          <p class="step-desc">Our smart client-side algorithm optimizes image quality and downsizes file size in milliseconds.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3 class="step-title">Download Photos</h3>
+          <p class="step-desc">Preview before/after quality with the slider and download single photos or a ZIP package.</p>
+        </div>
+      </div>
+
+      <h2 class="section-heading">Why Choose Our Image Reducer Tool?</h2>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-title">100% Private & Secure</h3>
+            <p class="feature-desc">All compression happens locally inside your browser. No files are ever sent to any remote server.</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-title">Strict Target Size Guarantee</h3>
+            <p class="feature-desc">Ensures the file size never exceeds the maximum portal limit (e.g. 50 KB will never be 51 KB).</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-title">Lightning-Fast Processing</h3>
+            <p class="feature-desc">Using HTML5 Canvas hardware acceleration, compress multiple photos in less than 2 seconds.</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-title">High Quality Preserved</h3>
+            <p class="feature-desc">Adaptive binary-search algorithms maximize resolution clarity while shedding excess bytes.</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-title">Batch Compression & ZIP</h3>
+            <p class="feature-desc">Upload multiple files at once, compress together, and download everything in one organized ZIP file.</p>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div>
+            <h3 class="feature-title">No Watermarks & Free Forever</h3>
+            <p class="feature-desc">Clean photos with no watermark, no registration, no subscription, and unlimited daily usage.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Govt Exam Portal Guidelines Table -->
+      <h2 class="section-heading">Government Portal Photo & Signature Guidelines</h2>
+      <div class="guidelines-card">
+        <table class="guidelines-table">
+          <thead>
+            <tr>
+              <th>Exam / Portal Name</th>
+              <th>Passport Photo Size</th>
+              <th>Signature Size</th>
+              <th>Supported Formats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>SSC (CGL, CHSL, MTS, GD)</strong></td>
+              <td>20 KB to 50 KB (3.5 × 4.5 cm)</td>
+              <td>10 KB to 20 KB (4.0 × 2.0 cm)</td>
+              <td>JPEG / JPG</td>
+            </tr>
+            <tr>
+              <td><strong>UPSC Civil Services / NDA / CDS</strong></td>
+              <td>20 KB to 50 KB (Min 350 × 350 px)</td>
+              <td>10 KB to 20 KB (Min 350 × 350 px)</td>
+              <td>JPEG / JPG</td>
+            </tr>
+            <tr>
+              <td><strong>IBPS / SBI (PO, Clerk, SO)</strong></td>
+              <td>20 KB to 50 KB (200 × 230 px)</td>
+              <td>10 KB to 20 KB (140 × 60 px)</td>
+              <td>JPEG / JPG</td>
+            </tr>
+            <tr>
+              <td><strong>NEET / JEE / NTA Portals</strong></td>
+              <td>10 KB to 200 KB</td>
+              <td>4 KB to 30 KB</td>
+              <td>JPG / JPEG</td>
+            </tr>
+            <tr>
+              <td><strong>PAN Card (NSDL / UTIITSL)</strong></td>
+              <td>Less than 50 KB (200 DPI, 2.5×3.5 cm)</td>
+              <td>Less than 20 KB (200 DPI, 4.5×2 cm)</td>
+              <td>JPEG</td>
+            </tr>
+            <tr>
+              <td><strong>Passport Seva Kendra</strong></td>
+              <td>Under 200 KB (4.5 × 3.5 cm)</td>
+              <td>Under 100 KB</td>
+              <td>JPEG / JPG</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- FAQ Section -->
+      <h2 class="section-heading">Frequently Asked Questions (FAQ)</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How do I reduce an image size to exactly 20 KB or 50 KB?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Simply upload your photo into the dropzone, click the "20 KB" or "50 KB" preset button (or type the number manually), and click "Reduce Size Now". The tool automatically adjusts image quality and dimensions so the resulting file is guaranteed to be within the target size without losing clarity.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Are my photos uploaded to your server? Is it safe?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            No! Your photos are processed 100% locally on your computer or phone using modern browser technology (HTML5 Canvas). Your sensitive documents, signatures, and photos never leave your device.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What should I do if a government portal says "File size too small"?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Many portals (like SSC or UPSC) have a minimum requirement of 20 KB. If your photo is only 12 KB, switch to our <a href="increase-size.html" style="color: var(--primary); font-weight: 600;">Increase Image Size in KB</a> tool. It safely inflates the file size to 25 KB or 45 KB without altering any pixels!
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Can I compress multiple images together and download as a ZIP?</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-answer">
+            Yes! You can select multiple images or drag-and-drop a whole folder of photos. Once compressed, click the "Download All (ZIP)" button to download all files in a single archive.
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-about">
+        <div class="brand-logo">
+          <span class="logo-badge">KB</span>
+          <div class="brand-text">KB<span>PIX</span></div>
+        </div>
+        <p>
+          KBPix: The fastest and most reliable image reducer for online applications, exam forms, and web optimization. 100% private, client-side photo processing.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Popular Tools</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Image Size in KB</a></li>
+          <li><a href="increase-size.html">Increase Image Size in KB</a></li>
+          <li><a href="passport-tool.html">Passport Size Photo Maker</a></li>
+          <li><a href="passport-tool.html">Resize Image Pixels</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Exam Portals</h4>
+        <ul class="footer-links">
+          <li><a href="index.html">SSC CGL Photo Resizer</a></li>
+          <li><a href="index.html">UPSC Photo & Sign Resizer</a></li>
+          <li><a href="index.html">IBPS Bank Exam Resizer</a></li>
+          <li><a href="index.html">NEET / JEE Photo Tool</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; 2026 KBPix. Free, fast and private precision image compression.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/jszip.min.js"></script>
+  <script src="js/compressor.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

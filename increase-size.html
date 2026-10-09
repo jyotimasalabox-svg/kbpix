@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KBPix | Increase Image Size In KB Online</title>
+  <meta name="description" content="KBPix: Increase image size in KB without changing quality or pixels. Boost photo to 20KB, 50KB, 100KB for government portals and exam applications.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234449a6'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="logo-badge">KB</span>
+        <div class="brand-text">KB<span>PIX</span></div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link">Reduce Size (KB)</a></li>
+        <li><a href="increase-size.html" class="nav-link active">Increase Size (KB)</a></li>
+        <li><a href="passport-tool.html" class="nav-link">Passport Photo Maker</a></li>
+        <li><a href="passport-tool.html" class="nav-link">Resize Pixels</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Tool Switcher Bar -->
+  <div class="tool-switcher-bar">
+    <div class="switcher-container">
+      <a href="index.html" class="switcher-tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
+        Reduce Image Size (KB)
+      </a>
+      <a href="increase-size.html" class="switcher-tab active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+        Increase Image Size (KB)
+      </a>
+      <a href="passport-tool.html" class="switcher-tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Passport Size Photo
+      </a>
+    </div>
+  </div>
+
+  <main class="main-content">
+    <section class="hero-section">
+      <h1 class="hero-title">Increase Image Size In <span>KB</span></h1>
+      <p class="hero-subtitle">
+        Meet portal minimum file size requirements! Expand image size to <strong>20KB, 50KB, 100KB</strong> without changing image quality, sharpness, or dimensions.
+      </p>
+    </section>
+
+    <div class="app-card">
+      <div class="dropzone" id="dropzone">
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        <div class="dropzone-icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/>
+          </svg>
+        </div>
+        <h2 class="dropzone-title">Select Image to Increase KB</h2>
+        <p class="dropzone-desc">Choose a small photo or signature that was rejected for being under minimum size</p>
+        <span class="btn-select-file">Select Image</span>
+      </div>
+
+      <div class="settings-panel">
+        <div class="size-control-group">
+          <div class="size-header-row">
+            <label class="setting-label" for="sizeInput">Target Minimum Size (KB):</label>
+            <div class="size-input-wrapper">
+              <div class="stepper-box">
+                <input type="number" id="sizeInput" class="size-number-input" value="45" min="5" max="5000">
+                <div class="stepper-btns">
+                  <button type="button" class="step-btn" id="stepUpBtn">▲</button>
+                  <button type="button" class="step-btn" id="stepDownBtn">▼</button>
+                </div>
+              </div>
+              <span style="font-weight: 700; color: var(--text-muted);">KB</span>
+            </div>
+          </div>
+
+          <div class="presets-row">
+            <span class="preset-title">Presets:</span>
+            <button type="button" class="preset-btn" data-size="20">20 KB (Min SSC Sign)</button>
+            <button type="button" class="preset-btn" data-size="30">30 KB</button>
+            <button type="button" class="preset-btn active" data-size="45">45 KB (Safe for 20-50KB portals)</button>
+            <button type="button" class="preset-btn" data-size="60">60 KB</button>
+            <button type="button" class="preset-btn" data-size="100">100 KB</button>
+          </div>
+        </div>
+
+        <div class="action-cta-row">
+          <button type="button" class="btn-compress-now" id="increaseBtn" disabled>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+            Increase Image Size Now
+          </button>
+        </div>
+
+        <div class="progress-card" id="progressCard">
+          <div class="spinner"></div>
+          <div class="progress-status" id="progressStatus">Padding image...</div>
+        </div>
+
+        <!-- Result Preview -->
+        <div id="resultCard" style="display: none; margin-top: 2rem; background: var(--bg-card-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center;">
+          <img id="previewImg" style="max-height: 180px; max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1rem;" alt="Preview">
+          <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.25rem; font-size: 0.95rem;">
+            <div>Original: <strong id="origSizeEl">--</strong></div>
+            <div>Target: <strong id="targetSizeEl">--</strong></div>
+            <div>Result: <strong id="newSizeEl" style="color: var(--accent);">--</strong></div>
+          </div>
+          <button type="button" class="btn-card-download" id="downloadBtn" style="display: none; padding: 0.75rem 2rem; font-size: 1rem; margin: 0 auto;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Inflated Photo
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Guide Section -->
+    <section class="article-section">
+      <h2 class="section-heading">Why Increase Image Size in KB?</h2>
+      <p style="text-align: center; color: var(--text-muted); max-width: 750px; margin: 0 auto 2.5rem;">
+        Government portals (SSC, UPSC, State PSC, NSDL PAN) often mandate strict file limits such as <strong>"File size must be between 20 KB and 50 KB"</strong>. If your photo is 12 KB, the system rejects it with an error. This tool safely pads internal metadata to increase the file size without blurring or modifying the picture.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔍</div>
+          <div>
+            <h3 class="feature-title">Zero Quality Loss</h3>
+            <p class="feature-desc">Your original image pixels are untouched. The image remains as crisp as before.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <div>
+            <h3 class="feature-title">Valid JPEG Format</h3>
+            <p class="feature-desc">Uses standard JPEG COM headers compatible with 100% of portal upload validators.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div>
+            <h3 class="feature-title">100% In-Browser Privacy</h3>
+            <p class="feature-desc">Processed entirely in your browser. Nothing is uploaded to any server.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      &copy; 2026 KBPix. Increase image size safely without loss.
+    </div>
+  </footer>
+
+  <script src="js/compressor.js"></script>
+  <script src="js/increase-app.js"></script>
+</body>
+</html>
