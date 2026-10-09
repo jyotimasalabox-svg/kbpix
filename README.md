@@ -1,6 +1,6 @@
-# KBPix ⚡ Precision Image Reducer & Resizer
+# PhotoResize Pro ⚡ Precision Image Reducer & Resizer
 
-A modern, lightning-fast web application to reduce image size in KB, create passport photos, and resize pictures with 100% in-browser privacy. Inspired by Pi7 Image Tool.
+A modern, high-performance web application to reduce image size in KB, create passport photos, and resize pictures with 100% in-browser privacy. Inspired by Pi7 Image Tool.
 
 Live deployment ready for Vercel, Netlify, and GitHub Pages.
 

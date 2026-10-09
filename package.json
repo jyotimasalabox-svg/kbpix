@@ -1,16 +1,15 @@
 {
-  "name": "kbpix",
+  "name": "photo-resize-pro",
   "version": "1.0.0",
-  "description": "KBPix - Smart Image Compressor & Reducer in KB",
+  "description": "PhotoResize Pro - Precision Image Reducer & Resizer in KB",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "keywords": [
+    "photo-resize-pro",
     "image-compressor",
     "reduce-image-size-in-kb",
-    "pi7",
-    "photo-resizer",
     "passport-photo"
   ],
   "author": "",
