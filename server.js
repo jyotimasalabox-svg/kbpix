@@ -21,7 +21,11 @@ const server = http.createServer((req, res) => {
   let cleanUrl = req.url.split('?')[0];
   if (cleanUrl === '/') cleanUrl = '/index.html';
 
-  const filePath = path.join(__dirname, cleanUrl);
+  let filePath = path.join(__dirname, cleanUrl);
+  if (!fs.existsSync(filePath) && fs.existsSync(filePath + '.html')) {
+    filePath = filePath + '.html';
+  }
+
   const ext = path.extname(filePath).toLowerCase();
   const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
