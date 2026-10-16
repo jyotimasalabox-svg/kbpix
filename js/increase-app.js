@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.classList.remove('active');
       }
     });
+    const increaseBtnKbLabel = document.getElementById('increaseBtnKbLabel');
+    if (increaseBtnKbLabel) increaseBtnKbLabel.textContent = val;
   }
 
   sizeInput.addEventListener('input', updateTargetSize);
@@ -127,13 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     state.file = file;
     state.origUrl = URL.createObjectURL(file);
+    state.paddedBlob = null;
+    state.paddedUrl = null;
     previewImg.src = state.origUrl;
     origSizeEl.textContent = ImageCompressor.formatBytes(file.size);
     targetSizeEl.textContent = `${state.targetSize} KB`;
     increaseBtn.disabled = false;
     resultCard.style.display = 'block';
-    newSizeEl.textContent = 'Waiting for increase...';
-    downloadBtn.style.display = 'none';
+    newSizeEl.textContent = 'Ready to download';
+    downloadBtn.style.display = 'inline-flex';
 
     // If current file is already larger than target size, suggest a higher target
     const currentKB = Math.ceil(file.size / 1024);
@@ -146,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Increase Execution
-  increaseBtn.addEventListener('click', async () => {
+  async function executeIncreaseAndDownload(autoTriggerDownload = true) {
     if (!state.file || state.isProcessing) return;
 
     const targetBytes = Math.round(state.targetSize * 1024);
@@ -171,7 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadBtn.style.display = 'inline-flex';
         state.isProcessing = false;
         increaseBtn.disabled = false;
-      }, 500);
+
+        if (autoTriggerDownload) {
+          triggerFileDownload();
+        }
+      }, 400);
     } catch (e) {
       console.error(e);
       alert('Failed to increase image size.');
@@ -179,10 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
       increaseBtn.disabled = false;
       progressCard.classList.remove('active');
     }
-  });
+  }
 
-  // Download
-  downloadBtn.addEventListener('click', () => {
+  increaseBtn.addEventListener('click', () => executeIncreaseAndDownload(true));
+
+  function triggerFileDownload() {
     if (!state.paddedUrl || !state.paddedBlob) return;
     const baseName = state.file.name.replace(/\.[^/.]+$/, '');
     const filename = `${baseName}_increased_${state.targetSize}KB.jpg`;
@@ -192,5 +201,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+  }
+
+  // Direct Download Button click
+  downloadBtn.addEventListener('click', () => {
+    if (state.paddedBlob && state.paddedUrl) {
+      triggerFileDownload();
+    } else {
+      executeIncreaseAndDownload(true);
+    }
   });
 });

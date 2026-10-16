@@ -450,6 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function executePrintA4() {
     if (!state.frontImg && !state.backImg) {
       alert('Please upload at least the Front Side of the card first!');
+      if (frontInput) frontInput.click();
       return;
     }
     renderA4Sheet();
@@ -459,6 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function executeExportPdf() {
     if (!state.frontImg && !state.backImg) {
       alert('Please upload at least the Front Side of the card first!');
+      if (frontInput) frontInput.click();
       return;
     }
     if (!canvas) return;
@@ -498,6 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function executeDownloadImage() {
     if (!state.frontImg && !state.backImg) {
       alert('Please upload at least the Front Side of the card first!');
+      if (frontInput) frontInput.click();
       return;
     }
     if (!canvas) return;

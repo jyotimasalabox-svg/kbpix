@@ -290,14 +290,17 @@
         </div>
 
         <!-- Action CTAs -->
-        <div class="action-cta-row">
-          <button type="button" class="btn-compress-now" id="compressBtn" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
-            Reduce Size Now
+        <div class="action-cta-row" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button type="button" class="btn-compress-now" id="compressBtn" disabled style="min-width: 280px; font-size: 1.15rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem 2rem; cursor: pointer; box-shadow: 0 4px 16px var(--primary-glow);">
+            <i class="ph-bold ph-download-simple" style="font-size: 1.4rem;"></i>
+            <span>⚡ Compress &amp; Download (<span id="mainBtnKbLabel">100</span> KB)</span>
           </button>
-          <button type="button" class="btn-clear-all" id="clearAllBtn" style="display: none;">
+          <button type="button" class="btn-clear-all" id="clearAllBtn" style="display: none; cursor: pointer;">
             Clear All
           </button>
+        </div>
+        <div id="quickDownloadHint" style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); text-align: center; display: none;">
+          <i class="ph-bold ph-check-circle" style="color: var(--accent);"></i> Click above or download directly from any photo card below.
         </div>
 
         <!-- Processing Indicator -->
@@ -321,9 +324,9 @@
           <span class="file-badge-count" id="fileCountBadge">0 Images</span>
         </h2>
         <div class="batch-actions">
-          <button type="button" class="btn-download-all" id="downloadAllBtn" style="display: none;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download All (ZIP)
+          <button type="button" class="btn-download-all" id="downloadAllBtn" style="display: none; padding: 0.75rem 1.4rem; font-size: 1rem; font-weight: 800; background: var(--accent); color: white; border-radius: var(--radius-md); box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4); cursor: pointer; display: none; align-items: center; gap: 0.5rem;">
+            <i class="ph-bold ph-download-simple" style="font-size: 1.25rem;"></i>
+            <span>Download All (ZIP)</span>
           </button>
         </div>
       </div>

@@ -124,6 +124,21 @@
       <!-- Document List Container -->
       <div id="docPackList" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
 
+      <!-- Bottom Download Action Bar (Visible when files are added) -->
+      <div id="converterBottomDownloadBar" style="display: none; margin-top: 1.5rem; background: var(--bg-card-secondary); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+        <div style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 0.75rem; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
+          <i class="ph-bold ph-download-simple" style="font-size: 1.1rem;"></i> Download Your Converted Pack
+        </div>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <button class="button primary" onclick="document.getElementById('btnDownloadAllZip').click()" style="padding: 0.95rem 1.6rem; font-size: 1.05rem; font-weight: 800; box-shadow: 0 4px 16px var(--primary-glow); cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <i class="ph-bold ph-file-zip" style="font-size: 1.3rem;"></i> Download Complete Pack (ZIP)
+          </button>
+          <button class="button secondary" onclick="document.getElementById('btnMergeAllPdf').click()" style="padding: 0.95rem 1.4rem; font-size: 1rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <i class="ph-bold ph-file-pdf" style="font-size: 1.3rem; color: #ef4444;"></i> Merge All to 1 PDF
+          </button>
+        </div>
+      </div>
+
     </div>
   </main>
 

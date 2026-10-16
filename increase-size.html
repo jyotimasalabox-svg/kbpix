@@ -108,10 +108,10 @@
           </div>
         </div>
 
-        <div class="action-cta-row">
-          <button type="button" class="btn-compress-now" id="increaseBtn" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-            Increase Image Size Now
+        <div class="action-cta-row" style="display: flex; justify-content: center;">
+          <button type="button" class="btn-compress-now" id="increaseBtn" disabled style="min-width: 280px; font-size: 1.15rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem 2rem; cursor: pointer; box-shadow: 0 4px 16px var(--primary-glow);">
+            <i class="ph-bold ph-download-simple" style="font-size: 1.4rem;"></i>
+            <span>⚡ Increase Size &amp; Download (<span id="increaseBtnKbLabel">45</span> KB)</span>
           </button>
         </div>
 
@@ -121,16 +121,16 @@
         </div>
 
         <!-- Result Preview -->
-        <div id="resultCard" style="display: none; margin-top: 2rem; background: var(--bg-card-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center;">
+        <div id="resultCard" style="display: none; margin-top: 2rem; background: var(--bg-card-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 2px solid var(--border-color); text-align: center;">
           <img id="previewImg" style="max-height: 180px; max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color); margin-bottom: 1rem;" alt="Preview">
-          <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.25rem; font-size: 0.95rem;">
+          <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.25rem; font-size: 0.95rem; flex-wrap: wrap;">
             <div>Original: <strong id="origSizeEl">--</strong></div>
             <div>Target: <strong id="targetSizeEl">--</strong></div>
-            <div>Result: <strong id="newSizeEl" style="color: var(--accent);">--</strong></div>
+            <div>Result: <strong id="newSizeEl" style="color: var(--accent); font-weight: 800;">--</strong></div>
           </div>
-          <button type="button" class="btn-card-download" id="downloadBtn" style="display: none; padding: 0.75rem 2rem; font-size: 1rem; margin: 0 auto;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download Inflated Photo
+          <button type="button" class="button primary" id="downloadBtn" style="display: inline-flex; padding: 0.95rem 2.2rem; font-size: 1.05rem; font-weight: 800; box-shadow: 0 4px 16px var(--primary-glow); align-items: center; justify-content: center; gap: 0.5rem; margin: 0 auto; cursor: pointer;">
+            <i class="ph-bold ph-download-simple" style="font-size: 1.3rem;"></i>
+            <span>Download Inflated Photo</span>
           </button>
         </div>
 

@@ -128,15 +128,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderDocList() {
     if (!docListContainer) return;
 
+    const bottomBar = document.getElementById('converterBottomDownloadBar');
     if (state.documents.length === 0) {
       if (dropzone) dropzone.style.display = 'block';
       if (packSummaryBar) packSummaryBar.style.display = 'none';
+      if (bottomBar) bottomBar.style.display = 'none';
       docListContainer.innerHTML = '';
       return;
     }
 
     if (dropzone) dropzone.style.display = 'none';
     if (packSummaryBar) packSummaryBar.style.display = 'flex';
+    if (bottomBar) bottomBar.style.display = 'block';
     if (docCountBadge) docCountBadge.textContent = state.documents.length;
 
     docListContainer.innerHTML = state.documents.map((doc, idx) => `

@@ -767,7 +767,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Action: Download Single Photo (JPEG with Target KB) ---
   async function executeDownloadSingle() {
     if (!state.img) {
-      alert('Please select or upload a photo first!');
+      alert('Please select or upload your photo first!');
+      const fi = document.getElementById('passportFileInput');
+      if (fi) fi.click();
       return;
     }
     const btns = [btnDownloadSingle, document.getElementById('btnStageDownloadSingle')].filter(Boolean);
@@ -821,7 +823,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Action: Download Printable Sheet as High-Res PDF (1:1 Actual Scale) ---
   function executeDownloadSheetPdf() {
     if (!state.img || !sheetCanvas) {
-      alert('Please upload a photo first!');
+      alert('Please upload your photo first!');
+      const fi = document.getElementById('passportFileInput');
+      if (fi) fi.click();
       return;
     }
     renderSheetCanvas();
@@ -868,7 +872,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Action: Direct 1-Click Print (Window Print) ---
   function executePrintSheet() {
     if (!state.img) {
-      alert('Please upload a photo first!');
+      alert('Please upload your photo first!');
+      const fi = document.getElementById('passportFileInput');
+      if (fi) fi.click();
       return;
     }
     renderSheetCanvas();

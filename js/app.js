@@ -122,6 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
     state.targetSize = val;
     state.unit = unitSelect.value;
     highlightMatchingPreset();
+    const mainBtnKbLabel = document.getElementById('mainBtnKbLabel');
+    if (mainBtnKbLabel) mainBtnKbLabel.textContent = `${state.targetSize} ${state.unit}`;
   }
 
   function highlightMatchingPreset() {
@@ -324,22 +326,27 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
           </div>
         </div>
-        <div class="file-actions">
+        <div class="file-actions" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
           ${isDone ? `
-            <button class="btn-card-action" onclick="window.openCompare('${item.id}')">
+            <button class="btn-card-action" onclick="window.openCompare('${item.id}')" style="cursor: pointer;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
               Compare
             </button>
-            <button class="btn-card-download" onclick="window.downloadSingle('${item.id}')">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download
+            <button class="btn-card-download" onclick="window.downloadSingle('${item.id}')" style="background: var(--accent); color: white; font-weight: 800; padding: 0.6rem 1.15rem; display: inline-flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 12px rgba(16,185,129,0.35); cursor: pointer; border: none; border-radius: var(--radius-sm);">
+              <i class="ph-bold ph-check-circle" style="font-size: 1.15rem;"></i>
+              <span>Download (${ImageCompressor.formatBytes(item.compSize)})</span>
             </button>
           ` : isProcessing ? `
-            <span style="font-size: 0.9rem; font-weight: 600; color: var(--primary);">Compressing...</span>
+            <span style="font-size: 0.9rem; font-weight: 700; color: var(--primary); display: inline-flex; align-items: center; gap: 0.35rem;">
+              <i class="ph-bold ph-spinner ph-spin"></i> Compressing...
+            </span>
           ` : `
-            <span style="font-size: 0.85rem; color: var(--text-muted);">Ready to compress</span>
+            <button class="btn-card-download" onclick="window.compressAndDownloadSingle('${item.id}')" style="background: var(--primary); color: white; font-weight: 800; padding: 0.6rem 1.15rem; display: inline-flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 12px var(--primary-glow); cursor: pointer; border: none; border-radius: var(--radius-sm);">
+              <i class="ph-bold ph-download-simple" style="font-size: 1.15rem;"></i>
+              <span>Download (&lt;${state.targetSize} ${state.unit})</span>
+            </button>
           `}
-          <button class="btn-card-remove" onclick="window.removeFile('${item.id}')" title="Remove">
+          <button class="btn-card-remove" onclick="window.removeFile('${item.id}')" title="Remove" style="cursor: pointer;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
         </div>
@@ -357,6 +364,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const hasFiles = state.files.length > 0;
     compressBtn.disabled = !hasFiles || state.isProcessing;
     clearAllBtn.style.display = hasFiles ? 'inline-block' : 'none';
+    const quickHint = document.getElementById('quickDownloadHint');
+    if (quickHint) quickHint.style.display = hasFiles ? 'block' : 'none';
   }
 
   // Window global handlers for inline onclicks
@@ -439,12 +448,22 @@ document.addEventListener('DOMContentLoaded', () => {
     progressBarFill.style.width = '100%';
     progressStatus.textContent = `Completed! Successfully processed ${totalFiles} images.`;
 
+    // Auto-download single photo or trigger batch ZIP
+    const doneItems = state.files.filter(f => f.status === 'done' && f.compBlob);
+    if (doneItems.length === 1) {
+      window.downloadSingle(doneItems[0].id);
+    } else if (doneItems.length > 1) {
+      setTimeout(() => {
+        if (downloadAllBtn) downloadAllBtn.click();
+      }, 300);
+    }
+
     setTimeout(() => {
       progressCard.classList.remove('active');
       state.isProcessing = false;
       updateUIState();
       renderFileList();
-    }, 1200);
+    }, 1000);
   });
 
   // ==========================================
@@ -469,6 +488,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const filename = `${baseName}_reduced_${state.targetSize}${state.unit}${ext}`;
 
     triggerDownload(item.compUrl, filename);
+  };
+
+  // 1-Click direct compress and download for individual cards
+  window.compressAndDownloadSingle = async function(id) {
+    const item = state.files.find(f => f.id === id);
+    if (!item) return;
+
+    if (item.status === 'done' && item.compBlob) {
+      window.downloadSingle(id);
+      return;
+    }
+
+    item.status = 'processing';
+    renderFileList();
+
+    const targetKB = state.unit === 'MB' ? state.targetSize * 1024 : state.targetSize;
+    const format = formatSelect ? formatSelect.value : 'auto';
+    const strictUnder = strictCheck ? strictCheck.checked : true;
+    const maxWidth = maxWidthInput && maxWidthInput.value ? parseInt(maxWidthInput.value, 10) : null;
+    const maxHeight = maxHeightInput && maxHeightInput.value ? parseInt(maxHeightInput.value, 10) : null;
+
+    try {
+      const result = await ImageCompressor.compressImage(item.file, {
+        targetKB,
+        format,
+        strictUnder,
+        maxWidth,
+        maxHeight
+      });
+
+      item.compBlob = result.blob;
+      item.compUrl = URL.createObjectURL(result.blob);
+      item.compSize = result.compressedSize;
+      item.compW = result.width;
+      item.compH = result.height;
+      item.status = 'done';
+      renderFileList();
+
+      // Immediately trigger download
+      window.downloadSingle(id);
+    } catch (err) {
+      console.error(err);
+      alert('Compression error: ' + err.message);
+      item.status = 'error';
+      renderFileList();
+    }
   };
 
   downloadAllBtn.addEventListener('click', async () => {
