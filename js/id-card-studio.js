@@ -447,26 +447,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Export Actions ---
-  if (btnPrintA4) {
-    btnPrintA4.addEventListener('click', () => {
-      renderA4Sheet();
-      window.print();
-    });
+  function executePrintA4() {
+    if (!state.frontImg && !state.backImg) {
+      alert('Please upload at least the Front Side of the card first!');
+      return;
+    }
+    renderA4Sheet();
+    window.print();
   }
 
-  if (btnExportPdf) {
-    btnExportPdf.addEventListener('click', () => {
-      if (!canvas) return;
-      renderA4Sheet();
+  function executeExportPdf() {
+    if (!state.frontImg && !state.backImg) {
+      alert('Please upload at least the Front Side of the card first!');
+      return;
+    }
+    if (!canvas) return;
+    renderA4Sheet();
 
-      if (!window.jspdf || !window.jspdf.jsPDF) {
-        alert('PDF library is loading, please try again.');
-        return;
-      }
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      alert('PDF library is loading, please try again.');
+      return;
+    }
 
-      btnExportPdf.disabled = true;
-      btnExportPdf.textContent = 'Generating PDF...';
+    const btns = [btnExportPdf, document.getElementById('btnStageExportIdPdf')].filter(Boolean);
+    btns.forEach(b => {
+      b.disabled = true;
+      b.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Generating PDF...';
+    });
 
+    try {
       const doc = new window.jspdf.jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -476,25 +485,43 @@ document.addEventListener('DOMContentLoaded', () => {
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
       doc.addImage(imgData, 'JPEG', 0, 0, 210, 297);
       doc.save(`${state.currentDocType}_id_print_a4.pdf`);
-
-      btnExportPdf.disabled = false;
-      btnExportPdf.textContent = 'Export High-Res PDF';
-    });
+    } catch (err) {
+      alert('PDF generation error: ' + err.message);
+    } finally {
+      btns.forEach(b => {
+        b.disabled = false;
+        b.innerHTML = '<i class="ph-bold ph-file-pdf" style="color: #ef4444;"></i> Download Print PDF';
+      });
+    }
   }
 
-  if (btnDownloadImage) {
-    btnDownloadImage.addEventListener('click', () => {
-      if (!canvas) return;
-      renderA4Sheet();
-      const url = canvas.toDataURL('image/jpeg', 0.95);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${state.currentDocType}_id_sheet.jpg`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    });
+  function executeDownloadImage() {
+    if (!state.frontImg && !state.backImg) {
+      alert('Please upload at least the Front Side of the card first!');
+      return;
+    }
+    if (!canvas) return;
+    renderA4Sheet();
+    const url = canvas.toDataURL('image/jpeg', 0.95);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${state.currentDocType}_id_sheet.jpg`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
+
+  if (btnPrintA4) btnPrintA4.addEventListener('click', executePrintA4);
+  const btnStagePrintIdA4 = document.getElementById('btnStagePrintIdA4');
+  if (btnStagePrintIdA4) btnStagePrintIdA4.addEventListener('click', executePrintA4);
+
+  if (btnExportPdf) btnExportPdf.addEventListener('click', executeExportPdf);
+  const btnStageExportIdPdf = document.getElementById('btnStageExportIdPdf');
+  if (btnStageExportIdPdf) btnStageExportIdPdf.addEventListener('click', executeExportPdf);
+
+  if (btnDownloadImage) btnDownloadImage.addEventListener('click', executeDownloadImage);
+  const btnStageDownloadIdJpg = document.getElementById('btnStageDownloadIdJpg');
+  if (btnStageDownloadIdJpg) btnStageDownloadIdJpg.addEventListener('click', executeDownloadImage);
 
   // Initial draw
   renderA4Sheet();

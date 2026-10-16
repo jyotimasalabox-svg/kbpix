@@ -130,7 +130,7 @@
               <button class="canvas-tool-btn" id="btnResetTransform" title="Reset Positioning"><i class="ph ph-arrows-clockwise"></i> Reset</button>
             </div>
 
-            <!-- Dimensions Badge & Download Actions -->
+            <!-- Dimensions Badge & Info -->
             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
               <span class="trust-pill" id="passportDimChip" style="font-weight: 700;">
                 3.5 × 4.5 cm (413 × 531 px)
@@ -138,6 +138,32 @@
               <span class="trust-pill" id="sheetInfoChip" style="display: none; font-weight: 700;">
                 8 Photos on A4 Sheet
               </span>
+            </div>
+
+            <!-- Prominent Download Action Box Directly Below Photo -->
+            <div class="stage-download-card" style="width: 100%; margin-top: 1.25rem; background: var(--bg-card-secondary); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+              <div style="font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 0.75rem; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                <i class="ph-bold ph-download-simple" style="font-size: 1.1rem;"></i> Download &amp; Print Options
+              </div>
+              <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                <button class="button primary" id="btnStageDownloadSingle" style="flex: 2; min-width: 220px; padding: 0.95rem 1.5rem; font-size: 1.05rem; font-weight: 800; box-shadow: 0 4px 16px var(--primary-glow); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;">
+                  <i class="ph-bold ph-download-simple" style="font-size: 1.4rem;"></i>
+                  <span>Download Photo (JPG &bull; &lt;<span id="stageTargetKb">50</span>KB)</span>
+                </button>
+                <button class="button secondary" id="btnStageDownloadSheet" style="flex: 1; min-width: 180px; padding: 0.95rem 1.25rem; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; cursor: pointer;">
+                  <i class="ph-bold ph-file-pdf" style="font-size: 1.3rem; color: #ef4444;"></i>
+                  <span>Download A4 PDF</span>
+                </button>
+                <button class="button secondary" id="btnStagePrintSheet" style="padding: 0.95rem 1.25rem; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; cursor: pointer;">
+                  <i class="ph-bold ph-printer" style="font-size: 1.3rem;"></i>
+                  <span>Print (1:1)</span>
+                </button>
+              </div>
+              <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <span><i class="ph-bold ph-check" style="color: var(--accent);"></i> Exact Target Size Limit</span>
+                <span><i class="ph-bold ph-check" style="color: var(--accent);"></i> 300 DPI Biometric Standard</span>
+                <span><i class="ph-bold ph-check" style="color: var(--accent);"></i> 100% Free &amp; Private</span>
+              </div>
             </div>
           </div>
 

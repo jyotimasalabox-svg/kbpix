@@ -756,63 +756,88 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Action: Download Single Photo (JPEG with Target KB) ---
-  if (btnDownloadSingle) {
-    btnDownloadSingle.addEventListener('click', async () => {
-      if (!state.img) return;
-      btnDownloadSingle.disabled = true;
-      btnDownloadSingle.textContent = 'Compressing...';
-
-      renderSingleCanvas();
-
-      previewCanvas.toBlob(async (blob) => {
-        try {
-          const rawFile = new File([blob], 'passport.jpg', { type: 'image/jpeg' });
-          let finalBlob = blob;
-
-          // If ImageCompressor is available, compress under target KB
-          if (typeof ImageCompressor !== 'undefined' && ImageCompressor.compressImage) {
-            const res = await ImageCompressor.compressImage(rawFile, {
-              targetKB: state.targetKB,
-              format: 'image/jpeg',
-              strictUnder: true
-            });
-            finalBlob = res.blob;
-          }
-
-          // Trigger download
-          const url = URL.createObjectURL(finalBlob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `passport_photo_${state.targetKB}KB.jpg`;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        } catch (err) {
-          console.error(err);
-        } finally {
-          btnDownloadSingle.disabled = false;
-          btnDownloadSingle.textContent = 'Download Photo (JPEG)';
-        }
-      }, 'image/jpeg', 0.95);
-    });
+  // Helper function to update KB labels across UI
+  function updateKbLabels() {
+    const stageTargetKb = document.getElementById('stageTargetKb');
+    const btnKbLabel = document.getElementById('btnKbLabel');
+    if (stageTargetKb) stageTargetKb.textContent = state.targetKB;
+    if (btnKbLabel) btnKbLabel.textContent = state.targetKB;
   }
 
-  // --- Action: Download Printable Sheet as High-Res PDF (1:1 Actual Scale) ---
-  if (btnDownloadSheetPdf) {
-    btnDownloadSheetPdf.addEventListener('click', () => {
-      if (!state.img || !sheetCanvas) return;
-      renderSheetCanvas();
+  // --- Action: Download Single Photo (JPEG with Target KB) ---
+  async function executeDownloadSingle() {
+    if (!state.img) {
+      alert('Please select or upload a photo first!');
+      return;
+    }
+    const btns = [btnDownloadSingle, document.getElementById('btnStageDownloadSingle')].filter(Boolean);
+    btns.forEach(b => {
+      b.disabled = true;
+      b.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Compressing & Downloading...';
+    });
 
-      if (!window.jspdf || !window.jspdf.jsPDF) {
-        alert('PDF generator library is loading, please try again in a moment.');
-        return;
+    renderSingleCanvas();
+
+    previewCanvas.toBlob(async (blob) => {
+      try {
+        const rawFile = new File([blob], 'passport.jpg', { type: 'image/jpeg' });
+        let finalBlob = blob;
+
+        // If ImageCompressor is available, compress under target KB
+        if (typeof ImageCompressor !== 'undefined' && ImageCompressor.compressImage) {
+          const res = await ImageCompressor.compressImage(rawFile, {
+            targetKB: state.targetKB,
+            format: 'image/jpeg',
+            strictUnder: true
+          });
+          finalBlob = res.blob;
+        }
+
+        // Trigger download
+        const url = URL.createObjectURL(finalBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `passport_photo_${state.targetKB}KB.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        console.error(err);
+        alert('Download error: ' + err.message);
+      } finally {
+        btns.forEach(b => {
+          b.disabled = false;
+          b.innerHTML = `<i class="ph-bold ph-download-simple"></i> Download Photo (JPG &bull; &lt;${state.targetKB}KB)`;
+        });
       }
+    }, 'image/jpeg', 0.95);
+  }
 
-      btnDownloadSheetPdf.disabled = true;
-      btnDownloadSheetPdf.textContent = 'Generating PDF...';
+  if (btnDownloadSingle) btnDownloadSingle.addEventListener('click', executeDownloadSingle);
+  const btnStageDownloadSingle = document.getElementById('btnStageDownloadSingle');
+  if (btnStageDownloadSingle) btnStageDownloadSingle.addEventListener('click', executeDownloadSingle);
 
+  // --- Action: Download Printable Sheet as High-Res PDF (1:1 Actual Scale) ---
+  function executeDownloadSheetPdf() {
+    if (!state.img || !sheetCanvas) {
+      alert('Please upload a photo first!');
+      return;
+    }
+    renderSheetCanvas();
+
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+      alert('PDF generator library is loading, please try again in a moment.');
+      return;
+    }
+
+    const btns = [btnDownloadSheetPdf, document.getElementById('btnStageDownloadSheet')].filter(Boolean);
+    btns.forEach(b => {
+      b.disabled = true;
+      b.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Generating PDF...';
+    });
+
+    try {
       const format = state.paperSize === '4x6' ? [101.6, 152.4] : (state.paperSize === 'letter' ? 'letter' : 'a4');
       const doc = new window.jspdf.jsPDF({
         orientation: 'portrait',
@@ -826,24 +851,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
       doc.addImage(imgData, 'JPEG', 0, 0, pdfW, pdfH);
       doc.save(`passport_sheet_${state.paperSize}_${state.copiesCount}_photos.pdf`);
-
-      btnDownloadSheetPdf.disabled = false;
-      btnDownloadSheetPdf.textContent = 'Download Print-Ready PDF';
-    });
+    } catch (err) {
+      alert('PDF generation error: ' + err.message);
+    } finally {
+      btns.forEach(b => {
+        b.disabled = false;
+        b.innerHTML = '<i class="ph-bold ph-file-pdf" style="color: #ef4444;"></i> Download A4 PDF';
+      });
+    }
   }
+
+  if (btnDownloadSheetPdf) btnDownloadSheetPdf.addEventListener('click', executeDownloadSheetPdf);
+  const btnStageDownloadSheet = document.getElementById('btnStageDownloadSheet');
+  if (btnStageDownloadSheet) btnStageDownloadSheet.addEventListener('click', executeDownloadSheetPdf);
 
   // --- Action: Direct 1-Click Print (Window Print) ---
-  if (btnPrintSheet) {
-    btnPrintSheet.addEventListener('click', () => {
-      renderSheetCanvas();
-      window.print();
-    });
+  function executePrintSheet() {
+    if (!state.img) {
+      alert('Please upload a photo first!');
+      return;
+    }
+    renderSheetCanvas();
+    window.print();
   }
+
+  if (btnPrintSheet) btnPrintSheet.addEventListener('click', executePrintSheet);
+  const btnStagePrintSheet = document.getElementById('btnStagePrintSheet');
+  if (btnStagePrintSheet) btnStagePrintSheet.addEventListener('click', executePrintSheet);
 
   // --- Action: Download Sheet as PNG/JPG ---
   if (btnDownloadSheetImage) {
     btnDownloadSheetImage.addEventListener('click', () => {
-      if (!sheetCanvas) return;
+      if (!sheetCanvas || !state.img) return;
       renderSheetCanvas();
       const url = sheetCanvas.toDataURL('image/jpeg', 0.95);
       const a = document.createElement('a');
@@ -854,4 +893,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeChild(a);
     });
   }
+
+  // Listen to target KB changes to update text
+  if (targetKbInput) {
+    targetKbInput.addEventListener('input', updateKbLabels);
+  }
+  updateKbLabels();
 });

@@ -177,11 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         <!-- Action / Download -->
         <div class="doc-action-col">
-          <button class="button primary small" onclick="processAndDownloadSingle('${doc.id}')" title="Convert & Download this file">
-            <i class="ph ph-download-simple"></i>
+          <button class="button primary small" onclick="processAndDownloadSingle('${doc.id}')" title="Convert & Download this file" style="padding: 0.5rem 0.9rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer;">
+            <i class="ph-bold ph-download-simple" style="font-size: 1.1rem;"></i> Download
           </button>
-          <button class="button secondary small" style="color:var(--danger);" onclick="removeDoc('${doc.id}')" title="Remove file">
-            <i class="ph ph-trash"></i>
+          <button class="button secondary small" style="color:var(--danger); padding: 0.5rem 0.65rem; cursor: pointer;" onclick="removeDoc('${doc.id}')" title="Remove file">
+            <i class="ph-bold ph-trash"></i>
           </button>
         </div>
       </div>
