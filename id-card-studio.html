@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart ID Card Print Studio — Pragya Kendra & Cyber Cafe A4 Studio | PhotoResize Pro</title>
+  <meta name="description" content="Professional Cyber Cafe & Pragya Kendra tool for printing Aadhaar Card, PAN Card, Voter ID, and Driving Licence on A4 sheets. Exact PVC 8.56x5.40 cm, CSC 1-click fold layouts, shadow clean, eco ink saver, 1:1 printing.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="logo-badge">
+          <i class="ph-bold ph-aperture"></i> PRO
+        </span>
+        <div class="brand-text">PhotoResize <span>PRO</span></div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link"><i class="ph ph-squares-four"></i> All Tools</a></li>
+        <li><a href="index.html#compressor" class="nav-link"><i class="ph ph-arrows-in-simple"></i> Reduce Size (KB)</a></li>
+        <li><a href="passport-tool.html" class="nav-link"><i class="ph ph-user-focus"></i> Passport Maker</a></li>
+        <li><a href="id-card-studio.html" class="nav-link active"><i class="ph ph-identification-card"></i> Smart ID Studio</a></li>
+        <li><a href="file-converter.html" class="nav-link"><i class="ph ph-file-arrow-up"></i> File Converter</a></li>
+        <li><a href="increase-size.html" class="nav-link"><i class="ph ph-arrows-out-simple"></i> Increase KB</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu"><i class="ph ph-list"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Tool Switcher Bar -->
+  <div class="tool-switcher-bar">
+    <div class="switcher-container">
+      <a href="index.html#compressor" class="switcher-tab">
+        <i class="ph ph-arrows-in-simple"></i> Reduce KB
+      </a>
+      <a href="passport-tool.html" class="switcher-tab">
+        <i class="ph ph-user-focus"></i> Passport Photo Maker
+      </a>
+      <a href="id-card-studio.html" class="switcher-tab active">
+        <i class="ph ph-identification-card"></i> Smart ID Print Studio
+      </a>
+      <a href="file-converter.html" class="switcher-tab">
+        <i class="ph ph-file-arrow-up"></i> File Converter & PDF
+      </a>
+      <a href="increase-size.html" class="switcher-tab">
+        <i class="ph ph-arrows-out-simple"></i> Increase KB
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <section class="hero-section">
+      <h1 class="hero-title">Smart ID Card <span>Print Studio</span></h1>
+      <p class="hero-subtitle">
+        The ultimate Cyber Cafe & Pragya Kendra utility for printing <strong>Aadhaar Card, PAN Card, Voter ID, and Driving Licence</strong>. Instant CSC pouch fold layouts, auto text enhancement, eco toner ink saver, and 1:1 scale A4 printing.
+      </p>
+
+      <div class="trust-badges">
+        <span class="trust-pill"><i class="ph ph-cardholder"></i> Standard PVC: 8.56 × 5.40 cm</span>
+        <span class="trust-pill"><i class="ph ph-arrows-down-up"></i> 1-Click CSC Pouch Fold</span>
+        <span class="trust-pill"><i class="ph ph-leaf"></i> Eco Ink-Saver (Zero Toner Waste)</span>
+        <span class="trust-pill"><i class="ph ph-printer"></i> 1:1 Actual Scale A4 Print</span>
+      </div>
+    </section>
+
+    <div class="studio-shell">
+      <div class="studio-grid">
+
+        <!-- Left Column: A4 Sheet Live Preview -->
+        <div class="preview-stage-panel">
+
+          <!-- Presets Layout Selector Bar -->
+          <div style="width: 100%; margin-bottom: 1rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem; letter-spacing: 0.5px;">
+              <i class="ph ph-layout"></i> Select Print Layout Arrangement:
+            </div>
+            <div class="id-layout-pills">
+              <button class="id-layout-btn active" data-layout="csc-fold" title="Front & Back stacked vertically with dashed fold line for pouch lamination">
+                <i class="ph ph-arrows-down-up"></i>
+                <span>CSC Fold (Front + Back)</span>
+              </button>
+              <button class="id-layout-btn" data-layout="csc-side" title="Front & Back horizontally aligned with 5mm cutting gap">
+                <i class="ph ph-arrows-left-right"></i>
+                <span>Side-by-Side</span>
+              </button>
+              <button class="id-layout-btn" data-layout="csc-5in1" title="5 PVC cards neatly stacked on 1 A4 sheet (saves photo paper)">
+                <i class="ph ph-stack"></i>
+                <span>5-in-1 Sheet</span>
+              </button>
+              <button class="id-layout-btn" data-layout="grid-4" title="4 Cards in 2x2 grid">
+                <i class="ph ph-squares-four"></i>
+                <span>2 × 2 Grid (4 Cards)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Canvas Preview Stage -->
+          <div class="preview-canvas-box" style="min-height: 440px;">
+            <canvas id="idPrintCanvas" style="max-height: 520px;"></canvas>
+          </div>
+
+          <!-- Canvas Quick Info & Clear -->
+          <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <span class="trust-pill" id="idLayoutInfoChip" style="font-weight: 700;">
+              CSC Fold: Front + Back (8.56 × 5.40 cm)
+            </span>
+            <button class="button secondary small" id="btnClearIdCards" style="color: var(--danger);">
+              <i class="ph ph-trash"></i> Clear Cards
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Card Uploads & Document Controls -->
+        <aside class="studio-controls-sidebar">
+
+          <!-- 1. Document Upload Slots (Front & Back) -->
+          <div class="control-section">
+            <div class="control-section-header">
+              <span><i class="ph ph-identification-badge"></i> Upload Card Images</span>
+            </div>
+
+            <div class="id-dual-upload-grid">
+              <!-- Front Slot -->
+              <div class="id-card-slot" id="idSlotFront">
+                <input type="file" id="idInputFront" accept="image/*" style="display: none;">
+                <div style="font-size: 1.8rem; color: var(--primary); margin-bottom: 0.35rem;"><i class="ph ph-identification-badge"></i></div>
+                <h4 style="font-size: 0.9rem; font-weight: 700;">Front Side</h4>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Click to upload</p>
+              </div>
+
+              <!-- Back Slot -->
+              <div class="id-card-slot" id="idSlotBack">
+                <input type="file" id="idInputBack" accept="image/*" style="display: none;">
+                <div style="font-size: 1.8rem; color: var(--primary); margin-bottom: 0.35rem;"><i class="ph ph-credit-card"></i></div>
+                <h4 style="font-size: 0.9rem; font-weight: 700;">Back Side</h4>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">(Optional for single)</p>
+              </div>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">Upload clear photo or scan of card from your phone or scanner.</p>
+          </div>
+
+          <!-- 2. Document Preset Selector -->
+          <div class="control-section" style="margin-top: 1.25rem;">
+            <div class="control-section-header">
+              <span><i class="ph ph-cardholder"></i> Document Format</span>
+              <span class="trust-pill" style="padding: 0.15rem 0.5rem; font-size: 0.72rem;">
+                <span id="idDimWidth">8.56</span> × <span id="idDimHeight">5.40</span> cm
+              </span>
+            </div>
+
+            <div class="format-pill-grid">
+              <button class="format-pill-btn doc-type-btn active" data-doctype="aadhaar">
+                <span>Aadhaar Card</span>
+                <small>PVC Standard</small>
+              </button>
+              <button class="format-pill-btn doc-type-btn" data-doctype="pan">
+                <span>PAN Card</span>
+                <small>PVC Standard</small>
+              </button>
+              <button class="format-pill-btn doc-type-btn" data-doctype="voter">
+                <span>Voter ID (EPIC)</span>
+                <small>Smart Card</small>
+              </button>
+              <button class="format-pill-btn doc-type-btn" data-doctype="dl">
+                <span>Driving Licence</span>
+                <small>Smart Card</small>
+              </button>
+              <button class="format-pill-btn doc-type-btn" data-doctype="ayushman">
+                <span>Ayushman Card</span>
+                <small>PVC 8.56x5.40</small>
+              </button>
+              <button class="format-pill-btn doc-type-btn" data-doctype="custom">
+                <span>Custom ID Card</span>
+                <small>Universal Size</small>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Quality & Print Enhancements -->
+          <div class="control-section" style="margin-top: 1.25rem;">
+            <div class="control-section-header">
+              <span><i class="ph ph-magic-wand"></i> Print Enhancements</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.65rem; background: var(--bg-card-secondary); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+              <!-- Eco Ink Saver Toggle -->
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <span style="font-size: 0.85rem; font-weight: 700; display: block;">Eco Toner Ink-Saver</span>
+                  <small style="font-size: 0.72rem; color: var(--text-muted);">Saves up to 60% printer toner in B&W mode</small>
+                </div>
+                <button class="eco-ink-pill" id="btnEcoInkSaver">
+                  <i class="ph ph-leaf"></i> Eco Mode
+                </button>
+              </div>
+
+              <!-- Auto Contrast & Text Clarity -->
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" id="checkAutoContrast" checked style="accent-color: var(--primary); width: 16px; height: 16px;">
+                Boost Contrast & Text Clarity (Makes faded text crisp)
+              </label>
+
+              <!-- Document Shadow Clean -->
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" id="checkShadowClean" checked style="accent-color: var(--primary); width: 16px; height: 16px;">
+                Clean Background & Shadows
+              </label>
+            </div>
+
+            <!-- Border and Corner Settings -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
+              <div>
+                <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Border Cut Guide:</label>
+                <select id="idBorderSelect" class="select-input" style="padding: 0.35rem 0.5rem; font-size: 0.8rem; width: 100%;">
+                  <option value="dashed" selected>Dashed Cut Line</option>
+                  <option value="solid">Thin Black Border</option>
+                  <option value="none">No Border</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Corner Style:</label>
+                <select id="idCornerSelect" class="select-input" style="padding: 0.35rem 0.5rem; font-size: 0.8rem; width: 100%;">
+                  <option value="rounded" selected>PVC Rounded Corners</option>
+                  <option value="sharp">Sharp Square Corners</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Action Buttons -->
+          <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.65rem;">
+            <button class="button primary w-full" id="btnPrintIdA4" style="padding: 0.85rem; font-size: 1rem;">
+              <i class="ph ph-printer"></i> Print A4 (1:1 Exact Scale)
+            </button>
+            <button class="button secondary w-full" id="btnExportIdPdf" style="padding: 0.75rem;">
+              <i class="ph ph-file-pdf"></i> Export High-Res Printable PDF
+            </button>
+            <button class="button secondary w-full" id="btnDownloadIdImage" style="padding: 0.75rem;">
+              <i class="ph ph-image"></i> Download Sheet as JPG
+            </button>
+          </div>
+
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Professional Cyber Cafe, CSC & Pragya Kendra utility tools. 100% private, on-device browser processing.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Tools Suite</h3>
+        <ul class="footer-links">
+          <li><a href="index.html#compressor">Reduce Size (KB)</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+          <li><a href="id-card-studio.html">Smart ID Print Studio</a></li>
+          <li><a href="file-converter.html">Pro File Converter & PDF</a></li>
+          <li><a href="increase-size.html">Increase Size (KB)</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">CSC & Cyber Cafe Features</h3>
+        <ul class="footer-links">
+          <li><a href="id-card-studio.html">1-Click CSC Pouch Fold</a></li>
+          <li><a href="id-card-studio.html">5-in-1 PVC Sheet Print</a></li>
+          <li><a href="id-card-studio.html">Eco Ink Saver Mode</a></li>
+          <li><a href="id-card-studio.html">Standard PVC 85.6 × 54 mm</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; 2026 PhotoResize Pro. Smart ID Card Print Studio.
+    </div>
+  </footer>
+
+  <script src="js/id-card-studio.js"></script>
+</body>
+</html>

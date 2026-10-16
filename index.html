@@ -6,7 +6,8 @@
   <title>PhotoResize Pro | Reduce Image Size In KB - Precision Photo Reducer</title>
   <meta name="description" content="PhotoResize Pro: Free online tool to compress image size in KB for government portals, job applications, college admissions, SSC, UPSC, and IBPS. Reduce JPG, PNG to 20KB, 50KB, 100KB with high quality.">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234449a6'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
@@ -15,17 +16,18 @@
     <div class="nav-container">
       <a href="index.html" class="brand-logo">
         <span class="logo-badge">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zm-9 9h7v7H4v-7zm9 0h7v7h-7v-7z"/></svg>
-          PRO
+          <i class="ph-bold ph-aperture"></i> PRO
         </span>
         <div class="brand-text">PhotoResize <span>PRO</span></div>
       </a>
 
       <ul class="nav-links" id="navLinks">
-        <li><a href="index.html" class="nav-link active">Reduce Size (KB)</a></li>
-        <li><a href="increase-size.html" class="nav-link">Increase Size (KB)</a></li>
-        <li><a href="passport-tool.html" class="nav-link">Passport Photo Maker</a></li>
-        <li><a href="passport-tool.html" class="nav-link">Resize Pixels</a></li>
+        <li><a href="index.html" class="nav-link active"><i class="ph ph-squares-four"></i> All Tools</a></li>
+        <li><a href="#compressor" class="nav-link"><i class="ph ph-arrows-in-simple"></i> Reduce Size (KB)</a></li>
+        <li><a href="passport-tool.html" class="nav-link"><i class="ph ph-user-focus"></i> Passport Maker</a></li>
+        <li><a href="id-card-studio.html" class="nav-link"><i class="ph ph-identification-card"></i> Smart ID Studio</a></li>
+        <li><a href="file-converter.html" class="nav-link"><i class="ph ph-file-arrow-up"></i> File Converter</a></li>
+        <li><a href="increase-size.html" class="nav-link"><i class="ph ph-arrows-out-simple"></i> Increase KB</a></li>
       </ul>
 
       <div class="nav-actions">
@@ -33,7 +35,7 @@
           <span id="themeIcon">🌙</span>
           <span id="themeText">Dark</span>
         </button>
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu">☰</button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu"><i class="ph ph-list"></i></button>
       </div>
     </div>
   </header>
@@ -41,21 +43,20 @@
   <!-- Quick Tool Switcher Bar -->
   <div class="tool-switcher-bar">
     <div class="switcher-container">
-      <a href="index.html" class="switcher-tab active">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
-        Reduce Image Size (KB)
+      <a href="#compressor" class="switcher-tab active">
+        <i class="ph ph-arrows-in-simple"></i> Reduce KB
+      </a>
+      <a href="passport-tool.html" class="switcher-tab">
+        <i class="ph ph-user-focus"></i> Passport Photo Maker
+      </a>
+      <a href="id-card-studio.html" class="switcher-tab">
+        <i class="ph ph-identification-card"></i> Smart ID Print Studio
+      </a>
+      <a href="file-converter.html" class="switcher-tab">
+        <i class="ph ph-file-arrow-up"></i> File Converter & PDF
       </a>
       <a href="increase-size.html" class="switcher-tab">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-        Increase Image Size (KB)
-      </a>
-      <a href="passport-tool.html" class="switcher-tab">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Passport Size Photo
-      </a>
-      <a href="passport-tool.html" class="switcher-tab">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 3H3v18h18V3zM9 9h6v6H9V9z"/></svg>
-        Resize Pixels (Width x Height)
+        <i class="ph ph-arrows-out-simple"></i> Increase KB
       </a>
     </div>
   </div>
@@ -63,30 +64,108 @@
   <!-- Main Container -->
   <main class="main-content">
 
-    <!-- Hero Header -->
-    <section class="hero-section">
+    <!-- BGrade-Style Professional Web Tools Hub Showcase Grid -->
+    <section class="hub-tools-section">
+      <div class="hub-section-header">
+        <span class="hub-section-tag"><i class="ph-bold ph-sparkle"></i> Professional Web Tools Suite</span>
+        <h2 class="hub-section-title">Photo & Document <span>Utilities Hub</span></h2>
+        <p class="hub-section-subtitle">
+          100% free, secure, on-device browser tools for students, job applicants, Pragya Kendra, CSC centers & cyber cafes.
+        </p>
+      </div>
+
+      <div class="hub-grid">
+
+        <!-- Tool 1: AI Passport Photo Maker -->
+        <a href="passport-tool.html" class="hub-tool-card">
+          <div class="hub-card-header">
+            <div class="hub-tool-icon"><i class="ph ph-user-focus"></i></div>
+            <span class="hub-card-badge">Biometric AI &amp; Sheets</span>
+          </div>
+          <h3 class="hub-tool-name">AI Passport Photo Maker</h3>
+          <p class="hub-tool-desc">
+            Make biometric passport photos for India (3.5×4.5 cm), US Visa (2×2 in), PAN, and Aadhaar. 1-click A4/4x6 print sheets, background colors, and DOP date stamps.
+          </p>
+          <div class="hub-tool-cta">
+            Open Tool <i class="ph ph-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Tool 2: Smart ID Card Print Studio -->
+        <a href="id-card-studio.html" class="hub-tool-card">
+          <div class="hub-card-header">
+            <div class="hub-tool-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--accent);"><i class="ph ph-identification-card"></i></div>
+            <span class="hub-card-badge" style="background: rgba(16, 185, 129, 0.12); color: var(--accent); border-color: rgba(16, 185, 129, 0.3);">CSC &amp; PVC Studio</span>
+          </div>
+          <h3 class="hub-tool-name">Smart ID Card Print Studio</h3>
+          <p class="hub-tool-desc">
+            Pragya Kendra &amp; CSC utility for Aadhaar, PAN, Voter ID &amp; Driving Licence. 1-click pouch fold layouts, auto text contrast, eco toner ink saver &amp; 1:1 A4 printing.
+          </p>
+          <div class="hub-tool-cta" style="color: var(--accent);">
+            Open Studio <i class="ph ph-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Tool 3: Pro File Converter & Application Pack -->
+        <a href="file-converter.html" class="hub-tool-card">
+          <div class="hub-card-header">
+            <div class="hub-tool-icon" style="background: rgba(14, 165, 233, 0.12); color: var(--accent-cyan);"><i class="ph ph-file-arrow-up"></i></div>
+            <span class="hub-card-badge cyan">Multi-Doc &amp; PDF ZIP</span>
+          </div>
+          <h3 class="hub-tool-name">Pro File Converter &amp; Pack</h3>
+          <p class="hub-tool-desc">
+            Convert JPG, PNG, WEBP, and PDF. Assemble your full exam application pack (photo, sign, marksheets), set exact target KB sizes, and download as 1 ZIP or merged PDF.
+          </p>
+          <div class="hub-tool-cta" style="color: var(--accent-cyan);">
+            Open Converter <i class="ph ph-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Tool 4: Reduce Image Size in KB -->
+        <a href="#compressor" class="hub-tool-card">
+          <div class="hub-card-header">
+            <div class="hub-tool-icon"><i class="ph ph-arrows-in-simple"></i></div>
+            <span class="hub-card-badge purple">Exact Target KB</span>
+          </div>
+          <h3 class="hub-tool-name">Reduce Image Size (KB)</h3>
+          <p class="hub-tool-desc">
+            Ultra-fast image reducer for government portals (SSC, UPSC, NEET, Police). Compress photos to 20KB, 50KB, 100KB with guaranteed strict file size limits.
+          </p>
+          <div class="hub-tool-cta">
+            Compress Photos <i class="ph ph-arrow-down"></i>
+          </div>
+        </a>
+
+        <!-- Tool 5: Increase Image Size in KB -->
+        <a href="increase-size.html" class="hub-tool-card">
+          <div class="hub-card-header">
+            <div class="hub-tool-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--warning);"><i class="ph ph-arrows-out-simple"></i></div>
+            <span class="hub-card-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--warning); border-color: rgba(245, 158, 11, 0.3);">Portal Requirement</span>
+          </div>
+          <h3 class="hub-tool-name">Increase Image Size (KB)</h3>
+          <p class="hub-tool-desc">
+            Increase photo file size to meet minimum portal limits (e.g. min 50KB, 100KB) without altering pixels or degrading image visual quality.
+          </p>
+          <div class="hub-tool-cta" style="color: var(--warning);">
+            Increase KB <i class="ph ph-arrow-right"></i>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Hero Header for Compressor -->
+    <section class="hero-section" id="compressor">
       <h1 class="hero-title">Reduce Image Size In <span>KB</span></h1>
       <p class="hero-subtitle">
         Compress JPG, PNG, and WebP photos to <strong>20KB, 50KB, 100KB, 200KB</strong> or any target size while preserving crystal clear quality. Guaranteed size limit for Government Portals, SSC, UPSC, NEET, and Job forms.
       </p>
 
       <div class="trust-badges">
-        <span class="trust-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          100% Private (Processed in Browser)
-        </span>
-        <span class="trust-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Instant Speed
-        </span>
-        <span class="trust-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-          Exact Target Size Guarantee
-        </span>
-        <span class="trust-pill">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-          Batch Multi-Image Support
-        </span>
+        <span class="trust-pill"><i class="ph ph-shield-check"></i> 100% Private (Processed in Browser)</span>
+        <span class="trust-pill"><i class="ph ph-lightning"></i> Instant Speed</span>
+        <span class="trust-pill"><i class="ph ph-check-circle"></i> Exact Target Size Guarantee</span>
+        <span class="trust-pill"><i class="ph ph-stack"></i> Batch Multi-Image Support</span>
       </div>
     </section>
 
@@ -486,22 +565,23 @@
       </div>
 
       <div class="footer-col">
-        <h4>Popular Tools</h4>
+        <h4>Professional Tools</h4>
         <ul class="footer-links">
-          <li><a href="index.html">Reduce Image Size in KB</a></li>
-          <li><a href="increase-size.html">Increase Image Size in KB</a></li>
-          <li><a href="passport-tool.html">Passport Size Photo Maker</a></li>
-          <li><a href="passport-tool.html">Resize Image Pixels</a></li>
+          <li><a href="#compressor">Reduce Image KB</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+          <li><a href="id-card-studio.html">Smart ID Print Studio</a></li>
+          <li><a href="file-converter.html">Pro File Converter &amp; PDF</a></li>
+          <li><a href="increase-size.html">Increase Image KB</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h4>Exam Portals</h4>
+        <h4>CSC &amp; Cyber Cafe</h4>
         <ul class="footer-links">
-          <li><a href="index.html">SSC CGL Photo Resizer</a></li>
-          <li><a href="index.html">UPSC Photo & Sign Resizer</a></li>
-          <li><a href="index.html">IBPS Bank Exam Resizer</a></li>
-          <li><a href="index.html">NEET / JEE Photo Tool</a></li>
+          <li><a href="id-card-studio.html">Aadhaar Card Print Studio</a></li>
+          <li><a href="id-card-studio.html">PAN Card Pouch Fold</a></li>
+          <li><a href="passport-tool.html">A4 / 4x6 Passport Sheet</a></li>
+          <li><a href="file-converter.html">Application Document Pack</a></li>
         </ul>
       </div>
     </div>

@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhotoResize Pro | Passport Size Photo Maker & Pixel Resizer</title>
-  <meta name="description" content="PhotoResize Pro: Create passport size photos online (3.5x4.5 cm, 2x2 inch, 200x230 px) and compress under 20KB or 50KB for SSC, UPSC, and Indian exam forms.">
+  <title>Free AI Passport Photo Maker & Print Sheet Studio — PhotoResize Pro</title>
+  <meta name="description" content="Create professional biometric passport size photos online. Official Indian Passport (3.5x4.5 cm), US Visa (2x2 in), PAN, and Aadhaar card formats. 1-click A4/4x6 print sheets, AI background removal, DOP date stamps.">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234449a6'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -14,15 +16,19 @@
   <header class="navbar">
     <div class="nav-container">
       <a href="index.html" class="brand-logo">
-        <span class="logo-badge">PRO</span>
+        <span class="logo-badge">
+          <i class="ph-bold ph-aperture"></i> PRO
+        </span>
         <div class="brand-text">PhotoResize <span>PRO</span></div>
       </a>
 
       <ul class="nav-links" id="navLinks">
-        <li><a href="index.html" class="nav-link">Reduce Size (KB)</a></li>
-        <li><a href="increase-size.html" class="nav-link">Increase Size (KB)</a></li>
-        <li><a href="passport-tool.html" class="nav-link active">Passport Photo Maker</a></li>
-        <li><a href="passport-tool.html" class="nav-link">Resize Pixels</a></li>
+        <li><a href="index.html" class="nav-link"><i class="ph ph-squares-four"></i> All Tools</a></li>
+        <li><a href="index.html#compressor" class="nav-link"><i class="ph ph-arrows-in-simple"></i> Reduce Size (KB)</a></li>
+        <li><a href="passport-tool.html" class="nav-link active"><i class="ph ph-user-focus"></i> Passport Maker</a></li>
+        <li><a href="id-card-studio.html" class="nav-link"><i class="ph ph-identification-card"></i> Smart ID Studio</a></li>
+        <li><a href="file-converter.html" class="nav-link"><i class="ph ph-file-arrow-up"></i> File Converter</a></li>
+        <li><a href="increase-size.html" class="nav-link"><i class="ph ph-arrows-out-simple"></i> Increase KB</a></li>
       </ul>
 
       <div class="nav-actions">
@@ -30,6 +36,7 @@
           <span id="themeIcon">🌙</span>
           <span id="themeText">Dark</span>
         </button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu"><i class="ph ph-list"></i></button>
       </div>
     </div>
   </header>
@@ -37,112 +44,341 @@
   <!-- Quick Tool Switcher Bar -->
   <div class="tool-switcher-bar">
     <div class="switcher-container">
-      <a href="index.html" class="switcher-tab">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg>
-        Reduce Image Size (KB)
-      </a>
-      <a href="increase-size.html" class="switcher-tab">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
-        Increase Image Size (KB)
+      <a href="index.html#compressor" class="switcher-tab">
+        <i class="ph ph-arrows-in-simple"></i> Reduce KB
       </a>
       <a href="passport-tool.html" class="switcher-tab active">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Passport Size Photo Maker
+        <i class="ph ph-user-focus"></i> Passport Photo Maker
+      </a>
+      <a href="id-card-studio.html" class="switcher-tab">
+        <i class="ph ph-identification-card"></i> Smart ID Print Studio
+      </a>
+      <a href="file-converter.html" class="switcher-tab">
+        <i class="ph ph-file-arrow-up"></i> File Converter & PDF
+      </a>
+      <a href="increase-size.html" class="switcher-tab">
+        <i class="ph ph-arrows-out-simple"></i> Increase KB
       </a>
     </div>
   </div>
 
+  <!-- Main Content -->
   <main class="main-content">
     <section class="hero-section">
-      <h1 class="hero-title">Passport Size Photo Maker & <span>Resizer</span></h1>
+      <h1 class="hero-title">AI Passport Photo Maker & <span>Print Studio</span></h1>
       <p class="hero-subtitle">
-        Crop & resize photos to standard dimensions (3.5 × 4.5 cm, 2 × 2 inch, 200 × 230 px) and compress to exact KB limits for Government exams, SSC, UPSC, and Visas.
+        Create compliant biometric passport photos for <strong>India, USA, UAE, Schengen</strong> & Exam portals (SSC, UPSC, NEET). 1-click A4/4x6 print sheets, AI background replacement, and D.O.P. name stamps.
       </p>
+
+      <div class="trust-badges">
+        <span class="trust-pill"><i class="ph ph-shield-check"></i> 100% Private (On-Device)</span>
+        <span class="trust-pill"><i class="ph ph-printer"></i> 1:1 Scale Print Ready</span>
+        <span class="trust-pill"><i class="ph ph-paint-brush"></i> Background Colors</span>
+        <span class="trust-pill"><i class="ph ph-calendar"></i> Name & Date of Photo (DOP)</span>
+      </div>
     </section>
 
-    <div class="app-card">
-      <div class="dropzone" id="dropzone">
-        <input type="file" id="fileInput" accept="image/*" style="display: none;">
-        <div class="dropzone-icon">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-          </svg>
-        </div>
-        <h2 class="dropzone-title">Select Photo for Passport Sizing</h2>
-        <p class="dropzone-desc">Choose a portrait photo to crop and convert into passport format</p>
-        <span class="btn-select-file">Select Image</span>
+    <!-- Upload Dropzone (shown when no image is loaded) -->
+    <div class="app-card" id="passportDropzone" style="cursor: pointer;">
+      <input type="file" id="passportFileInput" accept="image/*,.heic,.heif" style="display: none;">
+      <div class="dropzone-icon">
+        <i class="ph ph-cloud-arrow-up" style="font-size: 2.5rem; color: var(--primary);"></i>
       </div>
+      <h2 class="dropzone-title">Upload Photo for Passport Sizing</h2>
+      <p class="dropzone-desc">Drag & drop your portrait photo here, click to browse, or paste with <kbd>Ctrl + V</kbd></p>
+      <span class="btn-select-file" style="margin: 0.5rem auto;">
+        <i class="ph ph-image"></i> Select Portrait Photo
+      </span>
+      <p class="dropzone-hints">Supports JPG, PNG, WEBP &bull; Max 15MB &bull; 100% Private (Runs in Browser)</p>
+    </div>
 
-      <div class="settings-panel">
-        <div class="settings-grid">
-          <div class="size-control-group">
-            <div style="margin-bottom: 1rem;">
-              <label class="setting-label" for="presetFormat">Standard Preset:</label>
-              <select id="presetFormat" class="exam-select" style="margin-top: 0.4rem; width: 100%;">
-                <option value="india-passport">3.5 × 4.5 cm - India Exam & Passport (SSC / UPSC / IBPS)</option>
-                <option value="india-sign">Signature - 140 × 60 px (SSC / IBPS Bank Sign)</option>
-                <option value="us-visa">2 × 2 inch (600 × 600 px) - US Visa / International</option>
-                <option value="pan-photo">213 × 213 px - PAN Card (NSDL Portal)</option>
-                <option value="custom">Custom Dimensions</option>
-              </select>
+    <!-- Advanced Studio Workspace (shown when image loaded) -->
+    <div id="passportWorkspace" style="display: none;">
+      <div class="studio-shell">
+        <div class="studio-grid">
+
+          <!-- Left Column: Canvas Preview & Quick Tools -->
+          <div class="preview-stage-panel">
+            
+            <!-- Mode Switcher Tabs -->
+            <div style="display: flex; gap: 0.5rem; width: 100%; margin-bottom: 1rem;">
+              <button class="button primary small" id="tabSingleView" style="flex: 1;">
+                <i class="ph ph-user"></i> Single Photo Preview
+              </button>
+              <button class="button secondary small" id="tabSheetView" style="flex: 1;">
+                <i class="ph ph-grid-four"></i> Multi-Photo Print Sheet (A4 / 4x6)
+              </button>
             </div>
 
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
-              <div style="flex: 1; min-width: 140px;">
-                <label class="setting-label" for="widthInput">Width (pixels):</label>
-                <input type="number" id="widthInput" class="adv-input" value="413" style="width: 100%; margin-top: 0.3rem;">
-              </div>
-              <div style="flex: 1; min-width: 140px;">
-                <label class="setting-label" for="heightInput">Height (pixels):</label>
-                <input type="number" id="heightInput" class="adv-input" value="531" style="width: 100%; margin-top: 0.3rem;">
-              </div>
-              <div style="flex: 1; min-width: 140px;">
-                <label class="setting-label" for="targetKbInput">Target Size (KB):</label>
-                <input type="number" id="targetKbInput" class="adv-input" value="50" style="width: 100%; margin-top: 0.3rem;">
-              </div>
+            <!-- Canvas View Box -->
+            <div class="preview-canvas-box" id="previewCanvasBox">
+              <canvas id="passportPreviewCanvas"></canvas>
+              <canvas id="sheetPrintCanvas" style="display: none; max-height: 480px;"></canvas>
+              
+              <!-- Biometric Oval Overlay -->
+              <div class="biometric-guide-overlay active" id="biometricGuide"></div>
             </div>
 
-            <div>
-              <label style="display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.95rem; font-weight: 600;">
-                <input type="checkbox" id="addBorderCheck" checked style="width: 18px; height: 18px; accent-color: var(--primary);">
-                Add subtle clean border (Recommended for printed passport photos)
-              </label>
+            <!-- Canvas Quick Actions Bar -->
+            <div class="canvas-quick-toolbar">
+              <button class="canvas-tool-btn" id="btnZoomIn" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i> Zoom +</button>
+              <button class="canvas-tool-btn" id="btnZoomOut" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i> Zoom -</button>
+              <button class="canvas-tool-btn" id="btnRotateLeft" title="Rotate Left 90°"><i class="ph ph-arrow-counter-clockwise"></i> 90°</button>
+              <button class="canvas-tool-btn" id="btnRotateRight" title="Rotate Right 90°"><i class="ph ph-arrow-clockwise"></i> 90°</button>
+              <button class="canvas-tool-btn" id="btnFlipH" title="Flip Horizontal"><i class="ph ph-flip-horizontal"></i> Flip</button>
+              <button class="canvas-tool-btn active" id="btnToggleGuide" title="Toggle Biometric Face Oval Guide"><i class="ph ph-scan"></i> Face Guide</button>
+              <button class="canvas-tool-btn" id="btnResetTransform" title="Reset Positioning"><i class="ph ph-arrows-clockwise"></i> Reset</button>
             </div>
 
+            <!-- Dimensions Badge & Download Actions -->
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+              <span class="trust-pill" id="passportDimChip" style="font-weight: 700;">
+                3.5 × 4.5 cm (413 × 531 px)
+              </span>
+              <span class="trust-pill" id="sheetInfoChip" style="display: none; font-weight: 700;">
+                8 Photos on A4 Sheet
+              </span>
+            </div>
           </div>
-        </div>
 
-        <div class="action-cta-row">
-          <button type="button" class="btn-compress-now" id="generateBtn" disabled>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Generate Passport Photo
-          </button>
-        </div>
+          <!-- Right Column: Studio Controls Panel -->
+          <aside class="studio-controls-sidebar">
 
-        <!-- Result Preview Area -->
-        <div id="resultArea" style="display: none; margin-top: 2rem; background: var(--bg-card-secondary); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center;">
-          <h3 style="margin-bottom: 1rem;">Passport Photo Preview</h3>
-          <canvas id="previewCanvas" style="max-height: 280px; max-width: 100%; background: #ffffff; box-shadow: var(--shadow-md); border-radius: 4px; margin-bottom: 1rem;"></canvas>
-          <div id="resultInfo" style="margin-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-muted);">
-            Ready to download
-          </div>
-          <button type="button" class="btn-card-download" id="downloadBtn" style="display: none; padding: 0.75rem 2rem; font-size: 1rem; margin: 0 auto;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download Passport Photo
-          </button>
-        </div>
+            <!-- SINGLE PHOTO CONTROLS -->
+            <div id="singleControlsSection">
 
+              <!-- 1. Photo Size Presets -->
+              <div class="control-section">
+                <div class="control-section-header">
+                  <span><i class="ph ph-ruler"></i> Photo Format Preset</span>
+                </div>
+                <div class="format-pill-grid">
+                  <button class="format-pill-btn active" data-preset="india-passport">
+                    <span>Indian Passport</span>
+                    <small>3.5 × 4.5 cm</small>
+                  </button>
+                  <button class="format-pill-btn" data-preset="standard-passport">
+                    <span>Standard Global</span>
+                    <small>3.0 × 4.0 cm</small>
+                  </button>
+                  <button class="format-pill-btn" data-preset="us-visa">
+                    <span>US Visa / 2×2</span>
+                    <small>5.1 × 5.1 cm</small>
+                  </button>
+                  <button class="format-pill-btn" data-preset="aadhaar">
+                    <span>Aadhaar Photo</span>
+                    <small>2.5 × 3.0 cm</small>
+                  </button>
+                  <button class="format-pill-btn" data-preset="pan-card">
+                    <span>PAN Card</span>
+                    <small>2.5 × 3.5 cm</small>
+                  </button>
+                  <button class="format-pill-btn" data-preset="stamp">
+                    <span>Stamp Size</span>
+                    <small>2.0 × 2.5 cm</small>
+                  </button>
+                </div>
+
+                <!-- Custom Size & Target KB Inputs -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
+                  <div>
+                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">Width (cm):</label>
+                    <input type="number" id="customWidthCm" class="adv-input" value="3.5" step="0.1" style="padding: 0.35rem 0.5rem; font-size: 0.82rem;">
+                  </div>
+                  <div>
+                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">Height (cm):</label>
+                    <input type="number" id="customHeightCm" class="adv-input" value="4.5" step="0.1" style="padding: 0.35rem 0.5rem; font-size: 0.82rem;">
+                  </div>
+                  <div>
+                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">Target KB:</label>
+                    <input type="number" id="passportTargetKb" class="adv-input" value="50" style="padding: 0.35rem 0.5rem; font-size: 0.82rem;">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Background Color Changer -->
+              <div class="control-section" style="margin-top: 1.25rem;">
+                <div class="control-section-header">
+                  <span><i class="ph ph-paint-bucket"></i> Background Color</span>
+                  <button class="button secondary small" id="btnAiBgRemove" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">
+                    <i class="ph ph-sparkle"></i> Smart Replace
+                  </button>
+                </div>
+                <div class="color-dot-palette">
+                  <div class="color-dot active" data-color="#ffffff" style="background: #ffffff;" title="White"></div>
+                  <div class="color-dot" data-color="#bce0fd" style="background: #bce0fd;" title="Light Blue"></div>
+                  <div class="color-dot" data-color="#e5e7eb" style="background: #e5e7eb;" title="Soft Grey"></div>
+                  <div class="color-dot" data-color="#002b7f" style="background: #002b7f;" title="Navy Blue"></div>
+                  <div class="color-dot" data-color="#dc2626" style="background: #dc2626;" title="Red"></div>
+                  <div class="color-dot" data-color="transparent" style="background: repeating-conic-gradient(#cbd5e1 0% 25%, #fff 0% 50%) 50% / 8px 8px;" title="Original Background"></div>
+                  <input type="color" id="customColorPicker" class="color-dot-picker-input" value="#3b82f6" title="Pick Custom Color">
+                </div>
+              </div>
+
+              <!-- 3. Retouching Sliders -->
+              <div class="control-section" style="margin-top: 1.25rem;">
+                <div class="control-section-header">
+                  <span><i class="ph ph-sliders"></i> Retouch Filters</span>
+                  <button class="button secondary small" id="btnResetFilters" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">Reset</button>
+                </div>
+                <div class="retouch-slider-grid">
+                  <div class="slider-unit">
+                    <div class="slider-label-row">
+                      <span>Brightness</span>
+                      <span id="valBrightness">100%</span>
+                    </div>
+                    <input type="range" id="sliderBrightness" min="60" max="150" value="100" class="slider-range-input">
+                  </div>
+                  <div class="slider-unit">
+                    <div class="slider-label-row">
+                      <span>Contrast</span>
+                      <span id="valContrast">100%</span>
+                    </div>
+                    <input type="range" id="sliderContrast" min="60" max="150" value="100" class="slider-range-input">
+                  </div>
+                  <div class="slider-unit" style="grid-column: 1 / -1;">
+                    <div class="slider-label-row">
+                      <span>Saturation</span>
+                      <span id="valSaturation">100%</span>
+                    </div>
+                    <input type="range" id="sliderSaturation" min="40" max="160" value="100" class="slider-range-input">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. D.O.P. Name & Date Stamp -->
+              <div class="control-section" style="margin-top: 1.25rem;">
+                <div class="control-section-header">
+                  <span><i class="ph ph-text-t"></i> Name & Date Stamp (D.O.P.)</span>
+                </div>
+                <div class="stamp-config-box">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    <input type="checkbox" id="checkDopStamp" style="accent-color: var(--primary); width: 16px; height: 16px;">
+                    Add Name & Date strip at bottom (SSC / Govt)
+                  </label>
+                  <div id="dopFieldsWrap" style="display: none; flex-direction: column; gap: 0.4rem; margin-top: 0.4rem;">
+                    <input type="text" id="dopNameInput" class="adv-input" placeholder="Candidate Name (e.g. RAHUL SHARMA)" style="padding: 0.35rem 0.6rem; font-size: 0.82rem;">
+                    <input type="text" id="dopDateInput" class="adv-input" placeholder="Date of Photo (e.g. 15-10-2026)" style="padding: 0.35rem 0.6rem; font-size: 0.82rem;">
+                  </div>
+                </div>
+              </div>
+
+              <!-- 5. Border Checkbox -->
+              <div style="margin-top: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                  <input type="checkbox" id="checkBorder" checked style="accent-color: var(--primary); width: 16px; height: 16px;">
+                  Add subtle clean border (Easy cutting)
+                </label>
+              </div>
+
+              <!-- Single Download Action Button -->
+              <div style="margin-top: 1.5rem;">
+                <button class="button primary w-full" id="btnDownloadSingle" style="padding: 0.85rem; font-size: 1rem;">
+                  <i class="ph ph-download-simple"></i> Download Photo (JPEG &bull; Under <span id="btnKbLabel">50</span>KB)
+                </button>
+              </div>
+            </div>
+
+            <!-- MULTI-PHOTO SHEET CONTROLS -->
+            <div id="sheetControlsSection" style="display: none;">
+              <div class="control-section-header">
+                <span><i class="ph ph-printer"></i> Printable Sheet Setup</span>
+              </div>
+
+              <!-- Paper Selection -->
+              <div style="margin-bottom: 1rem;">
+                <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Paper Size:</label>
+                <select id="sheetPaperSelect" class="select-input" style="width: 100%;">
+                  <option value="a4" selected>A4 Paper (210 × 297 mm &bull; Most Popular)</option>
+                  <option value="4x6">4 × 6 Inch Photo Paper (102 × 152 mm &bull; Studio Standard)</option>
+                  <option value="letter">Letter Paper (8.5 × 11 inch)</option>
+                </select>
+              </div>
+
+              <!-- Copies Selection Pills -->
+              <div style="margin-bottom: 1rem;">
+                <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Number of Photos on Sheet:</label>
+                <div class="sheet-copies-pills">
+                  <div class="copy-pill" data-copies="4">4</div>
+                  <div class="copy-pill" data-copies="6">6</div>
+                  <div class="copy-pill active" data-copies="8">8</div>
+                  <div class="copy-pill" data-copies="12">12</div>
+                  <div class="copy-pill" data-copies="16">16</div>
+                  <div class="copy-pill" data-copies="24">24</div>
+                  <div class="copy-pill" data-copies="32">32</div>
+                </div>
+              </div>
+
+              <!-- Cut Lines Guideline -->
+              <div style="margin-bottom: 1.25rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                  <input type="checkbox" id="checkCutLines" checked style="accent-color: var(--primary); width: 16px; height: 16px;">
+                  Show dashed scissor cut lines between photos
+                </label>
+              </div>
+
+              <!-- Sheet Actions -->
+              <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                <button class="button primary w-full" id="btnPrintSheet" style="padding: 0.85rem; font-size: 1rem;">
+                  <i class="ph ph-printer"></i> Print Sheet (1:1 Exact Scale)
+                </button>
+                <button class="button secondary w-full" id="btnDownloadSheetPdf" style="padding: 0.75rem;">
+                  <i class="ph ph-file-pdf"></i> Download High-Res Printable PDF
+                </button>
+                <button class="button secondary w-full" id="btnDownloadSheetImage" style="padding: 0.75rem;">
+                  <i class="ph ph-image"></i> Download Sheet as JPG
+                </button>
+              </div>
+            </div>
+
+          </aside>
+        </div>
       </div>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Fast, secure, 100% browser-based suite of photo and document tools. Files never leave your computer.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Professional Tools</h3>
+        <ul class="footer-links">
+          <li><a href="index.html#compressor">Reduce Image KB</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+          <li><a href="id-card-studio.html">Smart ID Card Print Studio</a></li>
+          <li><a href="file-converter.html">Pro File Converter & PDF</a></li>
+          <li><a href="increase-size.html">Increase Image KB</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Supported Formats</h3>
+        <ul class="footer-links">
+          <li><a href="passport-tool.html">Indian Passport 3.5x4.5 cm</a></li>
+          <li><a href="passport-tool.html">US Visa 2x2 inch Photo</a></li>
+          <li><a href="id-card-studio.html">Aadhaar PVC Card Print</a></li>
+          <li><a href="id-card-studio.html">PAN Card PVC 8.56x5.40 cm</a></li>
+          <li><a href="file-converter.html">Multi-Document Application Pack</a></li>
+        </ul>
+      </div>
+    </div>
+
     <div class="footer-bottom">
-      &copy; 2026 PhotoResize Pro. Passport Photo Maker & Pixel Resizer.
+      &copy; 2026 PhotoResize Pro. All rights reserved. 100% Private Client-Side Processing.
     </div>
   </footer>
 
   <script src="js/compressor.js"></script>
-  <script src="js/passport-app.js"></script>
+  <script src="js/passport-advanced.js"></script>
 </body>
 </html>

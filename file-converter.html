@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pro File Converter & Application Document Pack Builder — PhotoResize Pro</title>
+  <meta name="description" content="Free online tool to convert and resize JPG, PNG, WEBP, and PDF documents. Set target file size in KB, rename files, and download as organized ZIP or merged application PDF. 100% private.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/jszip.min.js"></script>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-logo">
+        <span class="logo-badge">
+          <i class="ph-bold ph-aperture"></i> PRO
+        </span>
+        <div class="brand-text">PhotoResize <span>PRO</span></div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link"><i class="ph ph-squares-four"></i> All Tools</a></li>
+        <li><a href="index.html#compressor" class="nav-link"><i class="ph ph-arrows-in-simple"></i> Reduce Size (KB)</a></li>
+        <li><a href="passport-tool.html" class="nav-link"><i class="ph ph-user-focus"></i> Passport Maker</a></li>
+        <li><a href="id-card-studio.html" class="nav-link"><i class="ph ph-identification-card"></i> Smart ID Studio</a></li>
+        <li><a href="file-converter.html" class="nav-link active"><i class="ph ph-file-arrow-up"></i> File Converter</a></li>
+        <li><a href="increase-size.html" class="nav-link"><i class="ph ph-arrows-out-simple"></i> Increase KB</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu"><i class="ph ph-list"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Quick Tool Switcher Bar -->
+  <div class="tool-switcher-bar">
+    <div class="switcher-container">
+      <a href="index.html#compressor" class="switcher-tab">
+        <i class="ph ph-arrows-in-simple"></i> Reduce KB
+      </a>
+      <a href="passport-tool.html" class="switcher-tab">
+        <i class="ph ph-user-focus"></i> Passport Photo Maker
+      </a>
+      <a href="id-card-studio.html" class="switcher-tab">
+        <i class="ph ph-identification-card"></i> Smart ID Print Studio
+      </a>
+      <a href="file-converter.html" class="switcher-tab active">
+        <i class="ph ph-file-arrow-up"></i> File Converter & PDF
+      </a>
+      <a href="increase-size.html" class="switcher-tab">
+        <i class="ph ph-arrows-out-simple"></i> Increase KB
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <section class="hero-section">
+      <h1 class="hero-title">Pro File Converter & <span>Application Pack</span></h1>
+      <p class="hero-subtitle">
+        Convert images and PDFs (JPG, PNG, WEBP, PDF) with exact target KB sizing. Upload your complete exam pack (photo, sign, marksheet, certificates), rename them, and download individually, as 1 PDF, or as a single ZIP.
+      </p>
+
+      <div class="trust-badges">
+        <span class="trust-pill"><i class="ph ph-shield-check"></i> 100% Private (Browser-Based)</span>
+        <span class="trust-pill"><i class="ph ph-file-pdf"></i> Image to PDF & PDF to Image</span>
+        <span class="trust-pill"><i class="ph ph-scales"></i> Target KB Precision</span>
+        <span class="trust-pill"><i class="ph ph-file-zip"></i> 1-Click ZIP Download</span>
+      </div>
+    </section>
+
+    <!-- Upload Dropzone -->
+    <div class="app-card" id="converterDropzone" style="cursor: pointer;">
+      <input type="file" id="converterFileInput" multiple accept="image/*,.pdf,application/pdf" style="display: none;">
+      <div class="dropzone-icon">
+        <i class="ph ph-folder-open" style="font-size: 2.5rem; color: var(--primary);"></i>
+      </div>
+      <h2 class="dropzone-title">Upload Documents for Your Application Pack</h2>
+      <p class="dropzone-desc">Drag & drop photos, signatures, marksheets, and PDFs together</p>
+      <span class="btn-select-file" style="margin: 0.5rem auto;">
+        <i class="ph ph-files"></i> Select Application Files
+      </span>
+      <p class="dropzone-hints">Supports JPG, PNG, WEBP, PDF &bull; Multi-file upload supported &bull; 100% On-Device</p>
+    </div>
+
+    <!-- Application Pack Workspace (appears when files are added) -->
+    <div class="converter-pack-container">
+      
+      <!-- Pack Summary Bar -->
+      <div class="pack-status-banner" id="packSummaryBar" style="display: none;">
+        <div>
+          <span style="font-size: 0.95rem; font-weight: 700;">
+            <i class="ph ph-folder-notch-open"></i> Application Document Pack (<span id="docCountBadge">0</span> Files)
+          </span>
+          <small style="display: block; color: var(--text-muted); font-size: 0.78rem;">Rename files, set target KB sizes, and convert format.</small>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="button secondary small" id="btnAddMoreDocs">
+            <i class="ph ph-plus"></i> Add Files
+          </button>
+          <button class="button primary small" id="btnDownloadAllZip">
+            <i class="ph ph-file-zip"></i> Download Pack (ZIP)
+          </button>
+          <button class="button secondary small" id="btnMergeAllPdf">
+            <i class="ph ph-file-pdf"></i> Merge All to 1 PDF
+          </button>
+          <button class="button secondary small" id="btnClearAllDocs" style="color: var(--danger);">
+            <i class="ph ph-trash"></i> Clear All
+          </button>
+        </div>
+      </div>
+
+      <!-- Document List Container -->
+      <div id="docPackList" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Free, fast, and completely private browser-based utilities for students, job applicants, and cyber cafes.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">All Tools</h3>
+        <ul class="footer-links">
+          <li><a href="index.html#compressor">Reduce Size (KB)</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+          <li><a href="id-card-studio.html">Smart ID Print Studio</a></li>
+          <li><a href="file-converter.html">Pro File Converter & PDF</a></li>
+          <li><a href="increase-size.html">Increase Size (KB)</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Popular Conversions</h3>
+        <ul class="footer-links">
+          <li><a href="file-converter.html">JPG to PDF Converter</a></li>
+          <li><a href="file-converter.html">PNG to JPG Converter</a></li>
+          <li><a href="file-converter.html">Exam Signature (under 20KB)</a></li>
+          <li><a href="file-converter.html">Photo Compressor (under 50KB)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; 2026 PhotoResize Pro. Pro File Converter & Application Pack Builder.
+    </div>
+  </footer>
+
+  <script src="js/compressor.js"></script>
+  <script src="js/file-converter.js"></script>
+</body>
+</html>
