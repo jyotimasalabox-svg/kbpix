@@ -328,3 +328,196 @@
     display: block;
   }
 }
+
+
+/* ==========================================================================
+   PhotoResize Pro — In-Place Interactive Document Editor Styles
+   Edit text and photos directly on the document image with 1-click JPG/PDF export
+   ========================================================================== */
+
+.doc-editor-workspace {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.doc-editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: var(--bg-card-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1.15rem;
+}
+
+.doc-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.doc-tool-btn {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-main);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.doc-tool-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.doc-tool-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+}
+
+.doc-canvas-viewport {
+  position: relative;
+  background: #0f172a;
+  border-radius: var(--radius-lg);
+  overflow: auto;
+  max-height: 680px;
+  min-height: 400px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.5rem;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.doc-canvas-wrapper {
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  background: #ffffff;
+  display: inline-block;
+  user-select: none;
+}
+
+.doc-bg-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.doc-overlay-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.doc-text-overlay {
+  position: absolute;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.95);
+  color: #000000;
+  outline: 1px dashed rgba(37, 99, 235, 0.5);
+  font-family: Arial, sans-serif;
+  line-height: 1.2;
+  cursor: text;
+  box-sizing: border-box;
+  padding: 1px 3px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  transition: outline 0.15s ease;
+  z-index: 10;
+}
+
+.doc-text-overlay:hover {
+  outline: 1.5px solid #2563eb;
+  background: #ffffff;
+}
+
+.doc-text-overlay:focus {
+  outline: 2px solid #2563eb;
+  background: #ffffff;
+  z-index: 30;
+  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
+}
+
+.doc-photo-overlay {
+  position: absolute;
+  pointer-events: auto;
+  border: 2px dashed #10b981;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  cursor: move;
+  z-index: 20;
+}
+
+.doc-photo-overlay img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.doc-overlay-del-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.doc-tab-bar {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--bg-card-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem;
+  border-radius: var(--radius-lg);
+  width: fit-content;
+}
+
+.doc-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 0.55rem 1.15rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: var(--transition);
+}
+
+.doc-tab-btn.active {
+  background: var(--bg-card);
+  color: #2563eb;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}

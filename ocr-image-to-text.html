@@ -130,50 +130,179 @@
         <!-- OCR Results Workspace -->
         <div id="ocrWorkspace" style="display: none; margin-top: 1.5rem;">
           
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;" id="ocrSplitGrid">
-            
-            <!-- Left: Source Image Preview -->
-            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Source Image</span>
-                <span class="trust-pill" id="ocrConfidenceBadge">Confidence: 94%</span>
-              </div>
-              <img id="ocrSourceImg" style="max-height: 420px; max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" alt="Source Preview">
-            </div>
-
-            <!-- Right: Editable Extracted Text & Export Actions -->
-            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
-              
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
-                  <i class="ph-bold ph-pencil-simple" style="color: var(--primary);"></i> Extracted Text (Editable):
-                </span>
-                <button type="button" class="button secondary small" id="btnCopyText" style="cursor: pointer;">
-                  <i class="ph-bold ph-copy"></i> Copy Text
-                </button>
-              </div>
-
-              <textarea id="ocrExtractedText" class="adv-input" style="width: 100%; height: 300px; padding: 0.85rem; font-family: monospace; font-size: 0.95rem; line-height: 1.6; border-radius: var(--radius-sm); background: var(--bg-card); resize: vertical;"></textarea>
-
-              <!-- Export Buttons Bar -->
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
-                <button class="button primary" id="btnDownloadTxt" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                  <i class="ph-bold ph-file-text"></i> Download TXT
-                </button>
-                <button class="button secondary" id="btnDownloadDocx" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                  <i class="ph-bold ph-microsoft-word-logo" style="color:#2563eb;"></i> Download Word (.doc)
-                </button>
-                <button class="button secondary" id="btnDownloadSearchablePdf" style="padding: 0.75rem; font-weight: 700; cursor: pointer; grid-column: span 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                  <i class="ph-bold ph-file-pdf" style="color:#ef4444;"></i> Export Searchable PDF
-                </button>
-              </div>
-
-              <button class="button secondary small" id="btnOcrAnother" style="margin-top: 0.25rem; cursor: pointer;">
-                <i class="ph ph-arrow-counter-clockwise"></i> Scan Another Image
+          <!-- Mode Tabs & Scan Another -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+            <div class="doc-tab-bar">
+              <button type="button" class="doc-tab-btn active" id="tabInPlace">
+                <i class="ph-bold ph-note-pencil"></i>
+                <span>📄 Edit on Document (कागज पर एडिट करें)</span>
               </button>
+              <button type="button" class="doc-tab-btn" id="tabRawText">
+                <i class="ph-bold ph-file-text"></i>
+                <span>📝 Extracted Text Only</span>
+              </button>
+            </div>
+            <button type="button" class="button secondary small" id="btnOcrAnother" style="cursor: pointer; padding: 0.5rem 1rem;">
+              <i class="ph ph-arrow-counter-clockwise"></i> Scan Another Document
+            </button>
+          </div>
+
+          <!-- PANEL 1: In-Place Document Editor -->
+          <div id="panelInPlace" class="doc-editor-workspace">
+            
+            <!-- Editor Toolbar -->
+            <div class="doc-editor-toolbar">
+              
+              <!-- Content Tools -->
+              <div class="doc-toolbar-group">
+                <button type="button" class="doc-tool-btn" id="btnAddText" title="Add a new text box on the document">
+                  <i class="ph-bold ph-plus-circle" style="color: #2563eb;"></i> <span>Add Text</span>
+                </button>
+                <button type="button" class="doc-tool-btn" id="btnAddPhoto" title="Attach candidate photo, signature, or stamp">
+                  <i class="ph-bold ph-image" style="color: #10b981;"></i> <span>Add Photo / Stamp</span>
+                </button>
+                <input type="file" id="photoFileInput" accept="image/*" style="display: none;">
+                <button type="button" class="doc-tool-btn" id="btnWhiteout" title="Drag over any part of the paper to erase or white out">
+                  <i class="ph-bold ph-eraser" style="color: #f59e0b;"></i> <span>Whiteout Eraser</span>
+                </button>
+              </div>
+
+              <!-- Typography Tools -->
+              <div class="doc-toolbar-group">
+                <select id="fontFamilySelect" class="adv-input" style="padding: 0.35rem 0.6rem; font-size: 0.85rem; border-radius: var(--radius-md); width: auto;">
+                  <option value="Arial, sans-serif">Arial</option>
+                  <option value="'Times New Roman', serif">Times New Roman</option>
+                  <option value="'Courier New', monospace">Courier (Typewriter)</option>
+                  <option value="'Nirmala UI', Mangal, sans-serif">Hindi / Devanagari</option>
+                  <option value="Georgia, serif">Georgia</option>
+                  <option value="Impact, sans-serif">Impact / Bold Header</option>
+                </select>
+
+                <div style="display: flex; align-items: center; gap: 0.25rem; background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.15rem 0.4rem;">
+                  <button type="button" class="doc-tool-btn" id="btnFontDec" style="border: none; padding: 0.25rem 0.45rem;" title="Decrease font size">
+                    <i class="ph ph-minus"></i>
+                  </button>
+                  <span id="fontSizeLabel" style="font-size: 0.82rem; font-weight: 800; min-width: 32px; text-align: center;">16px</span>
+                  <button type="button" class="doc-tool-btn" id="btnFontInc" style="border: none; padding: 0.25rem 0.45rem;" title="Increase font size">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+
+                <button type="button" class="doc-tool-btn" id="btnToggleBold" title="Bold text">
+                  <i class="ph-bold ph-text-b"></i>
+                </button>
+              </div>
+
+              <!-- Ink Colors -->
+              <div class="doc-toolbar-group">
+                <span style="font-size: 0.78rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Ink:</span>
+                <button type="button" class="doc-tool-btn doc-color-btn active" data-color="#000000" title="Black Ink" style="padding: 0.35rem 0.55rem;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; background: #000000; display: inline-block;"></span>
+                </button>
+                <button type="button" class="doc-tool-btn doc-color-btn" data-color="#1e3a8a" title="Blue Ink" style="padding: 0.35rem 0.55rem;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; background: #1e3a8a; display: inline-block;"></span>
+                </button>
+                <button type="button" class="doc-tool-btn doc-color-btn" data-color="#dc2626" title="Red Ink" style="padding: 0.35rem 0.55rem;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; background: #dc2626; display: inline-block;"></span>
+                </button>
+                <button type="button" class="doc-tool-btn doc-color-btn" data-color="#15803d" title="Green Ink" style="padding: 0.35rem 0.55rem;">
+                  <span style="width: 14px; height: 14px; border-radius: 50%; background: #15803d; display: inline-block;"></span>
+                </button>
+              </div>
+
+              <!-- Zoom & Revert Tools -->
+              <div class="doc-toolbar-group">
+                <button type="button" class="doc-tool-btn" id="btnZoomOut" title="Zoom Out"><i class="ph ph-magnifying-glass-minus"></i></button>
+                <button type="button" class="doc-tool-btn" id="btnZoomFit" title="Fit to Screen"><i class="ph ph-corners-out"></i> <span>Fit</span></button>
+                <button type="button" class="doc-tool-btn" id="btnZoomIn" title="Zoom In"><i class="ph ph-magnifying-glass-plus"></i></button>
+                <button type="button" class="doc-tool-btn" id="btnClearEdits" style="color: #ef4444;" title="Revert to original document">
+                  <i class="ph ph-arrow-counter-clockwise"></i> <span>Reset</span>
+                </button>
+              </div>
 
             </div>
 
+            <!-- Tip banner -->
+            <div style="background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: var(--radius-md); padding: 0.65rem 1rem; font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+              <i class="ph-bold ph-lightbulb" style="color: #2563eb; font-size: 1.1rem; flex-shrink: 0;"></i>
+              <span><strong>Smart Tip:</strong> Click any text box directly on the paper to type new details. Drag photos or signatures anywhere on the document. Old text is automatically whited out cleanly.</span>
+            </div>
+
+            <!-- Document Canvas Viewport -->
+            <div class="doc-canvas-viewport" id="docCanvasViewport">
+              <div class="doc-canvas-wrapper" id="docCanvasWrapper">
+                <canvas id="docBgCanvas" class="doc-bg-canvas"></canvas>
+                <div id="docOverlayLayer" class="doc-overlay-layer"></div>
+              </div>
+            </div>
+
+            <!-- Direct Download Buttons -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
+                <i class="ph-bold ph-download-simple" style="color: #2563eb; font-size: 1.15rem;"></i>
+                <span>Download Edited Document (सीधे डाउनलोड करें):</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;">
+                <button type="button" class="button primary" id="btnDownloadEditedJpg" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);">
+                  <i class="ph-bold ph-file-jpg" style="font-size: 1.25rem;"></i>
+                  <span>Download Edited JPG</span>
+                </button>
+                <button type="button" class="button secondary" id="btnDownloadEditedPng" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
+                  <i class="ph-bold ph-file-png" style="font-size: 1.25rem; color: #10b981;"></i>
+                  <span>Download Edited PNG</span>
+                </button>
+                <button type="button" class="button secondary" id="btnDownloadEditedPdf" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
+                  <i class="ph-bold ph-file-pdf" style="font-size: 1.25rem; color: #ef4444;"></i>
+                  <span>Download Printable PDF (A4)</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- PANEL 2: Raw Extracted Text Panel -->
+          <div id="panelRawText" style="display: none;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;" id="ocrSplitGrid">
+              
+              <!-- Left: Source Image Preview -->
+              <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                  <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Source Image</span>
+                  <span class="trust-pill" id="ocrConfidenceBadge">Confidence: 94%</span>
+                </div>
+                <img id="ocrSourceImg" style="max-height: 420px; max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" alt="Source Preview">
+              </div>
+
+              <!-- Right: Editable Extracted Text & Export Actions -->
+              <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-pencil-simple" style="color: var(--primary);"></i> Extracted Text (Editable):
+                  </span>
+                  <button type="button" class="button secondary small" id="btnCopyText" style="cursor: pointer;">
+                    <i class="ph-bold ph-copy"></i> Copy Text
+                  </button>
+                </div>
+
+                <textarea id="ocrExtractedText" class="adv-input" style="width: 100%; height: 300px; padding: 0.85rem; font-family: monospace; font-size: 0.95rem; line-height: 1.6; border-radius: var(--radius-sm); background: var(--bg-card); resize: vertical;"></textarea>
+
+                <!-- Export Buttons Bar -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+                  <button class="button primary" id="btnDownloadTxt" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-file-text"></i> Download TXT
+                  </button>
+                  <button class="button secondary" id="btnDownloadDocx" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-microsoft-word-logo" style="color:#2563eb;"></i> Download Word (.doc)
+                  </button>
+                  <button class="button secondary" id="btnDownloadSearchablePdf" style="padding: 0.75rem; font-weight: 700; cursor: pointer; grid-column: span 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-file-pdf" style="color:#ef4444;"></i> Export Searchable PDF
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
           </div>
 
         </div>
