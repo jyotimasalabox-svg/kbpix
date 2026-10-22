@@ -334,9 +334,8 @@
 }
 
 .btn-upload-primary:active {
-  background: linear-gradient(135deg, #db2777 0%, #e11d48 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(219, 39, 119, 0.6) !important;
+  filter: brightness(0.88) contrast(1.1) !important;
+  transform: scale(0.97) !important;
 }
 
 .btn-upload-secondary {
@@ -363,9 +362,8 @@
 }
 
 .btn-upload-secondary:active {
-  background: linear-gradient(135deg, #be123c 0%, #881337 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(190, 18, 60, 0.6) !important;
+  filter: brightness(0.88) contrast(1.1) !important;
+  transform: scale(0.97) !important;
 }
 
 .upload-hints-text {
@@ -624,100 +622,100 @@
   overflow: hidden;
 }
 
-/* 20 KB Download (Signature): Emerald -> Electric Teal -> Sky Blue */
+/* 20 KB Download (Signature): Emerald */
 #btnFastDl20kb {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
   box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4) !important;
 }
 #btnFastDl20kb:hover {
-  background: linear-gradient(135deg, #059669 0%, #0d9488 100%) !important;
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.55) !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55) !important;
 }
 #btnFastDl20kb:active {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.6) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.96) translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5) !important;
 }
 
-/* 50 KB Download (Passport): Royal Blue -> Electric Violet -> Magenta */
+/* 50 KB Download (Passport): Royal Blue */
 #btnFastDl50kb {
   background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
 }
 #btnFastDl50kb:hover {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.55) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55) !important;
 }
 #btnFastDl50kb:active {
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.6) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.96) translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.5) !important;
 }
 
-/* 100 KB Download (Forms): Purple -> Hot Violet -> Deep Pink */
+/* 100 KB Download (Forms): Purple */
 #btnFastDl100kb {
   background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
   box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4) !important;
 }
 #btnFastDl100kb:hover {
-  background: linear-gradient(135deg, #9333ea 0%, #c026d3 100%) !important;
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(192, 38, 211, 0.55) !important;
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.55) !important;
 }
 #btnFastDl100kb:active {
-  background: linear-gradient(135deg, #db2777 0%, #e11d48 100%) !important;
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(219, 39, 119, 0.6) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.96) translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.5) !important;
 }
 
-/* JPG Download: Amber-Orange -> Red-Orange -> Crimson */
+/* JPG Download: Amber-Orange */
 #btnFastDlJpg {
   background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%) !important;
   box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4) !important;
 }
 #btnFastDlJpg:hover {
-  background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%) !important;
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.55) !important;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.55) !important;
 }
 #btnFastDlJpg:active {
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(185, 28, 28, 0.6) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.96) translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.5) !important;
 }
 
-/* PDF Download: Crimson Red -> Dark Burgundy -> Deep Purple */
+/* PDF Download: Crimson Red */
 #btnFastDlPdf {
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
   box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4) !important;
 }
 #btnFastDlPdf:hover {
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.55) !important;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.55) !important;
 }
 #btnFastDlPdf:active {
-  background: linear-gradient(135deg, #581c87 0%, #3b0764 100%) !important;
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(88, 28, 135, 0.6) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.96) translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5) !important;
 }
 
-/* PNG Download: Hot Magenta-Pink -> Indigo -> Electric Cyan */
+/* PNG Download: Hot Magenta-Pink */
 #btnFastDlPng {
   background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
   box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4) !important;
 }
 #btnFastDlPng:hover {
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%) !important;
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.55) !important;
+  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.55) !important;
 }
 #btnFastDlPng:active {
-  background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
-  transform: scale(0.95);
-  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.6) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.96) translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.5) !important;
 }
 
 /* ==========================================================================
@@ -819,11 +817,8 @@
 }
 
 .preset-chip-btn:active {
-  background: linear-gradient(135deg, #ec4899, #f43f5e) !important;
-  color: #ffffff !important;
-  border-color: transparent !important;
-  transform: scale(0.94);
-  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.45);
+  filter: brightness(0.88) !important;
+  transform: scale(0.96) !important;
 }
 
 .preset-chip-btn.active {
@@ -1040,9 +1035,8 @@
 }
 
 .format-card-btn:active {
-  background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
-  color: #ffffff !important;
-  transform: scale(0.95);
+  filter: brightness(0.88) !important;
+  transform: scale(0.96) !important;
 }
 
 .format-card-btn:active .format-card-icon,
@@ -1120,15 +1114,15 @@
 }
 
 .btn-process-main:hover {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%) !important;
+  filter: brightness(1.08);
   transform: translateY(-3px);
-  box-shadow: 0 14px 36px rgba(37, 99, 235, 0.58) !important;
+  box-shadow: 0 14px 34px rgba(16, 185, 129, 0.6) !important;
 }
 
 .btn-process-main:active {
-  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 6px 20px rgba(236, 72, 153, 0.65) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.5) !important;
 }
 
 .btn-process-main:disabled {
@@ -1213,9 +1207,9 @@
 }
 
 .btn-download-primary:active {
-  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.6) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.5) !important;
 }
 
 /* Comprehensive Footer */
@@ -1381,11 +1375,8 @@
 }
 
 .ws-tab-btn:active {
-  background: linear-gradient(135deg, #ec4899, #8b5cf6) !important;
-  color: #ffffff !important;
-  border-color: transparent !important;
-  transform: scale(0.95);
-  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.45);
+  filter: brightness(0.88) !important;
+  transform: scale(0.97) !important;
 }
 
 .ws-tab-btn:active i {

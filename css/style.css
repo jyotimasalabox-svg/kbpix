@@ -113,11 +113,16 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+  transition: background-color 0.45s ease, color 0.45s ease;
 }
 
-/* Dark Mode: Cyber Aurora Nebula Wallpaper */
-[data-theme="dark"] body {
+/* Dark Mode: Silky Smooth Cross-Fade Backdrop (Eliminates Flash) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   background-color: #070b14;
   background-image: 
     /* Tech Matrix Micro-Grid */
@@ -131,6 +136,40 @@ body {
   background-size: 30px 30px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
   background-attachment: fixed;
   background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] body::before {
+  opacity: 1;
+}
+
+[data-theme="dark"] body {
+  background-color: #070b14;
+}
+
+/* Universal Smooth Transition for Layout Cards & Controls (No Flash) */
+.navbar,
+.app-card,
+.stage-download-card,
+.preview-stage-panel,
+.studio-controls-sidebar,
+.upload-card-box,
+.active-photo-card,
+.editor-settings-card,
+.result-display-card,
+.app-sidebar,
+.sidebar-nav-item,
+.tool-switcher-bar,
+.switcher-tab,
+.comprehensive-footer,
+.theme-toggle-btn,
+.format-card-btn,
+.preset-chip-btn,
+.ws-tab-btn,
+.button {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease !important;
 }
 
 /* ==========================================================================
@@ -343,11 +382,8 @@ body {
 }
 
 .switcher-tab:active {
-  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%) !important;
-  color: #ffffff !important;
-  border-color: transparent !important;
-  transform: scale(0.95);
-  box-shadow: 0 2px 10px rgba(236, 72, 153, 0.55) !important;
+  filter: brightness(0.88) contrast(1.1) !important;
+  transform: scale(0.96) !important;
 }
 
 /* ==========================================================================
@@ -2436,13 +2472,14 @@ input, select, textarea {
   text-decoration: none;
   cursor: pointer;
   border: none;
-  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
 
 .button:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
+  filter: brightness(0.9) contrast(1.08);
 }
 
 .button.small {
@@ -2463,15 +2500,15 @@ input, select, textarea {
 }
 
 .button.primary:hover {
-  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  filter: brightness(1.08);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.55);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.55);
 }
 
 .button.primary:active {
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.6) !important;
+  filter: brightness(0.88) contrast(1.12) !important;
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.5) !important;
 }
 
 /* Secondary Generic Button */
@@ -2497,11 +2534,9 @@ input, select, textarea {
 }
 
 .button.secondary:active {
-  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%) !important;
-  color: #ffffff !important;
-  border-color: transparent !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.45) !important;
+  filter: brightness(0.9) !important;
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -2517,6 +2552,7 @@ input, select, textarea {
   color: #ffffff !important;
   border: none !important;
   box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45) !important;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 #btnStagePrintIdA4 *,
@@ -2530,8 +2566,8 @@ input, select, textarea {
 #btnPrintIdA4:hover,
 #btnStagePrintSheet:hover,
 #btnPrintSheet:hover {
-  background: linear-gradient(135deg, #1d4ed8 0%, #4338ca 100%) !important;
-  transform: translateY(-2px);
+  filter: brightness(1.08) !important;
+  transform: translateY(-2px) !important;
   box-shadow: 0 10px 28px rgba(37, 99, 235, 0.6) !important;
 }
 
@@ -2539,9 +2575,9 @@ input, select, textarea {
 #btnPrintIdA4:active,
 #btnStagePrintSheet:active,
 #btnPrintSheet:active {
-  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.65) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.5) !important;
 }
 
 /* 2. LAL (Vibrant Crimson Red) -> PDF Export/Download Buttons */
@@ -2557,6 +2593,7 @@ input, select, textarea {
   color: #ffffff !important;
   border: none !important;
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45) !important;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 #btnStageExportIdPdf *,
@@ -2578,8 +2615,8 @@ input, select, textarea {
 #btnMergeAllPdf:hover,
 #btnDownloadEditedPdf:hover,
 #btnDownloadCreatedPdf:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
-  transform: translateY(-2px);
+  filter: brightness(1.08) !important;
+  transform: translateY(-2px) !important;
   box-shadow: 0 10px 28px rgba(220, 38, 38, 0.6) !important;
 }
 
@@ -2591,9 +2628,9 @@ input, select, textarea {
 #btnMergeAllPdf:active,
 #btnDownloadEditedPdf:active,
 #btnDownloadCreatedPdf:active {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.65) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: 0 3px 10px rgba(220, 38, 38, 0.5) !important;
 }
 
 /* 3. PEELA / AMBER (Golden Yellow & Orange) -> JPG Image Download Buttons */
@@ -2608,6 +2645,7 @@ input, select, textarea {
   color: #ffffff !important;
   border: none !important;
   box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45) !important;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 #btnStageDownloadIdJpg *,
@@ -2627,8 +2665,8 @@ input, select, textarea {
 #btnDownloadSheetImage:hover,
 #btnDownloadScannedJpg:hover,
 #btnDownloadEditedJpg:hover {
-  background: linear-gradient(135deg, #ea580c 0%, #d97706 100%) !important;
-  transform: translateY(-2px);
+  filter: brightness(1.08) !important;
+  transform: translateY(-2px) !important;
   box-shadow: 0 10px 28px rgba(234, 88, 12, 0.6) !important;
 }
 
@@ -2639,9 +2677,9 @@ input, select, textarea {
 #btnDownloadSheetImage:active,
 #btnDownloadScannedJpg:active,
 #btnDownloadEditedJpg:active {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-  transform: scale(0.96);
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.65) !important;
+  filter: brightness(0.86) contrast(1.15) !important;
+  transform: scale(0.97) translateY(0) !important;
+  box-shadow: 0 3px 10px rgba(234, 88, 12, 0.5) !important;
 }
 
 /* 4. HARA (Emerald Green) -> Eco Mode Ink-Saver Pill */
@@ -2658,7 +2696,7 @@ input, select, textarea {
   align-items: center;
   gap: 0.4rem;
   box-shadow: 0 3px 12px rgba(16, 185, 129, 0.4) !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.22s ease !important;
 }
 
 #btnEcoInkSaver *,
@@ -2668,15 +2706,15 @@ input, select, textarea {
 
 #btnEcoInkSaver:hover,
 .eco-ink-pill:hover {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  filter: brightness(1.08) !important;
   transform: translateY(-1px);
   box-shadow: 0 5px 16px rgba(16, 185, 129, 0.55) !important;
 }
 
 #btnEcoInkSaver:active,
 .eco-ink-pill:active {
-  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
-  transform: scale(0.95);
+  filter: brightness(0.88) !important;
+  transform: scale(0.96);
 }
 
 /* 5. Clear Cards Button */
@@ -2691,7 +2729,7 @@ input, select, textarea {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  transition: all 0.2s ease;
+  transition: all 0.22s ease;
 }
 
 [data-theme="dark"] #btnClearIdCards {
@@ -2709,8 +2747,8 @@ input, select, textarea {
 }
 
 #btnClearIdCards:active {
-  background: #991b1b !important;
-  transform: scale(0.95);
+  filter: brightness(0.88);
+  transform: scale(0.96);
 }
 
 
@@ -2718,6 +2756,9 @@ input, select, textarea {
    Print Exact 1:1 Scale Output CSS (@media print)
    ========================================================================== */
 @media print {
+  body::before {
+    display: none !important;
+  }
   body {
     background: #ffffff !important;
     color: #000000 !important;
