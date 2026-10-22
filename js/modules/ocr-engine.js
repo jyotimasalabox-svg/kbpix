@@ -15,9 +15,7 @@ class OCREngine {
   // Pre-process noisy document photos for ultra-high OCR accuracy
   preprocessForOCR(imageElement, options = {}) {
     const {
-      enhanceContrast = true,
-      sharpen = true,
-      binarize = false
+      enhanceContrast = true
     } = options;
 
     const w = imageElement.naturalWidth || imageElement.width;
@@ -28,6 +26,8 @@ class OCREngine {
     canvas.height = h;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(imageElement, 0, 0, w, h);
+
+    if (!enhanceContrast) return canvas;
 
     const imgData = ctx.getImageData(0, 0, w, h);
     const d = imgData.data;
@@ -48,20 +48,13 @@ class OCREngine {
 
     const lumRange = Math.max(1, maxLum - minLum);
 
-    // 2. Adaptive contrast stretch & clean noise
+    // 2. Mild adaptive contrast stretch (gentle gamma to avoid turning background textures into black noise)
     for (let i = 0, j = 0; i < len; i += 4, j++) {
       let lum = lumArray[j];
-
-      if (enhanceContrast) {
-        // Stretch histogram so paper becomes clean white, text becomes deep black
-        lum = Math.round(((lum - minLum) / lumRange) * 255);
-        // Gamma correction to deepen text strokes
-        lum = Math.round(255 * Math.pow(lum / 255, 1.2));
-      }
-
-      if (binarize) {
-        lum = lum > 140 ? 255 : 0;
-      }
+      // Normalize luminance
+      lum = Math.round(((lum - minLum) / lumRange) * 255);
+      // Gentle contrast curve (1.08 instead of aggressive 1.5)
+      lum = Math.round(255 * Math.pow(lum / 255, 1.08));
 
       d[i] = lum;
       d[i + 1] = lum;
@@ -69,42 +62,6 @@ class OCREngine {
     }
 
     ctx.putImageData(imgData, 0, 0);
-
-    // 3. Unsharp Masking / Sharpening pass if requested
-    if (sharpen && w <= 3000 && h <= 3000) {
-      const sharpCanvas = document.createElement('canvas');
-      sharpCanvas.width = w;
-      sharpCanvas.height = h;
-      const sCtx = sharpCanvas.getContext('2d');
-      sCtx.drawImage(canvas, 0, 0);
-
-      const srcData = ctx.getImageData(0, 0, w, h);
-      const outData = sCtx.createImageData(w, h);
-      const s = srcData.data;
-      const o = outData.data;
-
-      // 3x3 unsharp kernel
-      for (let y = 1; y < h - 1; y++) {
-        for (let x = 1; x < w - 1; x++) {
-          const idx = (y * w + x) * 4;
-          const up = ((y - 1) * w + x) * 4;
-          const down = ((y + 1) * w + x) * 4;
-          const left = (y * w + (x - 1)) * 4;
-          const right = (y * w + (x + 1)) * 4;
-
-          const val = 5 * s[idx] - (s[up] + s[down] + s[left] + s[right]);
-          const clamped = Math.max(0, Math.min(255, val));
-
-          o[idx] = clamped;
-          o[idx + 1] = clamped;
-          o[idx + 2] = clamped;
-          o[idx + 3] = 255;
-        }
-      }
-      sCtx.putImageData(outData, 0, 0);
-      return sharpCanvas;
-    }
-
     return canvas;
   }
 
@@ -170,17 +127,23 @@ class OCREngine {
     // Clean noise & rogue artifacts like random single zeros or symbols
     const cleanedText = this.cleanOCRText(result.data.text || '');
 
-    // Extract word and line bounding boxes
-    const lines = (result.data.lines || []).map(line => ({
-      text: (line.text || '').trim(),
-      confidence: line.confidence,
-      bbox: line.bbox,
-      words: (line.words || []).map(w => ({
-        text: (w.text || '').trim(),
-        confidence: w.confidence,
-        bbox: w.bbox
-      }))
-    })).filter(l => l.text.length > 0 && l.text !== '0');
+    // Extract word and line bounding boxes with noise filtering
+    const lines = (result.data.lines || [])
+      .map(line => {
+        const cleaned = this.cleanOCRText(line.text || '').trim();
+        return {
+          text: cleaned,
+          rawText: (line.text || '').trim(),
+          confidence: line.confidence || 0,
+          bbox: line.bbox,
+          words: (line.words || []).map(w => ({
+            text: (w.text || '').trim(),
+            confidence: w.confidence || 0,
+            bbox: w.bbox
+          }))
+        };
+      })
+      .filter(l => l.text.length >= 2 && l.confidence >= 25);
 
     return {
       text: cleanedText,
@@ -200,10 +163,14 @@ class OCREngine {
       .split('\n')
       .map(line => {
         let l = line.trim();
-        // Remove standalone garbage characters on their own line like '~', '^', '0', '|'
-        if (/^[|~`^0_—=\-+*]$/.test(l)) return '';
+        // Remove standalone garbage symbols or noise tokens
+        if (/^[|~`^0_—=\-+*#<>:;/\\]+$/.test(l)) return '';
+        if (/^[\W_0-9]{1,2}$/.test(l) && !/^\d{1,2}$/.test(l)) return '';
+        // Trim leading and trailing noise symbols
+        l = l.replace(/^[|~`^0_—=\-+*#<>:;/\\]+\s*/, '');
+        l = l.replace(/\s*[|~`^0_—=\-+*#<>:;/\\]+$/, '');
         // Normalize multiple spaces
-        l = l.replace(/\s+/g, ' ');
+        l = l.replace(/\s+/g, ' ').trim();
         return l;
       })
       .filter(l => l.length > 0)

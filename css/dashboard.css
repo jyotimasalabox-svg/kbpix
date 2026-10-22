@@ -430,30 +430,163 @@
 .doc-text-overlay {
   position: absolute;
   pointer-events: auto;
-  background: rgba(255, 255, 255, 0.95);
+  background: #ffffff;
   color: #000000;
-  outline: 1px dashed rgba(37, 99, 235, 0.5);
+  outline: 1.5px solid #2563eb;
   font-family: Arial, sans-serif;
-  line-height: 1.2;
-  cursor: text;
+  line-height: 1.25;
   box-sizing: border-box;
-  padding: 1px 3px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  transition: outline 0.15s ease, box-shadow 0.15s ease;
+  z-index: 30;
+}
+
+.doc-overlay-drag-handle {
+  cursor: grab;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  padding: 2px 2px;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.doc-overlay-drag-handle:hover {
+  color: #2563eb;
+}
+
+.doc-overlay-drag-handle:active {
+  cursor: grabbing;
+}
+
+.doc-text-content {
+  cursor: text;
+  outline: none;
   white-space: pre-wrap;
   word-break: break-word;
-  transition: outline 0.15s ease;
-  z-index: 10;
+  min-width: 24px;
 }
 
 .doc-text-overlay:hover {
-  outline: 1.5px solid #2563eb;
-  background: #ffffff;
+  outline: 2px solid #2563eb;
 }
 
-.doc-text-overlay:focus {
-  outline: 2px solid #2563eb;
-  background: #ffffff;
-  z-index: 30;
-  box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
+.doc-text-overlay:focus-within {
+  outline: 2px solid #1d4ed8;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+.doc-split-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .doc-split-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.doc-fields-panel {
+  background: var(--bg-card-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-height: 680px;
+}
+
+.doc-fields-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.doc-fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  max-height: 520px;
+}
+
+.doc-field-row {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  transition: all 0.15s ease;
+}
+
+.doc-field-row:hover {
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.doc-field-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.doc-field-edit-btn {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  border: 1px solid rgba(37, 99, 235, 0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s ease;
+}
+
+.doc-field-edit-btn:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.doc-guide-box {
+  position: absolute;
+  pointer-events: auto;
+  background: rgba(37, 99, 235, 0.05);
+  border: 1.5px dashed rgba(37, 99, 235, 0.45);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 15;
+}
+
+.doc-guide-box:hover {
+  background: rgba(37, 99, 235, 0.22);
+  border-color: #2563eb;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
 }
 
 .doc-photo-overlay {

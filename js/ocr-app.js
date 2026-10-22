@@ -21,13 +21,15 @@ document.addEventListener('DOMContentLoaded', () => {
     scale: 1.0,
     activeOverlay: null,
     isWhiteoutMode: false,
+    showGuides: false,
     fontSize: 16,
     fontColor: '#000000',
     fontFamily: 'Arial, sans-serif',
     isBold: false,
     
     // Layers
-    textOverlays: [],   // Array of { id, x, y, width, height, text, fontSize, color, fontFamily, isBold, bgFill }
+    detectedLines: [],  // Original detected OCR lines with bounding boxes
+    textOverlays: [],   // Array of active user edits { id, lineIdx, x, y, width, height, text, fontSize, color, fontFamily, isBold, bgFill }
     photoOverlays: [],  // Array of { id, x, y, width, height, imgElement }
     whiteoutRects: []   // Array of { x, y, width, height, color }
   };
@@ -50,6 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const docCanvasWrapper = document.getElementById('docCanvasWrapper');
   const docBgCanvas = document.getElementById('docBgCanvas');
   const docOverlayLayer = document.getElementById('docOverlayLayer');
+
+  // Fields Panel
+  const btnToggleGuides = document.getElementById('btnToggleGuides');
+  const detectedFieldsList = document.getElementById('detectedFieldsList');
+  const detectedFieldsCount = document.getElementById('detectedFieldsCount');
 
   // Toolbar Buttons
   const btnAddText = document.getElementById('btnAddText');
@@ -256,8 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ocrConfidenceBadge.textContent = `Confidence: ${Math.round(result.confidence)}%`;
       }
 
-      // 4. Populate in-place editable overlays
-      buildInPlaceTextOverlays(result.lines);
+      // 4. Populate Detected Fields in right panel (Original document stays 100% clean and visible!)
+      renderDetectedFieldsList(result.lines);
 
       ocrProgressCard.classList.remove('active');
       ocrWorkspace.style.display = 'block';
@@ -274,79 +281,234 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 2. Build In-Place Editable Text Overlays on the Document
+  // 2. Detected Fields Management & Clean In-Place Overlay System
   // =========================================================================
-  function buildInPlaceTextOverlays(lines) {
-    docOverlayLayer.innerHTML = '';
-    state.textOverlays = [];
+
+  // Populate list in right panel so user can choose which fields to edit
+  function renderDetectedFieldsList(lines) {
+    if (!detectedFieldsList) return;
+    detectedFieldsList.innerHTML = '';
+    state.detectedLines = lines || [];
+
+    if (detectedFieldsCount) {
+      detectedFieldsCount.textContent = state.detectedLines.length;
+    }
+
+    if (!lines || lines.length === 0) {
+      detectedFieldsList.innerHTML = `
+        <div style="color: var(--text-muted); font-size: 0.85rem; padding: 1.5rem 1rem; text-align: center;">
+          <i class="ph-bold ph-info" style="font-size: 1.5rem; color: var(--primary); display: block; margin-bottom: 0.5rem;"></i>
+          No text lines detected automatically. You can click <strong>Add Text</strong> above to type directly on any part of the document.
+        </div>`;
+      return;
+    }
 
     lines.forEach((line, idx) => {
-      const bbox = line.bbox;
-      if (!bbox) return;
+      const row = document.createElement('div');
+      row.className = 'doc-field-row';
+      row.id = `doc_field_row_${idx}`;
 
-      const x = bbox.x0;
-      const y = bbox.y0;
-      const w = Math.max(20, bbox.x1 - bbox.x0);
-      const h = Math.max(14, bbox.y1 - bbox.y0);
+      const textDiv = document.createElement('div');
+      textDiv.className = 'doc-field-text';
+      textDiv.textContent = line.text;
+      textDiv.title = line.text;
 
-      // Estimate font size based on bounding box height
-      const estFontSize = Math.max(11, Math.min(36, Math.round(h * 0.85)));
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'button secondary small doc-field-edit-btn';
+      editBtn.innerHTML = '<i class="ph-bold ph-pencil-simple"></i> Edit';
+      editBtn.title = 'Edit or replace this text on the document';
 
-      const overlayItem = {
-        id: 'overlay_' + idx,
-        x,
-        y,
-        width: w,
-        height: h,
-        text: line.text,
-        fontSize: estFontSize,
-        color: '#000000',
-        fontFamily: 'Arial, sans-serif',
-        isBold: false,
-        bgFill: '#ffffff'
-      };
+      editBtn.addEventListener('click', () => {
+        activateTextOverlayForLine(line, idx);
+      });
 
-      state.textOverlays.push(overlayItem);
-      renderTextOverlayElement(overlayItem);
+      row.appendChild(textDiv);
+      row.appendChild(editBtn);
+      detectedFieldsList.appendChild(row);
     });
+
+    updateGuidesDisplay();
+  }
+
+  // Activate an editable replacement box ONLY for the clicked field
+  function activateTextOverlayForLine(line, idx) {
+    const existingId = `overlay_line_${idx}`;
+    let existingItem = state.textOverlays.find(o => o.id === existingId);
+
+    if (existingItem) {
+      const el = document.getElementById(existingId);
+      if (el) {
+        el.focus();
+        selectElementContents(el);
+      }
+      return;
+    }
+
+    const bbox = line.bbox || { x0: 50, y0: 50, x1: 200, y1: 80 };
+    const w = Math.max(50, (bbox.x1 - bbox.x0) + 10);
+    const h = Math.max(18, (bbox.y1 - bbox.y0) + 4);
+    const estFontSize = Math.max(12, Math.min(30, Math.round((bbox.y1 - bbox.y0) * 0.85)));
+
+    const overlayItem = {
+      id: existingId,
+      lineIdx: idx,
+      x: Math.max(0, bbox.x0 - 4),
+      y: Math.max(0, bbox.y0 - 2),
+      width: Math.round(w),
+      height: Math.round(h),
+      text: line.text,
+      fontSize: estFontSize,
+      color: state.fontColor || '#000000',
+      fontFamily: state.fontFamily || 'Arial, sans-serif',
+      isBold: false,
+      bgFill: '#ffffff' // Whiteout background to cleanly cover old text
+    };
+
+    state.textOverlays.push(overlayItem);
+    renderTextOverlayElement(overlayItem);
+
+    // Focus and select contents
+    const el = document.getElementById(existingId);
+    if (el) {
+      el.focus();
+      selectElementContents(el);
+    }
+
+    // Highlight row in sidebar
+    const row = document.getElementById(`doc_field_row_${idx}`);
+    if (row) {
+      row.style.borderColor = '#2563eb';
+      row.style.background = 'rgba(37, 99, 235, 0.08)';
+    }
+
+    // Update guide box if visible
+    updateGuidesDisplay();
   }
 
   function renderTextOverlayElement(item) {
     const el = document.createElement('div');
     el.className = 'doc-text-overlay';
     el.id = item.id;
-    el.contentEditable = 'true';
-    el.spellcheck = false;
-    el.textContent = item.text;
 
     // Positioning
     el.style.left = `${item.x}px`;
     el.style.top = `${item.y}px`;
     el.style.minWidth = `${item.width}px`;
-    el.style.minHeight = `${item.height}px`;
-    el.style.fontSize = `${item.fontSize}px`;
-    el.style.color = item.color;
-    el.style.fontFamily = item.fontFamily;
-    el.style.fontWeight = item.isBold ? 'bold' : 'normal';
-    el.style.backgroundColor = item.bgFill;
+    el.style.backgroundColor = item.bgFill || '#ffffff';
 
-    // Listen for edits
-    el.addEventListener('input', () => {
-      item.text = el.innerText;
+    // Drag handle
+    const dragHandle = document.createElement('span');
+    dragHandle.className = 'doc-overlay-drag-handle';
+    dragHandle.innerHTML = '<i class="ph-bold ph-dots-six-vertical"></i>';
+    dragHandle.title = 'Drag to reposition';
+
+    // Content box
+    const content = document.createElement('span');
+    content.className = 'doc-text-content';
+    content.contentEditable = 'true';
+    content.spellcheck = false;
+    content.textContent = item.text;
+    content.style.fontSize = `${item.fontSize}px`;
+    content.style.color = item.color || '#000000';
+    content.style.fontFamily = item.fontFamily || 'Arial, sans-serif';
+    content.style.fontWeight = item.isBold ? 'bold' : 'normal';
+
+    // Delete badge
+    const delBtn = document.createElement('button');
+    delBtn.type = 'button';
+    delBtn.className = 'doc-overlay-del-btn';
+    delBtn.innerHTML = '&times;';
+    delBtn.title = 'Remove this edit';
+    delBtn.addEventListener('mousedown', (e) => e.stopPropagation());
+    delBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      el.remove();
+      const idx = state.textOverlays.findIndex(o => o.id === item.id);
+      if (idx !== -1) state.textOverlays.splice(idx, 1);
+      if (item.lineIdx !== undefined) {
+        const row = document.getElementById(`doc_field_row_${item.lineIdx}`);
+        if (row) {
+          row.style.borderColor = '';
+          row.style.background = '';
+        }
+      }
+      updateGuidesDisplay();
       syncExtractedText();
     });
 
-    el.addEventListener('focus', () => {
+    el.appendChild(dragHandle);
+    el.appendChild(content);
+    el.appendChild(delBtn);
+
+    // Listen for edits
+    content.addEventListener('input', () => {
+      item.text = content.innerText;
+      syncExtractedText();
+    });
+
+    content.addEventListener('focus', () => {
       state.activeOverlay = item;
       updateToolbarForActiveOverlay();
     });
 
+    // Make draggable via drag handle
+    makeDraggableWithHandle(el, dragHandle, item);
+
     docOverlayLayer.appendChild(el);
+  }
+
+  function selectElementContents(el) {
+    const c = el.querySelector('.doc-text-content') || el;
+    const range = document.createRange();
+    range.selectNodeContents(c);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  // Render or clear transparent dashed guide outlines
+  function updateGuidesDisplay() {
+    const existingGuides = docOverlayLayer.querySelectorAll('.doc-guide-box');
+    existingGuides.forEach(g => g.remove());
+
+    if (!state.showGuides) return;
+
+    (state.detectedLines || []).forEach((line, idx) => {
+      if (state.textOverlays.some(o => o.lineIdx === idx)) return;
+      const bbox = line.bbox;
+      if (!bbox) return;
+
+      const guide = document.createElement('div');
+      guide.className = 'doc-guide-box';
+      guide.style.left = `${bbox.x0}px`;
+      guide.style.top = `${bbox.y0}px`;
+      guide.style.width = `${Math.max(30, bbox.x1 - bbox.x0)}px`;
+      guide.style.height = `${Math.max(16, bbox.y1 - bbox.y0)}px`;
+      guide.title = `Click to edit on document: "${line.text}"`;
+
+      guide.addEventListener('click', (e) => {
+        e.stopPropagation();
+        activateTextOverlayForLine(line, idx);
+      });
+
+      docOverlayLayer.appendChild(guide);
+    });
+  }
+
+  if (btnToggleGuides) {
+    btnToggleGuides.addEventListener('click', () => {
+      state.showGuides = !state.showGuides;
+      btnToggleGuides.classList.toggle('active', state.showGuides);
+      updateGuidesDisplay();
+    });
   }
 
   function syncExtractedText() {
     const allText = state.textOverlays.map(o => o.text.trim()).filter(Boolean).join('\n');
-    ocrExtractedText.value = allText;
+    if (allText) {
+      ocrExtractedText.value = allText;
+    }
   }
 
   function updateToolbarForActiveOverlay() {
@@ -460,12 +622,40 @@ document.addEventListener('DOMContentLoaded', () => {
     el.appendChild(delBtn);
 
     // Dragging support
-    makeElementDraggable(el, item);
+    makePhotoDraggable(el, item);
 
     docOverlayLayer.appendChild(el);
   }
 
-  function makeElementDraggable(element, dataItem) {
+  function makeDraggableWithHandle(element, handle, dataItem) {
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let origX = 0, origY = 0;
+
+    handle.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      origX = dataItem.x;
+      origY = dataItem.y;
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const dx = (e.clientX - startX) / state.scale;
+      const dy = (e.clientY - startY) / state.scale;
+      dataItem.x = Math.max(0, Math.min(state.docWidth - 30, Math.round(origX + dx)));
+      dataItem.y = Math.max(0, Math.min(state.docHeight - 20, Math.round(origY + dy)));
+      element.style.left = `${dataItem.x}px`;
+      element.style.top = `${dataItem.y}px`;
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+  }
+
+  function makePhotoDraggable(element, dataItem) {
     let isDragging = false;
     let startX = 0, startY = 0;
     let origX = 0, origY = 0;
@@ -543,7 +733,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.activeOverlay) {
         state.activeOverlay.fontSize = Math.min(60, state.activeOverlay.fontSize + 2);
         const el = document.getElementById(state.activeOverlay.id);
-        if (el) el.style.fontSize = `${state.activeOverlay.fontSize}px`;
+        if (el) {
+          const c = el.querySelector('.doc-text-content') || el;
+          c.style.fontSize = `${state.activeOverlay.fontSize}px`;
+        }
         if (fontSizeLabel) fontSizeLabel.textContent = `${state.activeOverlay.fontSize}px`;
       } else {
         state.fontSize = Math.min(60, state.fontSize + 2);
@@ -557,7 +750,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.activeOverlay) {
         state.activeOverlay.fontSize = Math.max(9, state.activeOverlay.fontSize - 2);
         const el = document.getElementById(state.activeOverlay.id);
-        if (el) el.style.fontSize = `${state.activeOverlay.fontSize}px`;
+        if (el) {
+          const c = el.querySelector('.doc-text-content') || el;
+          c.style.fontSize = `${state.activeOverlay.fontSize}px`;
+        }
         if (fontSizeLabel) fontSizeLabel.textContent = `${state.activeOverlay.fontSize}px`;
       } else {
         state.fontSize = Math.max(9, state.fontSize - 2);
@@ -576,7 +772,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.activeOverlay) {
         state.activeOverlay.color = col;
         const el = document.getElementById(state.activeOverlay.id);
-        if (el) el.style.color = col;
+        if (el) {
+          const c = el.querySelector('.doc-text-content') || el;
+          c.style.color = col;
+        }
       }
     });
   });
@@ -589,7 +788,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (state.activeOverlay) {
         state.activeOverlay.fontFamily = fam;
         const el = document.getElementById(state.activeOverlay.id);
-        if (el) el.style.fontFamily = fam;
+        if (el) {
+          const c = el.querySelector('.doc-text-content') || el;
+          c.style.fontFamily = fam;
+        }
       }
     });
   }
@@ -601,7 +803,10 @@ document.addEventListener('DOMContentLoaded', () => {
         state.activeOverlay.isBold = !state.activeOverlay.isBold;
         btnToggleBold.classList.toggle('active', state.activeOverlay.isBold);
         const el = document.getElementById(state.activeOverlay.id);
-        if (el) el.style.fontWeight = state.activeOverlay.isBold ? 'bold' : 'normal';
+        if (el) {
+          const c = el.querySelector('.doc-text-content') || el;
+          c.style.fontWeight = state.activeOverlay.isBold ? 'bold' : 'normal';
+        }
       } else {
         state.isBold = !state.isBold;
         btnToggleBold.classList.toggle('active', state.isBold);
@@ -622,9 +827,14 @@ document.addEventListener('DOMContentLoaded', () => {
           if (el) el.remove();
         });
         state.photoOverlays = [];
-        if (state.ocrResult && state.ocrResult.lines) {
-          buildInPlaceTextOverlays(state.ocrResult.lines);
-        }
+        state.textOverlays.forEach(o => {
+          const el = document.getElementById(o.id);
+          if (el) el.remove();
+        });
+        state.textOverlays = [];
+        const rows = document.querySelectorAll('.doc-field-row');
+        rows.forEach(r => { r.style.borderColor = ''; r.style.background = ''; });
+        updateGuidesDisplay();
       }
     });
   }
@@ -675,12 +885,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Draw text overlays (with whiteout background fill to hide original text)
     state.textOverlays.forEach(item => {
       const el = document.getElementById(item.id);
-      const currentText = el ? el.innerText : item.text;
+      let currentText = item.text;
+      if (el) {
+        const c = el.querySelector('.doc-text-content');
+        currentText = c ? c.innerText : item.text;
+      }
       if (!currentText.trim()) return;
 
       // Fill white background to cleanly hide old printed text underneath
       ctx.fillStyle = item.bgFill || '#ffffff';
-      ctx.fillRect(item.x - 2, item.y - 2, item.width + 4, item.height + 4);
+      ctx.fillRect(item.x - 2, item.y - 2, item.width + 6, item.height + 4);
 
       // Draw updated text
       ctx.fillStyle = item.color || '#000000';

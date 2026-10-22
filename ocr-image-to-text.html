@@ -165,6 +165,9 @@
                 <button type="button" class="doc-tool-btn" id="btnWhiteout" title="Drag over any part of the paper to erase or white out">
                   <i class="ph-bold ph-eraser" style="color: #f59e0b;"></i> <span>Whiteout Eraser</span>
                 </button>
+                <button type="button" class="doc-tool-btn" id="btnToggleGuides" title="Show or hide outlines of detected text on document">
+                  <i class="ph-bold ph-bounding-box" style="color: #6366f1;"></i> <span>Show Guides</span>
+                </button>
               </div>
 
               <!-- Typography Tools -->
@@ -223,39 +226,64 @@
             </div>
 
             <!-- Tip banner -->
-            <div style="background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: var(--radius-md); padding: 0.65rem 1rem; font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
-              <i class="ph-bold ph-lightbulb" style="color: #2563eb; font-size: 1.1rem; flex-shrink: 0;"></i>
-              <span><strong>Smart Tip:</strong> Click any text box directly on the paper to type new details. Drag photos or signatures anywhere on the document. Old text is automatically whited out cleanly.</span>
-            </div>
-
-            <!-- Document Canvas Viewport -->
-            <div class="doc-canvas-viewport" id="docCanvasViewport">
-              <div class="doc-canvas-wrapper" id="docCanvasWrapper">
-                <canvas id="docBgCanvas" class="doc-bg-canvas"></canvas>
-                <div id="docOverlayLayer" class="doc-overlay-layer"></div>
+            <div style="background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.2); border-radius: var(--radius-md); padding: 0.65rem 1rem; font-size: 0.85rem; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-lightbulb" style="color: #2563eb; font-size: 1.15rem; flex-shrink: 0;"></i>
+                <span><strong>कागज़ पर एडिट करें:</strong> साइड लिस्ट में किसी भी लाइन के आगे <strong>Edit</strong> दबाएं या ऊपर <strong>Add Text</strong> दबाकर कागज़ पर कहीं भी लिखें। पुरानी लिखावट अपने-आप सफ़ाई से मिट जाएगी।</span>
               </div>
             </div>
 
-            <!-- Direct Download Buttons -->
-            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
-              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
-                <i class="ph-bold ph-download-simple" style="color: #2563eb; font-size: 1.15rem;"></i>
-                <span>Download Edited Document (सीधे डाउनलोड करें):</span>
+            <!-- 2-Column Split Workspace (Canvas + Detected Fields List) -->
+            <div class="doc-split-workspace">
+              
+              <!-- Left: Canvas Viewport & Direct Download Buttons -->
+              <div style="display: flex; flex-direction: column; gap: 1.25rem; min-width: 0;">
+                
+                <div class="doc-canvas-viewport" id="docCanvasViewport">
+                  <div class="doc-canvas-wrapper" id="docCanvasWrapper">
+                    <canvas id="docBgCanvas" class="doc-bg-canvas"></canvas>
+                    <div id="docOverlayLayer" class="doc-overlay-layer"></div>
+                  </div>
+                </div>
+
+                <!-- Direct Download Buttons -->
+                <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
+                  <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
+                    <i class="ph-bold ph-download-simple" style="color: #2563eb; font-size: 1.15rem;"></i>
+                    <span>Download Edited Document (सीधे डाउनलोड करें):</span>
+                  </div>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem;">
+                    <button type="button" class="button primary" id="btnDownloadEditedJpg" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);">
+                      <i class="ph-bold ph-file-jpg" style="font-size: 1.25rem;"></i>
+                      <span>Download Edited JPG</span>
+                    </button>
+                    <button type="button" class="button secondary" id="btnDownloadEditedPng" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
+                      <i class="ph-bold ph-file-png" style="font-size: 1.25rem; color: #10b981;"></i>
+                      <span>Download Edited PNG</span>
+                    </button>
+                    <button type="button" class="button secondary" id="btnDownloadEditedPdf" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
+                      <i class="ph-bold ph-file-pdf" style="font-size: 1.25rem; color: #ef4444;"></i>
+                      <span>Download Printable PDF (A4)</span>
+                    </button>
+                  </div>
+                </div>
+
               </div>
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;">
-                <button type="button" class="button primary" id="btnDownloadEditedJpg" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);">
-                  <i class="ph-bold ph-file-jpg" style="font-size: 1.25rem;"></i>
-                  <span>Download Edited JPG</span>
-                </button>
-                <button type="button" class="button secondary" id="btnDownloadEditedPng" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
-                  <i class="ph-bold ph-file-png" style="font-size: 1.25rem; color: #10b981;"></i>
-                  <span>Download Edited PNG</span>
-                </button>
-                <button type="button" class="button secondary" id="btnDownloadEditedPdf" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
-                  <i class="ph-bold ph-file-pdf" style="font-size: 1.25rem; color: #ef4444;"></i>
-                  <span>Download Printable PDF (A4)</span>
-                </button>
+
+              <!-- Right: Detected Fields List -->
+              <div class="doc-fields-panel" id="docFieldsPanel">
+                <div class="doc-fields-header">
+                  <div style="font-weight: 800; font-size: 0.92rem; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-list-magnifying-glass" style="color: var(--primary);"></i>
+                    <span>Recognized Fields (<span id="detectedFieldsCount">0</span>)</span>
+                  </div>
+                  <span class="trust-pill" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">Click Edit to change</span>
+                </div>
+                <div class="doc-fields-list" id="detectedFieldsList">
+                  <!-- Dynamically populated rows with [Edit on Document] buttons -->
+                </div>
               </div>
+
             </div>
 
           </div>
