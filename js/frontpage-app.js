@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Sidebar Mobile Toggle
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const btnCloseSidebar = document.getElementById('btnCloseSidebar');
   const appSidebar = document.getElementById('appSidebar');
   const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
@@ -223,8 +223,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (btnToggleSidebar) btnToggleSidebar.addEventListener('click', toggleSidebar);
-  if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', toggleSidebar);
+  if (btnCloseSidebar) btnCloseSidebar.addEventListener('click', closeSidebar);
   if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
+  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth <= 900) closeSidebar();
+    });
+  });
 
   // =========================================================================
   // 2. Upload & File Handling

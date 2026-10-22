@@ -251,4 +251,45 @@ class I18nManager {
 window.i18n = new I18nManager();
 document.addEventListener('DOMContentLoaded', () => {
   window.i18n.init();
+
+  // Universal Mobile Sidebar Handler across all tools
+  const btnToggle = document.getElementById('btnToggleSidebar');
+  const btnClose = document.getElementById('btnCloseSidebar');
+  const sidebar = document.getElementById('appSidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function closeSidebar() {
+    if (sidebar) sidebar.classList.remove('drawer-open');
+    if (backdrop) backdrop.classList.remove('active');
+  }
+
+  function openSidebar() {
+    if (sidebar) sidebar.classList.add('drawer-open');
+    if (backdrop) backdrop.classList.add('active');
+  }
+
+  if (btnToggle && sidebar) {
+    btnToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (sidebar.classList.contains('drawer-open')) closeSidebar();
+      else openSidebar();
+    });
+  }
+
+  if (btnClose) {
+    btnClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeSidebar();
+    });
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', closeSidebar);
+  }
+
+  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth <= 900) closeSidebar();
+    });
+  });
 });

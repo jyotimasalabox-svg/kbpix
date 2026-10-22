@@ -81,6 +81,12 @@
   padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: var(--bg-body);
@@ -200,8 +206,24 @@ body {
   background: none;
   border: none;
   color: var(--text-main);
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
+  padding: 0.35rem;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.mobile-menu-toggle:hover {
+  background: var(--bg-card-secondary);
+  color: var(--primary);
+}
+
+@media (max-width: 900px) {
+  .mobile-menu-toggle {
+    display: inline-flex !important;
+  }
 }
 
 /* ==========================================================================
@@ -211,6 +233,8 @@ body {
   background: var(--bg-card);
   border-bottom: 1px solid var(--border-color);
   padding: 0.5rem 1rem;
+  width: 100%;
+  overflow: hidden;
 }
 
 .switcher-container {
@@ -219,8 +243,13 @@ body {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
-  padding-bottom: 2px;
-  scrollbar-width: thin;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.switcher-container::-webkit-scrollbar {
+  display: none;
 }
 
 .switcher-tab {
@@ -259,6 +288,8 @@ body {
   margin: 0 auto;
   padding: 2.5rem 1.25rem 4rem;
   width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 .hero-section {
@@ -1412,24 +1443,11 @@ body {
   }
   
   .nav-links {
-    display: none;
+    display: none !important;
   }
   
-  .mobile-menu-toggle {
-    display: block;
-  }
-
   .nav-links.open {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1rem;
-    box-shadow: var(--shadow-md);
+    display: none !important;
   }
 
   .app-card {

@@ -223,6 +223,9 @@
   max-width: 1040px;
   margin: 0 auto 4rem;
   padding: 0 1.25rem;
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
 }
 
 /* Upload Panel Box */

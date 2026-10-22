@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     image: null,
     ocrResult: null,
     selectedLang: 'eng',
-    currentTab: 'inplace', // 'inplace' or 'rawtext'
+    currentTab: 'rawtext', // Default to Extracted Text so user gets their text immediately!
     
     // Editor State
     docWidth: 0,
@@ -100,21 +100,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Sidebar toggle
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+  const btnCloseSidebar = document.getElementById('btnCloseSidebar');
   const appSidebar = document.getElementById('appSidebar');
   const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
+  function openSidebar() {
+    if (appSidebar) appSidebar.classList.add('drawer-open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.add('active');
+  }
+
+  function closeSidebar() {
+    if (appSidebar) appSidebar.classList.remove('drawer-open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+  }
+
   if (btnToggleSidebar && appSidebar) {
     btnToggleSidebar.addEventListener('click', () => {
-      appSidebar.classList.toggle('drawer-open');
-      if (sidebarBackdrop) sidebarBackdrop.classList.toggle('active');
+      if (appSidebar.classList.contains('drawer-open')) closeSidebar();
+      else openSidebar();
     });
-    if (sidebarBackdrop) {
-      sidebarBackdrop.addEventListener('click', () => {
-        appSidebar.classList.remove('drawer-open');
-        sidebarBackdrop.classList.remove('active');
-      });
-    }
   }
+  if (btnCloseSidebar) btnCloseSidebar.addEventListener('click', closeSidebar);
+  if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
+  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth <= 900) closeSidebar();
+    });
+  });
 
   // Theme
   const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -169,10 +182,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function switchTab(t) {
     state.currentTab = t;
-    tabInPlace.classList.toggle('active', t === 'inplace');
-    tabRawText.classList.toggle('active', t === 'rawtext');
-    panelInPlace.style.display = t === 'inplace' ? 'block' : 'none';
-    panelRawText.style.display = t === 'rawtext' ? 'block' : 'none';
+    if (tabRawText) tabRawText.classList.toggle('active', t === 'rawtext');
+    if (tabInPlace) tabInPlace.classList.toggle('active', t === 'inplace');
+    if (panelRawText) panelRawText.style.display = t === 'rawtext' ? 'block' : 'none';
+    if (panelInPlace) panelInPlace.style.display = t === 'inplace' ? 'block' : 'none';
+    if (t === 'inplace') {
+      setTimeout(() => zoomToFit(), 50);
+    }
   }
 
   // =========================================================================
@@ -255,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       state.ocrResult = result;
       ocrExtractedText.value = result.text;
+      updateTextStats(result.text);
 
       const ocrSourceImg = document.getElementById('ocrSourceImg');
       if (ocrSourceImg) ocrSourceImg.src = img.src;
@@ -269,8 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ocrProgressCard.classList.remove('active');
       ocrWorkspace.style.display = 'block';
 
-      // Auto zoom to fit viewport
-      zoomToFit();
+      // Switch to Extracted Text by default so user gets their text instantly
+      switchTab('rawtext');
 
     } catch (err) {
       console.error('OCR Error', err);
@@ -283,6 +300,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   // 2. Detected Fields Management & Clean In-Place Overlay System
   // =========================================================================
+
+  const ocrTextStatsBadge = document.getElementById('ocrTextStatsBadge');
+  function updateTextStats(txt) {
+    if (!ocrTextStatsBadge) return;
+    const clean = (txt || '').trim();
+    const words = clean ? clean.split(/\s+/).length : 0;
+    const chars = (txt || '').length;
+    ocrTextStatsBadge.textContent = `${words} Words • ${chars} Chars`;
+  }
+
+  if (ocrExtractedText) {
+    ocrExtractedText.addEventListener('input', () => {
+      updateTextStats(ocrExtractedText.value);
+    });
+  }
 
   // Populate list in right panel so user can choose which fields to edit
   function renderDetectedFieldsList(lines) {
@@ -308,6 +340,10 @@ document.addEventListener('DOMContentLoaded', () => {
       row.className = 'doc-field-row';
       row.id = `doc_field_row_${idx}`;
 
+      const numBadge = document.createElement('span');
+      numBadge.textContent = `#${idx + 1}`;
+      numBadge.style.cssText = 'font-size: 0.72rem; font-weight: 800; color: #2563eb; background: rgba(37, 99, 235, 0.1); padding: 0.15rem 0.45rem; border-radius: 4px; flex-shrink: 0;';
+
       const textDiv = document.createElement('div');
       textDiv.className = 'doc-field-text';
       textDiv.textContent = line.text;
@@ -323,6 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
         activateTextOverlayForLine(line, idx);
       });
 
+      row.appendChild(numBadge);
       row.appendChild(textDiv);
       row.appendChild(editBtn);
       detectedFieldsList.appendChild(row);

@@ -10,6 +10,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
   <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 
@@ -38,11 +39,41 @@
     </div>
   </header>
 
+  <!-- Quick Tool Switcher Bar -->
+  <div class="tool-switcher-bar">
+    <div class="switcher-container">
+      <a href="index.html" class="switcher-tab">
+        <i class="ph ph-arrows-in-simple"></i> Reduce KB
+      </a>
+      <a href="government-resizer.html" class="switcher-tab">
+        <i class="ph ph-bank"></i> Govt Resizer
+      </a>
+      <a href="passport-tool.html" class="switcher-tab">
+        <i class="ph ph-user-focus"></i> Passport Photo Maker
+      </a>
+      <a href="ocr-image-to-text.html" class="switcher-tab active">
+        <i class="ph ph-text-t"></i> Image to Text (OCR)
+      </a>
+      <a href="id-card-studio.html" class="switcher-tab">
+        <i class="ph ph-identification-card"></i> Smart ID Print Studio
+      </a>
+      <a href="file-converter.html" class="switcher-tab">
+        <i class="ph ph-file-arrow-up"></i> File Converter &amp; PDF
+      </a>
+      <a href="increase-size.html" class="switcher-tab">
+        <i class="ph ph-arrows-out-simple"></i> Increase KB
+      </a>
+    </div>
+  </div>
+
   <div class="saas-layout">
     <!-- Sidebar Navigation -->
     <aside class="app-sidebar" id="appSidebar">
       <div class="sidebar-header">
-        <span class="sidebar-brand-title" data-i18n="cat_ai_smart">AI Tools</span>
+        <span class="sidebar-brand-title" data-i18n="cat_ai_smart">Tool Suite</span>
+        <button type="button" class="sidebar-close-btn" id="btnCloseSidebar" aria-label="Close Menu">
+          <i class="ph ph-x"></i>
+        </button>
       </div>
       <div class="sidebar-menu-wrapper">
         <div class="sidebar-cat-group">
@@ -72,7 +103,7 @@
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
     <!-- Main Workspace -->
-    <main class="main-content" style="flex: 1; padding: 1.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%;">
+    <main class="main-content" style="flex: 1; padding: 1.5rem 1.25rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%; min-width: 0;">
       
       <section class="hero-section" style="margin-bottom: 2rem;">
         <span class="trust-pill" style="margin-bottom: 0.75rem;"><i class="ph-bold ph-shield-check" style="color: var(--accent);"></i> 100% In-Browser Tesseract Engine • English &amp; Hindi OCR</span>
@@ -90,7 +121,7 @@
           <label style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
             <i class="ph-bold ph-translate" style="color: var(--primary);"></i> Document Language:
           </label>
-          <div style="display: flex; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
             <button type="button" class="preset-btn active" data-ocr-lang="eng" style="padding: 0.5rem 1rem; font-weight: 700;">
               🇬🇧 English
             </button>
@@ -117,7 +148,7 @@
               <i class="ph ph-camera"></i> Camera
             </button>
           </div>
-          <p class="dropzone-hints">100% In-Browser Privacy • No Cloud Server Uploads • Tesseract Worker</p>
+          <p class="dropzone-hints">100% In-Browser Privacy • No Cloud Server Uploads • Fast Tesseract Engine</p>
         </div>
 
         <!-- Progress Card -->
@@ -133,13 +164,13 @@
           <!-- Mode Tabs & Scan Another -->
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
             <div class="doc-tab-bar">
-              <button type="button" class="doc-tab-btn active" id="tabInPlace">
+              <button type="button" class="doc-tab-btn active" id="tabRawText">
+                <i class="ph-bold ph-file-text"></i>
+                <span>📝 Extracted Text (टेक्स्ट निकालें व कॉपी करें)</span>
+              </button>
+              <button type="button" class="doc-tab-btn" id="tabInPlace">
                 <i class="ph-bold ph-note-pencil"></i>
                 <span>📄 Edit on Document (कागज पर एडिट करें)</span>
-              </button>
-              <button type="button" class="doc-tab-btn" id="tabRawText">
-                <i class="ph-bold ph-file-text"></i>
-                <span>📝 Extracted Text Only</span>
               </button>
             </div>
             <button type="button" class="button secondary small" id="btnOcrAnother" style="cursor: pointer; padding: 0.5rem 1rem;">
@@ -147,8 +178,56 @@
             </button>
           </div>
 
-          <!-- PANEL 1: In-Place Document Editor -->
-          <div id="panelInPlace" class="doc-editor-workspace">
+          <!-- PANEL 1 (DEFAULT): Extracted Text Only with Instant Copy & Downloads -->
+          <div id="panelRawText" style="display: block;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start;" id="ocrSplitGrid">
+              
+              <!-- Left: Source Image Preview -->
+              <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; text-align: center;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                  <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Source Image</span>
+                  <span class="trust-pill" id="ocrConfidenceBadge">Confidence: 95%</span>
+                </div>
+                <img id="ocrSourceImg" style="max-height: 440px; max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color); object-fit: contain; background: #ffffff;" alt="Source Preview">
+              </div>
+
+              <!-- Right: Editable Extracted Text & Export Actions -->
+              <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+                  <span style="font-size: 1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.45rem;">
+                    <i class="ph-bold ph-pencil-simple" style="color: var(--primary);"></i> Extracted Text (Editable):
+                  </span>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span id="ocrTextStatsBadge" style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); background: var(--bg-card); padding: 0.25rem 0.6rem; border-radius: var(--radius-full); border: 1px solid var(--border-color);">0 Words</span>
+                    <button type="button" class="button primary small" id="btnCopyText" style="cursor: pointer; padding: 0.45rem 0.95rem; font-weight: 800; box-shadow: 0 2px 8px rgba(79,70,229,0.3);">
+                      <i class="ph-bold ph-copy"></i> Copy Text
+                    </button>
+                  </div>
+                </div>
+
+                <textarea id="ocrExtractedText" class="adv-input" placeholder="Recognized text will appear here..." style="width: 100%; height: 320px; padding: 1rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 1rem; line-height: 1.7; border-radius: var(--radius-md); background: var(--bg-card); resize: vertical; border: 1.5px solid var(--border-color);"></textarea>
+
+                <!-- Export Buttons Bar -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                  <button type="button" class="button secondary" id="btnDownloadTxt" style="padding: 0.8rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-file-text" style="color: #2563eb; font-size: 1.15rem;"></i> Download TXT
+                  </button>
+                  <button type="button" class="button secondary" id="btnDownloadDocx" style="padding: 0.8rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-microsoft-word-logo" style="color: #2563eb; font-size: 1.15rem;"></i> Download Word (.doc)
+                  </button>
+                  <button type="button" class="button primary" id="btnDownloadSearchablePdf" style="padding: 0.8rem; font-weight: 800; cursor: pointer; grid-column: span 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                    <i class="ph-bold ph-file-pdf" style="color: #ffffff; font-size: 1.15rem;"></i> Export Searchable PDF
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- PANEL 2: In-Place Document Editor (Secondary) -->
+          <div id="panelInPlace" class="doc-editor-workspace" style="display: none;">
             
             <!-- Editor Toolbar -->
             <div class="doc-editor-toolbar">
@@ -250,7 +329,7 @@
                 <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem;">
                   <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.45rem;">
                     <i class="ph-bold ph-download-simple" style="color: #2563eb; font-size: 1.15rem;"></i>
-                    <span>Download Edited Document (सीधे डाउनलोड करें):</span>
+                    <span>Download Edited Document:</span>
                   </div>
                   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem;">
                     <button type="button" class="button primary" id="btnDownloadEditedJpg" style="padding: 0.85rem 1.25rem; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem; box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);">
@@ -288,51 +367,6 @@
 
           </div>
 
-          <!-- PANEL 2: Raw Extracted Text Panel -->
-          <div id="panelRawText" style="display: none;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;" id="ocrSplitGrid">
-              
-              <!-- Left: Source Image Preview -->
-              <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                  <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Source Image</span>
-                  <span class="trust-pill" id="ocrConfidenceBadge">Confidence: 94%</span>
-                </div>
-                <img id="ocrSourceImg" style="max-height: 420px; max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" alt="Source Preview">
-              </div>
-
-              <!-- Right: Editable Extracted Text & Export Actions -->
-              <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
-                
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
-                    <i class="ph-bold ph-pencil-simple" style="color: var(--primary);"></i> Extracted Text (Editable):
-                  </span>
-                  <button type="button" class="button secondary small" id="btnCopyText" style="cursor: pointer;">
-                    <i class="ph-bold ph-copy"></i> Copy Text
-                  </button>
-                </div>
-
-                <textarea id="ocrExtractedText" class="adv-input" style="width: 100%; height: 300px; padding: 0.85rem; font-family: monospace; font-size: 0.95rem; line-height: 1.6; border-radius: var(--radius-sm); background: var(--bg-card); resize: vertical;"></textarea>
-
-                <!-- Export Buttons Bar -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
-                  <button class="button primary" id="btnDownloadTxt" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                    <i class="ph-bold ph-file-text"></i> Download TXT
-                  </button>
-                  <button class="button secondary" id="btnDownloadDocx" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                    <i class="ph-bold ph-microsoft-word-logo" style="color:#2563eb;"></i> Download Word (.doc)
-                  </button>
-                  <button class="button secondary" id="btnDownloadSearchablePdf" style="padding: 0.75rem; font-weight: 700; cursor: pointer; grid-column: span 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                    <i class="ph-bold ph-file-pdf" style="color:#ef4444;"></i> Export Searchable PDF
-                  </button>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
         </div>
 
       </div>
@@ -351,32 +385,41 @@
         <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
       </div>
       <div class="camera-controls-bar">
-        <button type="button" class="btn-snap-photo" id="btnSnapPhoto" title="Snap Document">
-          <i class="ph-bold ph-camera"></i>
+        <button type="button" class="btn-snap-photo" id="btnSnapPhoto">
+          <i class="ph ph-camera"></i>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
+  <!-- Comprehensive 4-Column Footer -->
+  <footer class="app-footer">
+    <div class="footer-grid">
       <div class="footer-col">
-        <div class="brand-logo" style="margin-bottom: 0.75rem;">
-          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
-          <div class="brand-text">PhotoResize <span>PRO</span></div>
-        </div>
-        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-          Fast, secure, 100% browser-based suite of photo and document tools. Files never leave your computer.
-        </p>
+        <h3 class="footer-heading">Photo Tools</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Size (KB)</a></li>
+          <li><a href="government-resizer.html">Govt Form Resizer</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+          <li><a href="increase-size.html">Increase Image KB</a></li>
+        </ul>
       </div>
 
       <div class="footer-col">
-        <h3 class="footer-heading">OCR Capabilities</h3>
+        <h3 class="footer-heading">AI &amp; Smart Tools</h3>
         <ul class="footer-links">
-          <li><a href="ocr-image-to-text.html">English Document OCR</a></li>
-          <li><a href="ocr-image-to-text.html">Hindi Image to Text</a></li>
+          <li><a href="ocr-image-to-text.html">Image to Text (OCR)</a></li>
+          <li><a href="background-remover.html">Background Remover</a></li>
+          <li><a href="document-scanner.html">Document Scanner</a></li>
+          <li><a href="image-to-excel.html">Image to Excel</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Export Formats</h3>
+        <ul class="footer-links">
           <li><a href="ocr-image-to-text.html">Searchable PDF Export</a></li>
+          <li><a href="ocr-image-to-text.html">Plain Text (.txt) Export</a></li>
           <li><a href="ocr-image-to-text.html">Word Document (.docx) Export</a></li>
         </ul>
       </div>

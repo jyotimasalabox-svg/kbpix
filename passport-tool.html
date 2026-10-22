@@ -16,22 +16,17 @@
   <!-- Navigation Bar -->
   <header class="navbar">
     <div class="nav-container">
-      <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu" style="margin-right: 0.5rem;"><i class="ph ph-list"></i></button>
-      <a href="index.html" class="brand-logo">
-        <span class="logo-badge">
-          <i class="ph-bold ph-aperture"></i> PRO
-        </span>
-        <div class="brand-text">PhotoResize <span>PRO</span></div>
-      </a>
-
-      <ul class="nav-links" id="navLinks">
-        <li><a href="index.html" class="nav-link"><i class="ph ph-squares-four"></i> All Tools</a></li>
-        <li><a href="index.html#compressor" class="nav-link"><i class="ph ph-arrows-in-simple"></i> Reduce Size (KB)</a></li>
-        <li><a href="passport-tool.html" class="nav-link active"><i class="ph ph-user-focus"></i> Passport Maker</a></li>
-        <li><a href="id-card-studio.html" class="nav-link"><i class="ph ph-identification-card"></i> Smart ID Studio</a></li>
-        <li><a href="file-converter.html" class="nav-link"><i class="ph ph-file-arrow-up"></i> File Converter</a></li>
-        <li><a href="increase-size.html" class="nav-link"><i class="ph ph-arrows-out-simple"></i> Increase KB</a></li>
-      </ul>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
+          <i class="ph ph-list"></i>
+        </button>
+        <a href="index.html" class="brand-logo">
+          <span class="logo-badge">
+            <i class="ph-bold ph-aperture"></i> PRO
+          </span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </a>
+      </div>
 
       <div class="nav-actions">
         <button class="lang-toggle-btn" aria-label="Toggle Language"><span>🇮🇳</span> <span>हिंदी</span></button>
@@ -39,7 +34,6 @@
           <span id="themeIcon">🌙</span>
           <span id="themeText">Dark</span>
         </button>
-        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Menu"><i class="ph ph-list"></i></button>
       </div>
     </div>
   </header>
@@ -73,6 +67,9 @@
     <aside class="app-sidebar" id="appSidebar">
       <div class="sidebar-header">
         <span class="sidebar-brand-title" data-i18n="cat_photo_tools">Tool Suite</span>
+        <button type="button" class="sidebar-close-btn" id="btnCloseSidebar" aria-label="Close Menu">
+          <i class="ph ph-x"></i>
+        </button>
       </div>
       <div class="sidebar-menu-wrapper">
         <!-- Group 1: Photo & Image Tools -->
@@ -454,22 +451,29 @@
 
   <script src="js/modules/i18n.js"></script>
   <script>
-    const btnToggleSidebar = document.getElementById('btnToggleSidebar') || document.getElementById('mobileMenuToggle');
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const btnCloseSidebar = document.getElementById('btnCloseSidebar');
     const appSidebar = document.getElementById('appSidebar');
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+    function closeSidebar() {
+      if (appSidebar) appSidebar.classList.remove('drawer-open');
+      if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+    }
+
     if (btnToggleSidebar && appSidebar && sidebarBackdrop) {
       btnToggleSidebar.addEventListener('click', () => {
         const isOpen = appSidebar.classList.toggle('drawer-open');
         sidebarBackdrop.classList.toggle('active', isOpen);
       });
-      sidebarBackdrop.addEventListener('click', () => {
-        appSidebar.classList.remove('drawer-open');
-        sidebarBackdrop.classList.remove('active');
+      sidebarBackdrop.addEventListener('click', closeSidebar);
+      if (btnCloseSidebar) btnCloseSidebar.addEventListener('click', closeSidebar);
+      document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+          if (window.innerWidth <= 900) closeSidebar();
+        });
       });
     }
-    document.querySelectorAll('.lang-toggle-btn').forEach(btn => {
-      btn.addEventListener('click', () => window.I18nManager && window.I18nManager.toggleLanguage());
-    });
   </script>
 
 </body>

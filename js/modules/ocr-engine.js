@@ -78,9 +78,15 @@ class OCREngine {
         await this.worker.terminate();
       }
 
-      if (onProgress) onProgress(15, `Loading ${lang === 'hin' ? 'Hindi' : 'English'} OCR Engine...`);
+      if (onProgress) {
+        const langLabel = lang.includes('hin') ? (lang.includes('eng') ? 'English + Hindi' : 'Hindi') : 'English';
+        onProgress(15, `Loading ${langLabel} OCR Engine...`);
+      }
 
-      const worker = await Tesseract.createWorker(lang, 1, {
+      // In Tesseract v5, multi-language must be an array (e.g. ['eng', 'hin']) to download each traineddata
+      const langParam = typeof lang === 'string' && lang.includes('+') ? lang.split('+') : lang;
+
+      const worker = await Tesseract.createWorker(langParam, 1, {
         logger: m => {
           if (m.status === 'recognizing text' && onProgress) {
             const pct = Math.round(m.progress * 100);
