@@ -134,53 +134,27 @@ body {
 }
 
 /* ==========================================================================
-   Navigation Bar (Framer Floating Dynamic Island)
+   Navigation Bar
    ========================================================================== */
 .navbar {
   background-color: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
-  top: 10px;
-  z-index: 1000;
-  margin: 10px auto 0;
-  max-width: 1200px;
-  width: calc(100% - 24px);
-  border-radius: var(--radius-full);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.35),
-    0 10px 30px -10px rgba(0, 0, 0, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-[data-theme="dark"] .navbar {
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
-    0 14px 40px -10px rgba(0, 0, 0, 0.65),
-    0 2px 10px rgba(0, 0, 0, 0.4);
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0.6rem 1.4rem;
+  padding: 0.75rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-@media (max-width: 768px) {
-  .navbar {
-    top: 6px;
-    margin: 6px auto 0;
-    width: calc(100% - 16px);
-    border-radius: var(--radius-lg);
-  }
-  .nav-container {
-    padding: 0.5rem 0.9rem;
-  }
 }
 
 .brand-logo {
@@ -289,32 +263,27 @@ body {
 }
 
 /* ==========================================================================
-   Tool Switcher Tabs (Framer Floating Dock)
+   Tool Switcher Tabs
    ========================================================================== */
 .tool-switcher-bar {
-  background: transparent;
-  padding: 0.75rem 1rem 0.25rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
   width: 100%;
   overflow: hidden;
 }
 
 .switcher-container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
-  padding: 0.35rem 0.6rem;
+  padding-bottom: 4px;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-full);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.25),
-    0 4px 18px rgba(0, 0, 0, 0.04);
 }
 
 .switcher-container::-webkit-scrollbar {
@@ -325,29 +294,25 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.45rem 1rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
   text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: var(--text-muted);
-  background: transparent;
+  background: var(--bg-card-secondary);
   white-space: nowrap;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: var(--transition);
   border: 1px solid transparent;
 }
 
 .switcher-tab:hover {
   color: var(--primary);
   background: var(--primary-light);
-  transform: translateY(-1px);
 }
 
 .switcher-tab.active {
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-}
+  background: var(--primary);
   color: #ffffff;
   box-shadow: 0 2px 8px var(--primary-glow);
 }
