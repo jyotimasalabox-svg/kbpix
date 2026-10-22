@@ -101,37 +101,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // Theme
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const themeIcon = document.getElementById('themeIcon');
-  const themeText = document.getElementById('themeText');
+  if (window.ThemeManager) {
+    window.ThemeManager.init();
+  } else {
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
 
-  function initTheme() {
-    const saved = localStorage.getItem('photo_theme') || 'light';
-    setTheme(saved);
-  }
-
-  function setTheme(t) {
-    if (t === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      if (themeIcon) themeIcon.textContent = '☀️';
-      if (themeText) themeText.textContent = 'Light';
-      localStorage.setItem('photo_theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      if (themeIcon) themeIcon.textContent = '🌙';
-      if (themeText) themeText.textContent = 'Dark';
-      localStorage.setItem('photo_theme', 'light');
+    function initTheme() {
+      const saved = localStorage.getItem('photo_theme') || 'light';
+      setTheme(saved);
     }
-  }
 
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(isDark ? 'light' : 'dark');
-    });
-  }
+    function setTheme(t) {
+      if (t === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeIcon) themeIcon.textContent = '☀️';
+        if (themeText) themeText.textContent = 'Light';
+        localStorage.setItem('photo_theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (themeIcon) themeIcon.textContent = '🌙';
+        if (themeText) themeText.textContent = 'Dark';
+        localStorage.setItem('photo_theme', 'light');
+      }
+    }
 
-  initTheme();
+    if (themeToggleBtn && !themeToggleBtn.dataset.themeBound) {
+      themeToggleBtn.dataset.themeBound = 'true';
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        setTheme(isDark ? 'light' : 'dark');
+      });
+    }
+
+    initTheme();
+  }
 
   // Language selection
   langPills.forEach(pill => {

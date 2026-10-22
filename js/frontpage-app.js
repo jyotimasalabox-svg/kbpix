@@ -167,42 +167,42 @@ document.addEventListener('DOMContentLoaded', () => {
   let mediaStream = null;
   let currentFacingMode = 'environment';
 
-  // Theme Toggle
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const themeIcon = document.getElementById('themeIcon');
-  const themeText = document.getElementById('themeText');
+  // =========================================================================
+  // 1. Theme Management (Delegated to window.ThemeManager in i18n.js)
+  // =========================================================================
+  if (window.ThemeManager) {
+    window.ThemeManager.init();
+  } else {
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
 
-  // =========================================================================
-  // 1. Theme Initialization
-  // =========================================================================
-  function initTheme() {
+    function setTheme(t) {
+      if (t === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeIcon) themeIcon.textContent = '☀️';
+        if (themeText) themeText.textContent = 'Light';
+        localStorage.setItem('photo_theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (themeIcon) themeIcon.textContent = '🌙';
+        if (themeText) themeText.textContent = 'Dark';
+        localStorage.setItem('photo_theme', 'light');
+      }
+    }
+
+    if (themeToggleBtn && !themeToggleBtn.dataset.themeBound) {
+      themeToggleBtn.dataset.themeBound = 'true';
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        setTheme(isDark ? 'light' : 'dark');
+      });
+    }
+
     const saved = localStorage.getItem('photo_theme') ||
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     setTheme(saved);
   }
-
-  function setTheme(t) {
-    if (t === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      if (themeIcon) themeIcon.textContent = '☀️';
-      if (themeText) themeText.textContent = 'Light';
-      localStorage.setItem('photo_theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      if (themeIcon) themeIcon.textContent = '🌙';
-      if (themeText) themeText.textContent = 'Dark';
-      localStorage.setItem('photo_theme', 'light');
-    }
-  }
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(isDark ? 'light' : 'dark');
-    });
-  }
-
-  initTheme();
 
   // Sidebar Mobile Toggle
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');

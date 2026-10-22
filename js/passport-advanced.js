@@ -123,36 +123,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnDownloadSheetImage = document.getElementById('btnDownloadSheetImage');
 
   // --- Theme initialization ---
-  function initTheme() {
-    const saved = localStorage.getItem('photo_theme') || 'light';
-    if (saved === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      const themeIcon = document.getElementById('themeIcon');
-      const themeText = document.getElementById('themeText');
-      if (themeIcon) themeIcon.textContent = '☀️';
-      if (themeText) themeText.textContent = 'Light';
-    }
-  }
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const themeIcon = document.getElementById('themeIcon');
-      const themeText = document.getElementById('themeText');
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('photo_theme', 'light');
-        if (themeIcon) themeIcon.textContent = '🌙';
-        if (themeText) themeText.textContent = 'Dark';
-      } else {
+  if (window.ThemeManager) {
+    window.ThemeManager.init();
+  } else {
+    function initTheme() {
+      const saved = localStorage.getItem('photo_theme') || 'light';
+      if (saved === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('photo_theme', 'dark');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
         if (themeIcon) themeIcon.textContent = '☀️';
         if (themeText) themeText.textContent = 'Light';
       }
-    });
+    }
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    if (themeToggleBtn && !themeToggleBtn.dataset.themeBound) {
+      themeToggleBtn.dataset.themeBound = 'true';
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        if (isDark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('photo_theme', 'light');
+          if (themeIcon) themeIcon.textContent = '🌙';
+          if (themeText) themeText.textContent = 'Dark';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('photo_theme', 'dark');
+          if (themeIcon) themeIcon.textContent = '☀️';
+          if (themeText) themeText.textContent = 'Light';
+        }
+      });
+    }
+    initTheme();
   }
-  initTheme();
 
   // Mobile nav toggle
   const mobileMenuToggle = document.getElementById('mobileMenuToggle');

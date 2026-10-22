@@ -268,6 +268,7 @@ window.ThemeManager = {
     const themeText = document.getElementById('themeText');
     if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
     if (themeText) themeText.textContent = isDark ? 'Light' : 'Dark';
+    window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: isDark ? 'dark' : 'light' } }));
   },
   toggle() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -280,6 +281,7 @@ window.ThemeManager = {
       btn.dataset.themeBound = 'true';
       btn.addEventListener('click', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         window.ThemeManager.toggle();
       });
     }
@@ -288,6 +290,16 @@ window.ThemeManager = {
 
 // Immediate early run to prevent any theme flicker
 window.ThemeManager.apply(window.ThemeManager.getTheme());
+
+// Document-level fallback listener
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('#themeToggleBtn, .theme-toggle-btn');
+  if (btn && !btn.dataset.themeBound) {
+    e.preventDefault();
+    btn.dataset.themeBound = 'true';
+    window.ThemeManager.toggle();
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   window.i18n.init();

@@ -35,34 +35,41 @@ document.addEventListener('DOMContentLoaded', () => {
   const downloadBtn = document.getElementById('downloadBtn');
 
   // Theme
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const themeIcon = document.getElementById('themeIcon');
-  const themeText = document.getElementById('themeText');
+  if (window.ThemeManager) {
+    window.ThemeManager.init();
+  } else {
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
 
-  function initTheme() {
-    const savedTheme = localStorage.getItem('photo_theme') || 'light';
-    if (savedTheme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      if (themeIcon) themeIcon.textContent = '☀️';
-      if (themeText) themeText.textContent = 'Light';
-    }
-  }
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('photo_theme', 'light');
-        if (themeIcon) themeIcon.textContent = '🌙';
-        if (themeText) themeText.textContent = 'Dark';
-      } else {
+    function initTheme() {
+      const savedTheme = localStorage.getItem('photo_theme') || 'light';
+      if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('photo_theme', 'dark');
         if (themeIcon) themeIcon.textContent = '☀️';
         if (themeText) themeText.textContent = 'Light';
       }
-    });
+    }
+
+    if (themeToggleBtn && !themeToggleBtn.dataset.themeBound) {
+      themeToggleBtn.dataset.themeBound = 'true';
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('photo_theme', 'light');
+          if (themeIcon) themeIcon.textContent = '🌙';
+          if (themeText) themeText.textContent = 'Dark';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('photo_theme', 'dark');
+          if (themeIcon) themeIcon.textContent = '☀️';
+          if (themeText) themeText.textContent = 'Light';
+        }
+      });
+    }
+
+    initTheme();
   }
   initTheme();
 

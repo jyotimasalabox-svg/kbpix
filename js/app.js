@@ -104,31 +104,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function initTheme() {
-    const savedTheme = localStorage.getItem('photo_theme') || 
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setTheme(savedTheme);
-  }
-
-  function setTheme(theme) {
-    if (theme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      if (themeIcon) themeIcon.textContent = '☀️';
-      if (themeText) themeText.textContent = 'Light';
-      localStorage.setItem('photo_theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-      if (themeIcon) themeIcon.textContent = '🌙';
-      if (themeText) themeText.textContent = 'Dark';
-      localStorage.setItem('photo_theme', 'light');
+  if (window.ThemeManager) {
+    window.ThemeManager.init();
+  } else {
+    function initTheme() {
+      const savedTheme = localStorage.getItem('photo_theme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      setTheme(savedTheme);
     }
-  }
 
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setTheme(isDark ? 'light' : 'dark');
-    });
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (themeIcon) themeIcon.textContent = '☀️';
+        if (themeText) themeText.textContent = 'Light';
+        localStorage.setItem('photo_theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (themeIcon) themeIcon.textContent = '🌙';
+        if (themeText) themeText.textContent = 'Dark';
+        localStorage.setItem('photo_theme', 'light');
+      }
+    }
+
+    if (themeToggleBtn && !themeToggleBtn.dataset.themeBound) {
+      themeToggleBtn.dataset.themeBound = 'true';
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        setTheme(isDark ? 'light' : 'dark');
+      });
+    }
+
+    initTheme();
   }
 
   // Language Toggle

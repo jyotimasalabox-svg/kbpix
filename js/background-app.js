@@ -51,35 +51,40 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Dark Mode Toggle
-  const themeBtn = document.getElementById('themeToggleBtn');
-  const themeIcon = document.getElementById('themeIcon');
-  const themeText = document.getElementById('themeText');
+  if (window.ThemeManager) {
+    window.ThemeManager.init();
+  } else {
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
 
-  function initTheme() {
-    const saved = localStorage.getItem('photo_theme') || 'light';
-    if (saved === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      if (themeIcon) themeIcon.textContent = '☀️';
-      if (themeText) themeText.textContent = 'Light';
-    }
-  }
-  initTheme();
-
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      if (isDark) {
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('photo_theme', 'light');
-        if (themeIcon) themeIcon.textContent = '🌙';
-        if (themeText) themeText.textContent = 'Dark';
-      } else {
+    function initTheme() {
+      const saved = localStorage.getItem('photo_theme') || 'light';
+      if (saved === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('photo_theme', 'dark');
         if (themeIcon) themeIcon.textContent = '☀️';
         if (themeText) themeText.textContent = 'Light';
       }
-    });
+    }
+    initTheme();
+
+    if (themeBtn && !themeBtn.dataset.themeBound) {
+      themeBtn.dataset.themeBound = 'true';
+      themeBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('photo_theme', 'light');
+          if (themeIcon) themeIcon.textContent = '🌙';
+          if (themeText) themeText.textContent = 'Dark';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('photo_theme', 'dark');
+          if (themeIcon) themeIcon.textContent = '☀️';
+          if (themeText) themeText.textContent = 'Light';
+        }
+      });
+    }
   }
 
   let originalImg = null;
