@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image to Excel &amp; CSV Converter — PhotoResize Pro</title>
+  <meta name="description" content="Extract tables, rows, columns, and numbers from scanned documents, receipts, invoices, and photos directly into editable Excel (.xlsx) and CSV files. 100% private.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
+          <i class="ph ph-list"></i>
+        </button>
+        <a href="index.html" class="brand-logo">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" aria-label="Toggle Language">
+          <span>🇮🇳</span> <span>हिंदी</span>
+        </button>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="saas-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-brand-title" data-i18n="cat_ai_smart">AI Tools</span>
+      </div>
+      <div class="sidebar-menu-wrapper">
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
+          <a href="index.html" class="sidebar-nav-item"><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
+          <a href="passport-tool.html" class="sidebar-nav-item"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
+          <a href="government-resizer.html" class="sidebar-nav-item"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span></a>
+          <a href="id-card-studio.html" class="sidebar-nav-item"><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
+          <a href="increase-size.html" class="sidebar-nav-item"><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
+          <a href="background-remover.html" class="sidebar-nav-item"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span></a>
+          <a href="document-scanner.html" class="sidebar-nav-item"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span></a>
+          <a href="ocr-image-to-text.html" class="sidebar-nav-item"><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span></a>
+          <a href="image-to-excel.html" class="sidebar-nav-item active"><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span> <span class="sidebar-badge new">Table</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
+          <a href="pdf-studio.html" class="sidebar-nav-item"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span></a>
+          <a href="file-converter.html" class="sidebar-nav-item"><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Workspace -->
+    <main class="main-content" style="flex: 1; padding: 1.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%;">
+      
+      <section class="hero-section" style="margin-bottom: 2rem;">
+        <span class="trust-pill" style="margin-bottom: 0.75rem;"><i class="ph-bold ph-shield-check" style="color: var(--accent);"></i> Geometric Bounding-Box Alignment • 100% In-Browser</span>
+        <h1 class="hero-title">Image to Excel &amp; <span>CSV Table Extractor</span></h1>
+        <p class="hero-subtitle">
+          Extract data tables, bills, spreadsheets, and marksheets from photos into editable rows and columns. Edit cells live, then download as Excel (.xlsx) or CSV.
+        </p>
+      </section>
+
+      <!-- App Card -->
+      <div class="app-card">
+        
+        <!-- Upload Dropzone -->
+        <div class="dropzone" id="tableDropzone" style="cursor: pointer; padding: 2.5rem 1.5rem;">
+          <input type="file" id="tableFileInput" accept="image/*" style="display: none;">
+          <div class="dropzone-icon">
+            <i class="ph ph-table" style="font-size: 2.8rem; color: var(--primary);"></i>
+          </div>
+          <h2 class="dropzone-title">Upload Image Containing a Table or Grid</h2>
+          <p class="dropzone-desc">Drag &amp; drop document, invoice, marksheet, or receipt with table columns</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin: 0.75rem auto;">
+            <span class="btn-select-file" style="margin: 0;"><i class="ph ph-folder-open"></i> Select Table Photo</span>
+            <button type="button" class="button secondary" id="btnTableCamera" style="padding: 0.75rem 1.25rem; font-weight: 700; border-radius: var(--radius-full); cursor: pointer;">
+              <i class="ph ph-camera"></i> Camera
+            </button>
+          </div>
+          <p class="dropzone-hints">Geometric Column Clustering • Direct .xlsx and .csv Export</p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-card" id="tableProgressCard">
+          <div class="spinner"></div>
+          <div class="progress-status" id="tableProgressText">Analyzing table columns and rows...</div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="tableProgressBar"></div></div>
+        </div>
+
+        <!-- Interactive Table Workspace -->
+        <div id="tableWorkspace" style="display: none; margin-top: 1.5rem;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <span style="font-size: 1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-grid-four" style="color: var(--primary);"></i> Extracted Table Grid (<span id="tableDimStats">0 Rows × 0 Cols</span>):
+              </span>
+              <small style="color: var(--text-muted); font-size: 0.8rem;">Click any cell to edit contents directly before downloading.</small>
+            </div>
+
+            <!-- Download Buttons -->
+            <div style="display: flex; gap: 0.65rem; flex-wrap: wrap;">
+              <button class="button primary" id="btnDownloadXlsx" style="padding: 0.7rem 1.25rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 12px var(--primary-glow);">
+                <i class="ph-bold ph-microsoft-excel-logo" style="font-size: 1.2rem;"></i> Download Excel (.xlsx)
+              </button>
+              <button class="button secondary" id="btnDownloadCsv" style="padding: 0.7rem 1rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;">
+                <i class="ph-bold ph-file-csv"></i> Download CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Editable HTML Table Container -->
+          <div style="overflow-x: auto; background: var(--bg-card); border-radius: var(--radius-md); border: 1.5px solid var(--border-color); box-shadow: var(--shadow-sm); max-height: 480px;">
+            <table id="editableGridTable" style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+              <!-- Populated dynamically with contenteditable cells -->
+            </table>
+          </div>
+
+          <div style="margin-top: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <span style="font-size: 0.82rem; color: var(--text-muted);">
+              <i class="ph-bold ph-info" style="color: var(--primary);"></i> Review columns carefully for handwriting or uneven spacing.
+            </span>
+            <button class="button secondary small" id="btnTableAnother" style="cursor: pointer;">
+              <i class="ph ph-arrow-counter-clockwise"></i> Extract Another Table
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Mobile Camera Capture Modal -->
+  <div class="camera-modal-overlay" id="cameraModal">
+    <div class="camera-modal-box">
+      <div class="camera-modal-header">
+        <h3 style="font-size: 1.05rem; font-weight: 800;"><i class="ph ph-camera"></i> Capture Table Document</h3>
+        <button type="button" class="modal-close-btn" id="btnCloseCamera">&times;</button>
+      </div>
+      <div class="camera-preview-wrapper">
+        <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+      </div>
+      <div class="camera-controls-bar">
+        <button type="button" class="btn-snap-photo" id="btnSnapPhoto" title="Take Photo">
+          <i class="ph-bold ph-camera"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Fast, secure, 100% browser-based suite of photo and document tools. Files never leave your computer.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Table Extraction</h3>
+        <ul class="footer-links">
+          <li><a href="image-to-excel.html">Marksheet to Excel</a></li>
+          <li><a href="image-to-excel.html">Invoice Table to CSV</a></li>
+          <li><a href="image-to-excel.html">Bank Statement Extraction</a></li>
+          <li><a href="image-to-excel.html">Editable Spreadsheet Preview</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">All Utilities</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Size (KB)</a></li>
+          <li><a href="ocr-image-to-text.html">Image to Text (OCR)</a></li>
+          <li><a href="document-scanner.html">Document Scanner</a></li>
+          <li><a href="pdf-studio.html">PDF Studio</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 PhotoResize Pro. Image to Excel &amp; CSV Table Extractor.</span>
+      <span class="made-by-badge"><i class="ph-bold ph-code"></i> Made by Roopkishor</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/modules/i18n.js"></script>
+  <script src="js/modules/ocr-engine.js"></script>
+  <script src="js/modules/table-extractor.js"></script>
+  <script src="js/table-app.js"></script>
+</body>
+</html>

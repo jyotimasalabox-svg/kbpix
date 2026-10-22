@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Government Form Photo & Signature Resizer — PhotoResize Pro</title>
+  <meta name="description" content="Resize and compress photos and signatures for SSC, UPSC, RPSC, Railway, Police, Banking, NEET, and PAN portal forms. Guaranteed KB limits and exact dimensions. 100% free & private.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
+          <i class="ph ph-list"></i>
+        </button>
+        <a href="index.html" class="brand-logo">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Language Switcher Pill -->
+        <button class="lang-toggle-btn" aria-label="Toggle Language">
+          <span>🇮🇳</span> <span>हिंदी</span>
+        </button>
+        <!-- Dark Mode Toggle -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="saas-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-brand-title" data-i18n="cat_photo_tools">Tool Suite</span>
+      </div>
+      <div class="sidebar-menu-wrapper">
+        <!-- Group 1: Photo & Image Tools -->
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
+          <a href="index.html" class="sidebar-nav-item"><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
+          <a href="passport-tool.html" class="sidebar-nav-item"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
+          <a href="government-resizer.html" class="sidebar-nav-item active"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span> <span class="sidebar-badge new">Exam</span></a>
+          <a href="id-card-studio.html" class="sidebar-nav-item"><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
+          <a href="increase-size.html" class="sidebar-nav-item"><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
+        </div>
+
+        <!-- Group 2: AI & Smart Tools -->
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
+          <a href="background-remover.html" class="sidebar-nav-item"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span> <span class="sidebar-badge ai">AI</span></a>
+          <a href="document-scanner.html" class="sidebar-nav-item"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span></a>
+          <a href="ocr-image-to-text.html" class="sidebar-nav-item"><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span></a>
+          <a href="image-to-excel.html" class="sidebar-nav-item"><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span></a>
+        </div>
+
+        <!-- Group 3: PDF Suite -->
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
+          <a href="pdf-studio.html" class="sidebar-nav-item"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span></a>
+          <a href="file-converter.html" class="sidebar-nav-item"><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Content Panel -->
+    <main class="main-content" style="flex: 1; padding: 1.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%;">
+      
+      <section class="hero-section" style="margin-bottom: 2rem;">
+        <span class="trust-pill" style="margin-bottom: 0.75rem;"><i class="ph-bold ph-shield-check" style="color: var(--accent);"></i> 100% Free &amp; Private • Guaranteed Size Acceptance</span>
+        <h1 class="hero-title">Government Form <span>Photo &amp; Signature Resizer</span></h1>
+        <p class="hero-subtitle">
+          Guaranteed dimension and KB limits for SSC, UPSC, RPSC, Railway RRB, Police, Banking IBPS/SBI, NEET, NSDL PAN, and state portal applications.
+        </p>
+      </section>
+
+      <!-- App Workspace Card -->
+      <div class="app-card" style="margin-bottom: 2rem;">
+        
+        <!-- Step 1: Select Portal Preset -->
+        <div style="background: var(--bg-card-secondary); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); margin-bottom: 1.5rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.75rem;">
+            <label for="govtPresetSelect" style="font-weight: 800; font-size: 1rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+              <i class="ph-bold ph-seal-check" style="color: var(--primary); font-size: 1.25rem;"></i> Select Exam / Portal Requirement:
+            </label>
+            <button type="button" class="button secondary small" id="btnOpenCustomPresetModal" style="cursor: pointer;">
+              <i class="ph-bold ph-plus-circle"></i> Create Custom Preset
+            </button>
+          </div>
+
+          <select id="govtPresetSelect" class="select-input" style="width: 100%; padding: 0.75rem 1rem; font-size: 1rem; font-weight: 700; border-radius: var(--radius-md);">
+            <!-- Populated dynamically by js/modules/govt-presets.js -->
+          </select>
+
+          <!-- Selected Preset Spec Details Banner -->
+          <div id="presetSpecBox" style="margin-top: 1rem; padding: 1rem; background: var(--bg-card); border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; font-size: 0.85rem;">
+            <div><span style="color:var(--text-muted); display:block; font-size:0.75rem;">Dimensions:</span><strong id="specDim" style="color:var(--primary); font-size:1rem;">3.5 × 4.5 cm</strong></div>
+            <div><span style="color:var(--text-muted); display:block; font-size:0.75rem;">Pixels:</span><strong id="specPx">413 × 531 px</strong></div>
+            <div><span style="color:var(--text-muted); display:block; font-size:0.75rem;">Allowed File Size:</span><strong id="specKB" style="color:var(--accent); font-size:1rem;">20 KB – 50 KB</strong></div>
+            <div><span style="color:var(--text-muted); display:block; font-size:0.75rem;">Format &amp; DPI:</span><strong id="specDpi">JPG • 300 DPI</strong></div>
+          </div>
+          <div id="specNotes" style="margin-top: 0.6rem; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem;">
+            <i class="ph-bold ph-info" style="color: var(--primary);"></i> <span>White/light background. Spectacles/cap not allowed. Recent photo.</span>
+          </div>
+        </div>
+
+        <!-- Step 2: Upload Dropzone & Camera -->
+        <div class="dropzone" id="govtDropzone" style="cursor: pointer; padding: 2.25rem 1.5rem;">
+          <input type="file" id="govtFileInput" accept="image/*" style="display: none;">
+          <div class="dropzone-icon">
+            <i class="ph ph-cloud-arrow-up" style="font-size: 2.8rem; color: var(--primary);"></i>
+          </div>
+          <h2 class="dropzone-title">Upload Photo or Signature for This Portal</h2>
+          <p class="dropzone-desc">Drag &amp; drop file here, select from phone/computer, or use camera</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin: 0.75rem auto;">
+            <span class="btn-select-file" style="margin: 0;"><i class="ph ph-folder-open"></i> Select File</span>
+            <button type="button" class="button secondary" id="btnGovtCamera" style="padding: 0.75rem 1.25rem; font-weight: 700; border-radius: var(--radius-full); cursor: pointer;">
+              <i class="ph ph-camera"></i> Use Camera
+            </button>
+          </div>
+          <p class="dropzone-hints">100% On-Device Processing • Zero Server Uploads • Private &amp; Secure</p>
+        </div>
+
+        <!-- Step 3: Interactive Workspace (Shown once photo is loaded) -->
+        <div id="govtWorkspace" style="display: none; margin-top: 1.5rem;">
+          
+          <div style="display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start;" id="workspaceGrid">
+            
+            <!-- Left: Interactive Canvas Crop & Preview -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+              <div style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="ph ph-crop"></i> Align &amp; Crop Area</span>
+                <span class="trust-pill" id="liveDimBadge">413 × 531 px</span>
+              </div>
+
+              <div class="interactive-crop-stage" style="background:#0b0f19;">
+                <canvas id="govtCropperCanvas" style="max-height: 420px; max-width: 100%; border-radius: 4px;"></canvas>
+              </div>
+
+              <!-- Quick Canvas Adjustments -->
+              <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+                <button type="button" class="canvas-tool-btn" id="btnGovtRotateL" title="Rotate -90°"><i class="ph ph-arrow-counter-clockwise"></i> -90°</button>
+                <button type="button" class="canvas-tool-btn" id="btnGovtRotateR" title="Rotate +90°"><i class="ph ph-arrow-clockwise"></i> +90°</button>
+                <button type="button" class="canvas-tool-btn" id="btnGovtFlipH" title="Flip Horizontal"><i class="ph ph-flip-horizontal"></i> Flip</button>
+                <button type="button" class="canvas-tool-btn" id="btnGovtReset" title="Reset All"><i class="ph ph-arrows-clockwise"></i> Reset</button>
+              </div>
+
+              <!-- Fine Angle Adjust Slider -->
+              <div class="fine-rotate-box">
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">Angle:</span>
+                <input type="range" id="fineRotateSlider" class="fine-rotate-slider" min="-45" max="45" value="0">
+                <span id="fineRotateVal" style="font-size: 0.8rem; font-weight: 800; width: 38px;">0°</span>
+              </div>
+            </div>
+
+            <!-- Right: Verification & 1-Click Download Card -->
+            <div style="background: var(--bg-card-secondary); border: 2px solid var(--primary); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); font-weight: 800; font-size: 1.05rem;">
+                <i class="ph-bold ph-seal-check" style="font-size: 1.4rem;"></i>
+                <span>Portal Verification Check</span>
+              </div>
+
+              <!-- Target Verification Specs -->
+              <div style="background: var(--bg-card); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.88rem;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted);">Target Dimensions:</span>
+                  <strong id="verifyDimText">3.5 × 4.5 cm</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted);">Required Range:</span>
+                  <strong id="verifyRangeText">20 KB to 50 KB</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-muted);">Output Status:</span>
+                  <span class="trust-pill" id="verifyStatusBadge" style="background: rgba(16,185,129,0.15); color: var(--accent); font-weight: 800;">
+                    ✓ 100% Guaranteed Fit
+                  </span>
+                </div>
+              </div>
+
+              <!-- Primary Download Button -->
+              <button class="button primary" id="btnDownloadGovtPhoto" style="padding: 1.1rem 1.5rem; font-size: 1.15rem; font-weight: 800; box-shadow: 0 6px 20px var(--primary-glow); display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; cursor: pointer;">
+                <i class="ph-bold ph-download-simple" style="font-size: 1.4rem;"></i>
+                <span>Download Form Photo (JPG)</span>
+              </button>
+
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-align: center; line-height: 1.5;">
+                <i class="ph-bold ph-check" style="color: var(--accent);"></i> Processed strictly under the portal max KB limit with biometric sharpness.
+              </div>
+
+              <!-- Option to Change Photo -->
+              <button class="button secondary small" id="btnGovtChangePhoto" style="margin-top: 0.5rem; cursor: pointer;">
+                <i class="ph ph-arrow-counter-clockwise"></i> Select Different Photo
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Verified Guidelines & FAQs -->
+      <section class="article-section" style="margin-top: 3rem;">
+        <h2 class="section-heading">Official Portal Photo Guidelines (SSC, UPSC, RPSC, Railway)</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">📸</div>
+            <div>
+              <h3 class="feature-title">Clear Frontal Face View</h3>
+              <p class="feature-desc">Ensure both ears and forehead are clearly visible. Do not wear caps, hats, dark sunglasses, or masks.</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚖️</div>
+            <div>
+              <h3 class="feature-title">Strict Minimum &amp; Maximum KB</h3>
+              <p class="feature-desc">Government validation software automatically rejects files outside their specified range (e.g. under 20KB or over 50KB). Our engine guarantees the file stays within tolerance.</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✍️</div>
+            <div>
+              <h3 class="feature-title">Signature Guidelines</h3>
+              <p class="feature-desc">Sign on plain white unruled paper using dark black ink. Signatures written in all CAPITAL BLOCK LETTERS are strictly rejected by IBPS, SBI, and SSC.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Custom Preset Creator Modal -->
+  <div class="camera-modal-overlay" id="customPresetModal">
+    <div class="camera-modal-box" style="max-width: 500px;">
+      <div class="camera-modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="ph-bold ph-plus-circle" style="color: var(--primary);"></i> Create Custom Govt / Portal Preset
+        </h3>
+        <button type="button" class="modal-close-btn" id="btnClosePresetModal">&times;</button>
+      </div>
+      <div style="padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Exam / Portal Title:</label>
+          <input type="text" id="custPresetName" class="adv-input" placeholder="e.g. Bihar BPSC Teacher Exam" style="width: 100%; padding: 0.5rem 0.75rem;">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Width (px or cm):</label>
+            <input type="number" id="custPresetW" class="adv-input" placeholder="413" style="width: 100%; padding: 0.5rem 0.75rem;">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Height (px or cm):</label>
+            <input type="number" id="custPresetH" class="adv-input" placeholder="531" style="width: 100%; padding: 0.5rem 0.75rem;">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+          <div>
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Min Size (KB):</label>
+            <input type="number" id="custPresetMinKB" class="adv-input" value="20" style="width: 100%; padding: 0.5rem 0.75rem;">
+          </div>
+          <div>
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Max Size (KB):</label>
+            <input type="number" id="custPresetMaxKB" class="adv-input" value="50" style="width: 100%; padding: 0.5rem 0.75rem;">
+          </div>
+        </div>
+        <button type="button" class="button primary" id="btnSaveCustomPreset" style="margin-top: 0.5rem; padding: 0.85rem; font-weight: 800; cursor: pointer;">
+          <i class="ph-bold ph-check"></i> Save Preset to Browser
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Camera Capture Modal -->
+  <div class="camera-modal-overlay" id="cameraModal">
+    <div class="camera-modal-box">
+      <div class="camera-modal-header">
+        <h3 style="font-size: 1.05rem; font-weight: 800;"><i class="ph ph-camera"></i> Live Camera Capture</h3>
+        <button type="button" class="modal-close-btn" id="btnCloseCamera">&times;</button>
+      </div>
+      <div class="camera-preview-wrapper">
+        <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+      </div>
+      <div class="camera-controls-bar">
+        <button type="button" class="btn-snap-photo" id="btnSnapPhoto" title="Take Photo">
+          <i class="ph-bold ph-camera"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Fast, secure, 100% browser-based suite of photo and document tools. Files never leave your computer.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Govt Exam Tools</h3>
+        <ul class="footer-links">
+          <li><a href="government-resizer.html">SSC CGL / CHSL Resizer</a></li>
+          <li><a href="government-resizer.html">UPSC Civil Services Photo</a></li>
+          <li><a href="government-resizer.html">Railway RRB Recruitment</a></li>
+          <li><a href="government-resizer.html">Police Constable Signature</a></li>
+          <li><a href="government-resizer.html">NEET / JEE Application Photo</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">All Utilities</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Image Size (KB)</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+          <li><a href="background-remover.html">AI Background Remover</a></li>
+          <li><a href="document-scanner.html">Document Scanner</a></li>
+          <li><a href="ocr-image-to-text.html">Image to Text (OCR)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 PhotoResize Pro. Government Form Photo &amp; Signature Resizer.</span>
+      <span class="made-by-badge"><i class="ph-bold ph-code"></i> Made by Roopkishor</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/compressor.js"></script>
+  <script src="js/modules/i18n.js"></script>
+  <script src="js/modules/cropper-engine.js"></script>
+  <script src="js/modules/govt-presets.js"></script>
+  <script src="js/government-app.js"></script>
+</body>
+</html>

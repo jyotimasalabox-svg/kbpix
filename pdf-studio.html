@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All-in-One PDF Studio (Convert, Images to PDF, PDF to JPG, Merge) — PhotoResize Pro</title>
+  <meta name="description" content="Free online client-side PDF Studio. Convert Images to PDF, extract PDF pages to JPG/PNG, merge multiple PDFs, and split documents. 100% private, browser-based.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/jszip.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
+          <i class="ph ph-list"></i>
+        </button>
+        <a href="index.html" class="brand-logo">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" aria-label="Toggle Language">
+          <span>🇮🇳</span> <span>हिंदी</span>
+        </button>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="saas-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-brand-title" data-i18n="cat_pdf_pack">PDF Suite</span>
+      </div>
+      <div class="sidebar-menu-wrapper">
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
+          <a href="index.html" class="sidebar-nav-item"><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
+          <a href="passport-tool.html" class="sidebar-nav-item"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
+          <a href="government-resizer.html" class="sidebar-nav-item"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span></a>
+          <a href="id-card-studio.html" class="sidebar-nav-item"><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
+          <a href="increase-size.html" class="sidebar-nav-item"><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
+          <a href="background-remover.html" class="sidebar-nav-item"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span></a>
+          <a href="document-scanner.html" class="sidebar-nav-item"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span></a>
+          <a href="ocr-image-to-text.html" class="sidebar-nav-item"><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span></a>
+          <a href="image-to-excel.html" class="sidebar-nav-item"><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
+          <a href="pdf-studio.html" class="sidebar-nav-item active"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span> <span class="sidebar-badge new">PDF</span></a>
+          <a href="file-converter.html" class="sidebar-nav-item"><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Workspace -->
+    <main class="main-content" style="flex: 1; padding: 1.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%;">
+      
+      <section class="hero-section" style="margin-bottom: 2rem;">
+        <span class="trust-pill" style="margin-bottom: 0.75rem;"><i class="ph-bold ph-shield-check" style="color: var(--accent);"></i> 100% In-Browser PDF Engine • Zero Upload Security</span>
+        <h1 class="hero-title">All-in-One <span>PDF Studio</span></h1>
+        <p class="hero-subtitle">
+          Convert Images to high-resolution PDF, extract PDF pages to JPG/PNG with custom DPI, merge multiple PDF documents into 1 file, or split pages.
+        </p>
+      </section>
+
+      <!-- Sub-Tool Mode Tabs -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <button type="button" class="preset-btn active" id="tabImagesToPdf" style="padding: 0.65rem 1.25rem; font-weight: 700;">
+          <i class="ph-bold ph-images"></i> Images to PDF
+        </button>
+        <button type="button" class="preset-btn" id="tabPdfToImages" style="padding: 0.65rem 1.25rem; font-weight: 700;">
+          <i class="ph-bold ph-file-pdf"></i> PDF to JPG / PNG
+        </button>
+        <button type="button" class="preset-btn" id="tabMergePdf" style="padding: 0.65rem 1.25rem; font-weight: 700;">
+          <i class="ph-bold ph-file-plus"></i> Merge PDFs
+        </button>
+        <button type="button" class="preset-btn" id="tabSplitPdf" style="padding: 0.65rem 1.25rem; font-weight: 700;">
+          <i class="ph-bold ph-scissors"></i> Split PDF
+        </button>
+      </div>
+
+      <!-- App Card -->
+      <div class="app-card">
+
+        <!-- MODE 1: IMAGES TO PDF -->
+        <div id="sectionImagesToPdf">
+          <div class="dropzone" id="imgPdfDropzone" style="cursor: pointer; padding: 2.25rem 1.5rem;">
+            <input type="file" id="imgPdfFileInput" multiple accept="image/*" style="display: none;">
+            <div class="dropzone-icon"><i class="ph ph-images" style="font-size: 2.8rem; color: var(--primary);"></i></div>
+            <h2 class="dropzone-title">Upload Photos to Combine into PDF</h2>
+            <p class="dropzone-desc">Drag &amp; drop multiple images (JPG, PNG, WebP) or click to select</p>
+            <span class="btn-select-file" style="margin: 0.5rem auto;"><i class="ph ph-plus"></i> Select Images</span>
+          </div>
+
+          <div id="imgPdfWorkspace" style="display: none; margin-top: 1.5rem;">
+            <!-- Configuration row -->
+            <div style="background: var(--bg-card-secondary); padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Page Size:</label>
+                  <select id="pdfPageSizeSelect" class="select-input" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;">
+                    <option value="a4" selected>A4 (210 × 297 mm)</option>
+                    <option value="letter">US Letter (8.5 × 11 in)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Orientation:</label>
+                  <select id="pdfOrientationSelect" class="select-input" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;">
+                    <option value="portrait" selected>Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Margin:</label>
+                  <select id="pdfMarginSelect" class="select-input" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;">
+                    <option value="0">No Margin (Fit Full Page)</option>
+                    <option value="10" selected>Small Margin (10mm)</option>
+                    <option value="20">Large Margin (20mm)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" class="button secondary small" id="btnAddMoreImgPdf"><i class="ph ph-plus"></i> Add More</button>
+                <button type="button" class="button secondary small" id="btnClearImgPdf" style="color: var(--danger);"><i class="ph ph-trash"></i> Clear</button>
+              </div>
+            </div>
+
+            <!-- Page Previews List -->
+            <div id="imgPdfList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;"></div>
+
+            <!-- Download Button -->
+            <button class="button primary" id="btnDownloadCreatedPdf" style="padding: 1.1rem 2rem; font-size: 1.1rem; font-weight: 800; box-shadow: 0 4px 16px var(--primary-glow); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; cursor: pointer;">
+              <i class="ph-bold ph-file-pdf" style="font-size: 1.4rem; color: #ef4444;"></i>
+              <span>Download Combined PDF</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MODE 2: PDF TO IMAGES -->
+        <div id="sectionPdfToImages" style="display: none;">
+          <div class="dropzone" id="pdfImgDropzone" style="cursor: pointer; padding: 2.25rem 1.5rem;">
+            <input type="file" id="pdfImgFileInput" accept="application/pdf" style="display: none;">
+            <div class="dropzone-icon"><i class="ph ph-file-pdf" style="font-size: 2.8rem; color: #ef4444;"></i></div>
+            <h2 class="dropzone-title">Select PDF Document to Convert to Images</h2>
+            <p class="dropzone-desc">Extract all or individual pages as high-resolution JPG or PNG</p>
+            <span class="btn-select-file" style="margin: 0.5rem auto;"><i class="ph ph-file-arrow-up"></i> Select PDF File</span>
+          </div>
+
+          <div id="pdfImgWorkspace" style="display: none; margin-top: 1.5rem;">
+            <div style="background: var(--bg-card-secondary); padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+              <div style="display: flex; gap: 1rem; align-items: center;">
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">Output Image Format:</label>
+                  <select id="pdfImgFormatSelect" class="select-input" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;">
+                    <option value="image/jpeg" selected>JPG / JPEG (Standard)</option>
+                    <option value="image/png">PNG (Lossless High Quality)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.2rem;">DPI Resolution:</label>
+                  <select id="pdfImgDpiSelect" class="select-input" style="padding: 0.4rem 0.6rem; font-size: 0.85rem;">
+                    <option value="150">150 DPI (Fast)</option>
+                    <option value="200" selected>200 DPI (Recommended)</option>
+                    <option value="300">300 DPI (High Print Resolution)</option>
+                  </select>
+                </div>
+              </div>
+
+              <button class="button primary small" id="btnDownloadAllPdfImagesZip" style="font-weight: 800; cursor: pointer;">
+                <i class="ph-bold ph-file-zip"></i> Download All Pages (ZIP)
+              </button>
+            </div>
+
+            <!-- Rendered Pages Grid -->
+            <div id="pdfImgPagesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.25rem;"></div>
+          </div>
+        </div>
+
+        <!-- MODE 3: MERGE PDF -->
+        <div id="sectionMergePdf" style="display: none;">
+          <div class="dropzone" id="mergePdfDropzone" style="cursor: pointer; padding: 2.25rem 1.5rem;">
+            <input type="file" id="mergePdfFileInput" multiple accept="application/pdf" style="display: none;">
+            <div class="dropzone-icon"><i class="ph ph-file-plus" style="font-size: 2.8rem; color: var(--primary);"></i></div>
+            <h2 class="dropzone-title">Upload 2 or More PDFs to Merge Together</h2>
+            <p class="dropzone-desc">Combine multiple documents into one single PDF in your preferred order</p>
+            <span class="btn-select-file" style="margin: 0.5rem auto;"><i class="ph ph-plus"></i> Select PDF Files</span>
+          </div>
+
+          <div id="mergePdfWorkspace" style="display: none; margin-top: 1.5rem;">
+            <div id="mergePdfFilesList" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;"></div>
+            <button class="button primary" id="btnExecuteMergePdf" style="padding: 1.1rem; font-size: 1.1rem; font-weight: 800; width: 100%; box-shadow: 0 4px 16px var(--primary-glow); cursor: pointer;">
+              <i class="ph-bold ph-file-plus"></i> Merge &amp; Download Combined PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- MODE 4: SPLIT PDF -->
+        <div id="sectionSplitPdf" style="display: none;">
+          <div class="dropzone" id="splitPdfDropzone" style="cursor: pointer; padding: 2.25rem 1.5rem;">
+            <input type="file" id="splitPdfFileInput" accept="application/pdf" style="display: none;">
+            <div class="dropzone-icon"><i class="ph ph-scissors" style="font-size: 2.8rem; color: var(--warning);"></i></div>
+            <h2 class="dropzone-title">Select PDF to Split &amp; Extract Pages</h2>
+            <p class="dropzone-desc">Extract specific pages (e.g. 1-3, 5) or single pages</p>
+            <span class="btn-select-file" style="margin: 0.5rem auto;"><i class="ph ph-file-arrow-up"></i> Select PDF to Split</span>
+          </div>
+
+          <div id="splitPdfWorkspace" style="display: none; margin-top: 1.5rem;">
+            <div style="background: var(--bg-card-secondary); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 1.25rem;">
+              <div style="margin-bottom: 0.75rem; font-weight: 800;">
+                Document: <span id="splitFileName" style="color:var(--primary);">document.pdf</span> (<span id="splitPageCount">0</span> Pages)
+              </div>
+              <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Page Range to Extract:</label>
+              <input type="text" id="splitPageRangeInput" class="adv-input" placeholder="e.g. 1-3 or 2, 4, 6" style="width: 100%; padding: 0.6rem 0.85rem; font-size: 0.95rem;">
+              <small style="display: block; color: var(--text-muted); margin-top: 0.35rem;">Enter page numbers separated by commas or dash (e.g. 1-2, 5).</small>
+            </div>
+
+            <button class="button primary" id="btnExecuteSplitPdf" style="padding: 1.1rem; font-size: 1.1rem; font-weight: 800; width: 100%; box-shadow: 0 4px 16px var(--primary-glow); cursor: pointer;">
+              <i class="ph-bold ph-scissors"></i> Split &amp; Download Extracted PDF
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Fast, secure, 100% browser-based suite of photo and document tools. Files never leave your computer.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">PDF Features</h3>
+        <ul class="footer-links">
+          <li><a href="pdf-studio.html">Images to PDF Converter</a></li>
+          <li><a href="pdf-studio.html">PDF to High-Res JPG/PNG</a></li>
+          <li><a href="pdf-studio.html">Merge Multiple PDF Files</a></li>
+          <li><a href="pdf-studio.html">Split &amp; Extract Pages</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">All Utilities</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Size (KB)</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+          <li><a href="government-resizer.html">Govt Form Resizer</a></li>
+          <li><a href="document-scanner.html">Document Scanner</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 PhotoResize Pro. All-in-One PDF Studio.</span>
+      <span class="made-by-badge"><i class="ph-bold ph-code"></i> Made by Roopkishor</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/modules/i18n.js"></script>
+  <script src="js/modules/pdf-engine.js"></script>
+  <script src="js/pdf-studio-app.js"></script>
+</body>
+</html>

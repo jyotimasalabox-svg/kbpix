@@ -6,6 +6,7 @@
   <title>Free AI Passport Photo Maker & Print Sheet Studio — PhotoResize Pro</title>
   <meta name="description" content="Create professional biometric passport size photos online. Official Indian Passport (3.5x4.5 cm), US Visa (2x2 in), PAN, and Aadhaar card formats. 1-click A4/4x6 print sheets, AI background removal, DOP date stamps.">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
   <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -15,6 +16,7 @@
   <!-- Navigation Bar -->
   <header class="navbar">
     <div class="nav-container">
+      <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu" style="margin-right: 0.5rem;"><i class="ph ph-list"></i></button>
       <a href="index.html" class="brand-logo">
         <span class="logo-badge">
           <i class="ph-bold ph-aperture"></i> PRO
@@ -32,6 +34,7 @@
       </ul>
 
       <div class="nav-actions">
+        <button class="lang-toggle-btn" aria-label="Toggle Language"><span>🇮🇳</span> <span>हिंदी</span></button>
         <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
           <span id="themeIcon">🌙</span>
           <span id="themeText">Dark</span>
@@ -63,7 +66,45 @@
   </div>
 
   <!-- Main Content -->
-  <main class="main-content">
+  
+  <div class="saas-layout">
+
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-brand-title" data-i18n="cat_photo_tools">Tool Suite</span>
+      </div>
+      <div class="sidebar-menu-wrapper">
+        <!-- Group 1: Photo & Image Tools -->
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
+          <a href="index.html" class="sidebar-nav-item "><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
+          <a href="government-resizer.html" class="sidebar-nav-item "><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span> <span class="sidebar-badge new">Exam</span></a>
+          <a href="passport-tool.html" class="sidebar-nav-item active"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
+          <a href="id-card-studio.html" class="sidebar-nav-item "><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
+          <a href="increase-size.html" class="sidebar-nav-item "><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
+        </div>
+
+        <!-- Group 2: AI & Smart Tools -->
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
+          <a href="background-remover.html" class="sidebar-nav-item "><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span> <span class="sidebar-badge ai">AI</span></a>
+          <a href="document-scanner.html" class="sidebar-nav-item "><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span></a>
+          <a href="ocr-image-to-text.html" class="sidebar-nav-item "><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span></a>
+          <a href="image-to-excel.html" class="sidebar-nav-item "><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span></a>
+        </div>
+
+        <!-- Group 3: PDF Suite -->
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
+          <a href="pdf-studio.html" class="sidebar-nav-item "><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span></a>
+          <a href="file-converter.html" class="sidebar-nav-item "><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+<main class="main-content">
     <section class="hero-section">
       <h1 class="hero-title">AI Passport Photo Maker & <span>Print Studio</span></h1>
       <p class="hero-subtitle">
@@ -364,7 +405,10 @@
   </main>
 
   <!-- Footer -->
-  <footer class="footer">
+  
+  </div>
+
+<footer class="footer">
     <div class="footer-container">
       <div class="footer-col">
         <div class="brand-logo" style="margin-bottom: 0.75rem;">
@@ -407,5 +451,26 @@
 
   <script src="js/compressor.js"></script>
   <script src="js/passport-advanced.js"></script>
+
+  <script src="js/modules/i18n.js"></script>
+  <script>
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar') || document.getElementById('mobileMenuToggle');
+    const appSidebar = document.getElementById('appSidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    if (btnToggleSidebar && appSidebar && sidebarBackdrop) {
+      btnToggleSidebar.addEventListener('click', () => {
+        const isOpen = appSidebar.classList.toggle('drawer-open');
+        sidebarBackdrop.classList.toggle('active', isOpen);
+      });
+      sidebarBackdrop.addEventListener('click', () => {
+        appSidebar.classList.remove('drawer-open');
+        sidebarBackdrop.classList.remove('active');
+      });
+    }
+    document.querySelectorAll('.lang-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => window.I18nManager && window.I18nManager.toggleLanguage());
+    });
+  </script>
+
 </body>
 </html>

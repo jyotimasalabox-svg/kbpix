@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image to Text (OCR) — Extract English &amp; Hindi Text — PhotoResize Pro</title>
+  <meta name="description" content="Free online OCR tool to extract printed English and Hindi text from images, photos, and scanned documents. Download as TXT, Word (DOCX), or searchable PDF. 100% private.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
+          <i class="ph ph-list"></i>
+        </button>
+        <a href="index.html" class="brand-logo">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" aria-label="Toggle Language">
+          <span>🇮🇳</span> <span>हिंदी</span>
+        </button>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="saas-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-brand-title" data-i18n="cat_ai_smart">AI Tools</span>
+      </div>
+      <div class="sidebar-menu-wrapper">
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
+          <a href="index.html" class="sidebar-nav-item"><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
+          <a href="passport-tool.html" class="sidebar-nav-item"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
+          <a href="government-resizer.html" class="sidebar-nav-item"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span></a>
+          <a href="id-card-studio.html" class="sidebar-nav-item"><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
+          <a href="increase-size.html" class="sidebar-nav-item"><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
+          <a href="background-remover.html" class="sidebar-nav-item"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span></a>
+          <a href="document-scanner.html" class="sidebar-nav-item"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span></a>
+          <a href="ocr-image-to-text.html" class="sidebar-nav-item active"><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span> <span class="sidebar-badge new">OCR</span></a>
+          <a href="image-to-excel.html" class="sidebar-nav-item"><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
+          <a href="pdf-studio.html" class="sidebar-nav-item"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span></a>
+          <a href="file-converter.html" class="sidebar-nav-item"><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Workspace -->
+    <main class="main-content" style="flex: 1; padding: 1.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%;">
+      
+      <section class="hero-section" style="margin-bottom: 2rem;">
+        <span class="trust-pill" style="margin-bottom: 0.75rem;"><i class="ph-bold ph-shield-check" style="color: var(--accent);"></i> 100% In-Browser Tesseract Engine • English &amp; Hindi OCR</span>
+        <h1 class="hero-title">Image to Text <span>(OCR Scanner)</span></h1>
+        <p class="hero-subtitle">
+          Extract printed and typed text from photos, screenshots, and book pages. Edit recognized text directly, copy with 1 click, or export to TXT, Word, and searchable PDF.
+        </p>
+      </section>
+
+      <!-- App Card -->
+      <div class="app-card">
+        
+        <!-- Language Option Bar -->
+        <div style="background: var(--bg-card-secondary); padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+          <label style="font-weight: 800; font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
+            <i class="ph-bold ph-translate" style="color: var(--primary);"></i> Document Language:
+          </label>
+          <div style="display: flex; gap: 0.5rem;">
+            <button type="button" class="preset-btn active" data-ocr-lang="eng" style="padding: 0.5rem 1rem; font-weight: 700;">
+              🇬🇧 English
+            </button>
+            <button type="button" class="preset-btn" data-ocr-lang="hin" style="padding: 0.5rem 1rem; font-weight: 700;">
+              🇮🇳 हिन्दी (Hindi)
+            </button>
+            <button type="button" class="preset-btn" data-ocr-lang="eng+hin" style="padding: 0.5rem 1rem; font-weight: 700;">
+              🌐 Mixed (Eng + Hin)
+            </button>
+          </div>
+        </div>
+
+        <!-- Upload Dropzone -->
+        <div class="dropzone" id="ocrDropzone" style="cursor: pointer; padding: 2.5rem 1.5rem;">
+          <input type="file" id="ocrFileInput" accept="image/*" style="display: none;">
+          <div class="dropzone-icon">
+            <i class="ph ph-text-t" style="font-size: 2.8rem; color: var(--primary);"></i>
+          </div>
+          <h2 class="dropzone-title">Upload Image or Document with Text</h2>
+          <p class="dropzone-desc">Drag &amp; drop textbook, document, invoice, receipt, or screenshot</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin: 0.75rem auto;">
+            <span class="btn-select-file" style="margin: 0;"><i class="ph ph-folder-open"></i> Select Image</span>
+            <button type="button" class="button secondary" id="btnOcrCamera" style="padding: 0.75rem 1.25rem; font-weight: 700; border-radius: var(--radius-full); cursor: pointer;">
+              <i class="ph ph-camera"></i> Camera
+            </button>
+          </div>
+          <p class="dropzone-hints">100% In-Browser Privacy • No Cloud Server Uploads • Tesseract Worker</p>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="progress-card" id="ocrProgressCard">
+          <div class="spinner"></div>
+          <div class="progress-status" id="ocrProgressText">Recognizing text characters...</div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="ocrProgressBar"></div></div>
+        </div>
+
+        <!-- OCR Results Workspace -->
+        <div id="ocrWorkspace" style="display: none; margin-top: 1.5rem;">
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;" id="ocrSplitGrid">
+            
+            <!-- Left: Source Image Preview -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Source Image</span>
+                <span class="trust-pill" id="ocrConfidenceBadge">Confidence: 94%</span>
+              </div>
+              <img id="ocrSourceImg" style="max-height: 420px; max-width: 100%; border-radius: var(--radius-sm); border: 1px solid var(--border-color);" alt="Source Preview">
+            </div>
+
+            <!-- Right: Editable Extracted Text & Export Actions -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
+              
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
+                  <i class="ph-bold ph-pencil-simple" style="color: var(--primary);"></i> Extracted Text (Editable):
+                </span>
+                <button type="button" class="button secondary small" id="btnCopyText" style="cursor: pointer;">
+                  <i class="ph-bold ph-copy"></i> Copy Text
+                </button>
+              </div>
+
+              <textarea id="ocrExtractedText" class="adv-input" style="width: 100%; height: 300px; padding: 0.85rem; font-family: monospace; font-size: 0.95rem; line-height: 1.6; border-radius: var(--radius-sm); background: var(--bg-card); resize: vertical;"></textarea>
+
+              <!-- Export Buttons Bar -->
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem;">
+                <button class="button primary" id="btnDownloadTxt" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                  <i class="ph-bold ph-file-text"></i> Download TXT
+                </button>
+                <button class="button secondary" id="btnDownloadDocx" style="padding: 0.75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                  <i class="ph-bold ph-microsoft-word-logo" style="color:#2563eb;"></i> Download Word (.doc)
+                </button>
+                <button class="button secondary" id="btnDownloadSearchablePdf" style="padding: 0.75rem; font-weight: 700; cursor: pointer; grid-column: span 2; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;">
+                  <i class="ph-bold ph-file-pdf" style="color:#ef4444;"></i> Export Searchable PDF
+                </button>
+              </div>
+
+              <button class="button secondary small" id="btnOcrAnother" style="margin-top: 0.25rem; cursor: pointer;">
+                <i class="ph ph-arrow-counter-clockwise"></i> Scan Another Image
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Mobile Camera Capture Modal -->
+  <div class="camera-modal-overlay" id="cameraModal">
+    <div class="camera-modal-box">
+      <div class="camera-modal-header">
+        <h3 style="font-size: 1.05rem; font-weight: 800;"><i class="ph ph-camera"></i> Capture Document for OCR</h3>
+        <button type="button" class="modal-close-btn" id="btnCloseCamera">&times;</button>
+      </div>
+      <div class="camera-preview-wrapper">
+        <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+      </div>
+      <div class="camera-controls-bar">
+        <button type="button" class="btn-snap-photo" id="btnSnapPhoto" title="Snap Document">
+          <i class="ph-bold ph-camera"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Fast, secure, 100% browser-based suite of photo and document tools. Files never leave your computer.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">OCR Capabilities</h3>
+        <ul class="footer-links">
+          <li><a href="ocr-image-to-text.html">English Document OCR</a></li>
+          <li><a href="ocr-image-to-text.html">Hindi Image to Text</a></li>
+          <li><a href="ocr-image-to-text.html">Searchable PDF Export</a></li>
+          <li><a href="ocr-image-to-text.html">Word Document (.docx) Export</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">All Utilities</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Size (KB)</a></li>
+          <li><a href="image-to-excel.html">Image to Excel / CSV</a></li>
+          <li><a href="document-scanner.html">Document Scanner</a></li>
+          <li><a href="pdf-studio.html">PDF Studio</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 PhotoResize Pro. Image to Text (OCR Scanner).</span>
+      <span class="made-by-badge"><i class="ph-bold ph-code"></i> Made by Roopkishor</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/modules/i18n.js"></script>
+  <script src="js/modules/ocr-engine.js"></script>
+  <script src="js/ocr-app.js"></script>
+</body>
+</html>

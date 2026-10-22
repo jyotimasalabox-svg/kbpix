@@ -1,4 +1,21 @@
 {
   "framework": null,
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/image-resizer", "destination": "/index.html" },
+    { "source": "/photo-compressor", "destination": "/index.html" },
+    { "source": "/passport-photo-maker", "destination": "/passport-tool.html" },
+    { "source": "/signature-resizer", "destination": "/government-resizer.html" },
+    { "source": "/government-form-photo-resizer", "destination": "/government-resizer.html" },
+    { "source": "/background-remover", "destination": "/background-remover.html" },
+    { "source": "/document-scanner", "destination": "/document-scanner.html" },
+    { "source": "/image-to-text", "destination": "/ocr-image-to-text.html" },
+    { "source": "/image-to-excel", "destination": "/image-to-excel.html" },
+    { "source": "/image-to-pdf", "destination": "/pdf-studio.html" },
+    { "source": "/pdf-to-jpg", "destination": "/pdf-studio.html" },
+    { "source": "/pdf-studio", "destination": "/pdf-studio.html" },
+    { "source": "/id-card-studio", "destination": "/id-card-studio.html" },
+    { "source": "/file-converter", "destination": "/file-converter.html" },
+    { "source": "/increase-size", "destination": "/increase-size.html" }
+  ]
 }

@@ -1,5 +1,7 @@
 /**
- * Main Application Script for Pi7 Style Image Reducer
+ * Main Application Script for PhotoResize Pro
+ * Features: Batch Compression, Precision KB/MB, Interactive Cropper & Transform,
+ * Image Enhancements (Brightness, Contrast, Sharpness), Camera Capture, Bilingual Support.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     maxWidth: null,
     maxHeight: null,
     isProcessing: false,
-    activeCompareId: null
+    activeCompareId: null,
+    activeEditingId: null
   };
 
   // DOM Elements
@@ -56,18 +59,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const compareCompSize = document.getElementById('compareCompSize');
   const compareSavedPct = document.getElementById('compareSavedPct');
 
-  // Theme Toggle
+  // Theme & Language
   const themeToggleBtn = document.getElementById('themeToggleBtn');
   const themeIcon = document.getElementById('themeIcon');
   const themeText = document.getElementById('themeText');
+  const langToggleBtn = document.querySelectorAll('.lang-toggle-btn');
 
-  // Mobile Menu
-  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-  const navLinks = document.getElementById('navLinks');
+  // Sidebar Drawer for Mobile
+  const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+  const appSidebar = document.getElementById('appSidebar');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+  // Camera Elements
+  const btnOpenMainCamera = document.getElementById('btnOpenMainCamera');
+  const mainCameraModal = document.getElementById('mainCameraModal');
+  const mainCameraVideo = document.getElementById('mainCameraVideo');
+  const btnCameraClose = document.getElementById('btnCameraClose');
+  const btnCameraSwitch = document.getElementById('btnCameraSwitch');
+  const btnCameraSnap = document.getElementById('btnCameraSnap');
+  let cameraStream = null;
+  let currentCameraFacing = 'environment';
+
+  // Editor Modal Elements
+  const editorModal = document.getElementById('editorModal');
+  const editorCanvas = document.getElementById('editorCanvas');
+  const btnEditorClose = document.getElementById('btnEditorClose');
+  const btnEditorCancel = document.getElementById('btnEditorCancel');
+  const btnEditorApply = document.getElementById('btnEditorApply');
+  const editorFineRotate = document.getElementById('editorFineRotate');
+  const editorFineRotateVal = document.getElementById('editorFineRotateVal');
+  let activeCropper = null;
 
   // ==========================================
-  // Initialization & Theme
+  // Sidebar & Theme Initialization
   // ==========================================
+  if (btnToggleSidebar && appSidebar && sidebarBackdrop) {
+    btnToggleSidebar.addEventListener('click', () => {
+      const isOpen = appSidebar.classList.toggle('drawer-open');
+      sidebarBackdrop.classList.toggle('active', isOpen);
+    });
+    sidebarBackdrop.addEventListener('click', () => {
+      appSidebar.classList.remove('drawer-open');
+      sidebarBackdrop.classList.remove('active');
+    });
+  }
+
   function initTheme() {
     const savedTheme = localStorage.getItem('photo_theme') || 
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -95,11 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (mobileMenuToggle && navLinks) {
-    mobileMenuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
+  // Language Toggle
+  langToggleBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (window.I18nManager) {
+        window.I18nManager.toggleLanguage();
+      }
     });
-  }
+  });
 
   initTheme();
 
@@ -188,7 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // Dropzone & File Handling
   // ==========================================
-  dropzone.addEventListener('click', () => fileInput.click());
+  dropzone.addEventListener('click', (e) => {
+    // If clicking the camera button, don't trigger file input
+    if (e.target.closest('#btnOpenMainCamera')) return;
+    fileInput.click();
+  });
 
   ['dragenter', 'dragover'].forEach(eventName => {
     dropzone.addEventListener(eventName, (e) => {
@@ -275,6 +318,83 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================
+  // Camera Capture Integration
+  // ==========================================
+  if (btnOpenMainCamera && mainCameraModal) {
+    btnOpenMainCamera.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openCamera();
+    });
+
+    if (btnCameraClose) {
+      btnCameraClose.addEventListener('click', closeCamera);
+    }
+
+    if (btnCameraSwitch) {
+      btnCameraSwitch.addEventListener('click', () => {
+        currentCameraFacing = currentCameraFacing === 'user' ? 'environment' : 'user';
+        closeCameraStream();
+        startCameraStream();
+      });
+    }
+
+    if (btnCameraSnap) {
+      btnCameraSnap.addEventListener('click', () => {
+        if (!mainCameraVideo.videoWidth) return;
+        const c = document.createElement('canvas');
+        c.width = mainCameraVideo.videoWidth;
+        c.height = mainCameraVideo.videoHeight;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(mainCameraVideo, 0, 0, c.width, c.height);
+
+        c.toBlob((blob) => {
+          if (blob) {
+            const snapFile = new File([blob], `camera_photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
+            handleFiles([snapFile]);
+            closeCamera();
+          }
+        }, 'image/jpeg', 0.95);
+      });
+    }
+  }
+
+  async function openCamera() {
+    mainCameraModal.classList.add('active');
+    await startCameraStream();
+  }
+
+  async function startCameraStream() {
+    try {
+      const constraints = {
+        video: {
+          facingMode: { ideal: currentCameraFacing },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 }
+        },
+        audio: false
+      };
+      cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
+      mainCameraVideo.srcObject = cameraStream;
+    } catch (err) {
+      console.error('Camera access failed', err);
+      alert('Could not access camera. Please allow camera permissions or upload an image file.');
+      closeCamera();
+    }
+  }
+
+  function closeCameraStream() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(t => t.stop());
+      cameraStream = null;
+    }
+  }
+
+  function closeCamera() {
+    closeCameraStream();
+    if (mainCameraModal) mainCameraModal.classList.remove('active');
+  }
+
+  // ==========================================
   // Render File Cards
   // ==========================================
   function renderFileList() {
@@ -295,9 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const isDone = item.status === 'done';
       const isProcessing = item.status === 'processing';
-      const isError = item.status === 'error';
 
-      // Savings calculation
       let savedText = '';
       if (isDone && item.compSize) {
         const pct = Math.max(0, Math.round(((item.origSize - item.compSize) / item.origSize) * 100));
@@ -327,6 +445,9 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         </div>
         <div class="file-actions" style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <button class="btn-card-action" onclick="window.openEditor('${item.id}')" title="Interactive Crop, Straighten & Enhance" style="cursor: pointer;">
+            <i class="ph-bold ph-crop"></i> Edit &amp; Crop
+          </button>
           ${isDone ? `
             <button class="btn-card-action" onclick="window.openCompare('${item.id}')" style="cursor: pointer;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
@@ -355,7 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fileCardsList.appendChild(card);
     });
 
-    // Check if all files are done to show batch download
     const doneCount = state.files.filter(f => f.status === 'done').length;
     downloadAllBtn.style.display = doneCount > 0 ? 'inline-flex' : 'none';
   }
@@ -391,6 +511,164 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================
+  // Interactive Photo Editor (Crop, Transform, Enhance)
+  // ==========================================
+  window.openEditor = function(id) {
+    const item = state.files.find(f => f.id === id);
+    if (!item) return;
+
+    state.activeEditingId = id;
+    editorModal.classList.add('active');
+
+    // Reset editor canvas
+    activeCropper = new InteractiveCropper(editorCanvas);
+    activeCropper.loadImage(item.origUrl).catch(err => {
+      console.error('Failed to load image in cropper', err);
+    });
+
+    // Reset controls
+    if (editorFineRotate) {
+      editorFineRotate.value = 0;
+      editorFineRotateVal.textContent = '0°';
+    }
+
+    // Reset enhancement sliders
+    const enhBrightness = document.getElementById('enhBrightness');
+    const enhContrast = document.getElementById('enhContrast');
+    const enhSaturation = document.getElementById('enhSaturation');
+    const enhSharpness = document.getElementById('enhSharpness');
+    const enhGrayscale = document.getElementById('enhGrayscale');
+    if (enhBrightness) enhBrightness.value = 0;
+    if (enhContrast) enhContrast.value = 0;
+    if (enhSaturation) enhSaturation.value = 0;
+    if (enhSharpness) enhSharpness.value = 0;
+    if (enhGrayscale) enhGrayscale.checked = false;
+  };
+
+  function closeEditor() {
+    editorModal.classList.remove('active');
+    state.activeEditingId = null;
+    activeCropper = null;
+  }
+
+  if (btnEditorClose) btnEditorClose.addEventListener('click', closeEditor);
+  if (btnEditorCancel) btnEditorCancel.addEventListener('click', closeEditor);
+
+  // Aspect ratio handlers
+  const ratioBtns = document.querySelectorAll('.editor-ratio-btn');
+  ratioBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      ratioBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const r = btn.dataset.ratio;
+      if (activeCropper) {
+        activeCropper.setAspectRatio(r === 'free' ? null : parseFloat(r));
+      }
+    });
+  });
+
+  // Transform buttons
+  const btnCCW = document.getElementById('btnEditorRotateCCW');
+  const btnCW = document.getElementById('btnEditorRotateCW');
+  const btnFlipH = document.getElementById('btnEditorFlipH');
+  const btnFlipV = document.getElementById('btnEditorFlipV');
+  const btnZoomIn = document.getElementById('btnEditorZoomIn');
+  const btnZoomOut = document.getElementById('btnEditorZoomOut');
+  const btnUndo = document.getElementById('btnEditorUndo');
+  const btnReset = document.getElementById('btnEditorReset');
+
+  if (btnCCW) btnCCW.addEventListener('click', () => activeCropper && activeCropper.rotate90(false));
+  if (btnCW) btnCW.addEventListener('click', () => activeCropper && activeCropper.rotate90(true));
+  if (btnFlipH) btnFlipH.addEventListener('click', () => activeCropper && activeCropper.toggleFlipH());
+  if (btnFlipV) btnFlipV.addEventListener('click', () => activeCropper && activeCropper.toggleFlipV());
+  if (btnZoomIn) btnZoomIn.addEventListener('click', () => activeCropper && activeCropper.adjustZoom(0.15));
+  if (btnZoomOut) btnZoomOut.addEventListener('click', () => activeCropper && activeCropper.adjustZoom(-0.15));
+  if (btnUndo) btnUndo.addEventListener('click', () => activeCropper && activeCropper.undo());
+  if (btnReset) btnReset.addEventListener('click', () => activeCropper && activeCropper.resetTransform());
+
+  if (editorFineRotate) {
+    editorFineRotate.addEventListener('input', (e) => {
+      const deg = parseFloat(e.target.value);
+      editorFineRotateVal.textContent = `${deg > 0 ? '+' : ''}${deg}°`;
+      if (activeCropper) activeCropper.setFineRotation(deg);
+    });
+  }
+
+  const btnEnhAutoLevels = document.getElementById('btnEnhAutoLevels');
+  let autoLevelsEnabled = false;
+  if (btnEnhAutoLevels) {
+    btnEnhAutoLevels.addEventListener('click', () => {
+      autoLevelsEnabled = !autoLevelsEnabled;
+      btnEnhAutoLevels.classList.toggle('active', autoLevelsEnabled);
+    });
+  }
+
+  // Apply changes to file
+  if (btnEditorApply) {
+    btnEditorApply.addEventListener('click', async () => {
+      if (!activeCropper || !state.activeEditingId) return;
+
+      const item = state.files.find(f => f.id === state.activeEditingId);
+      if (!item) return;
+
+      btnEditorApply.disabled = true;
+      btnEditorApply.textContent = 'Applying...';
+
+      try {
+        const croppedCanvas = activeCropper.getCroppedCanvas();
+        if (!croppedCanvas) throw new Error('Could not crop canvas');
+
+        // Apply image enhancements
+        const enhBrightness = parseInt(document.getElementById('enhBrightness')?.value || 0, 10);
+        const enhContrast = parseInt(document.getElementById('enhContrast')?.value || 0, 10);
+        const enhSaturation = parseInt(document.getElementById('enhSaturation')?.value || 0, 10);
+        const enhSharpness = parseInt(document.getElementById('enhSharpness')?.value || 0, 10);
+        const enhGrayscale = document.getElementById('enhGrayscale')?.checked || false;
+
+        const enhancedCanvas = ImageEnhancer.applyAdjustments(croppedCanvas, {
+          brightness: enhBrightness,
+          contrast: enhContrast,
+          saturation: enhSaturation,
+          sharpness: enhSharpness,
+          grayscale: enhGrayscale,
+          autoEnhance: autoLevelsEnabled
+        });
+
+        // Convert to Blob
+        enhancedCanvas.toBlob((blob) => {
+          if (!blob) return;
+
+          // Replace item data
+          const newFile = new File([blob], item.file.name, { type: 'image/jpeg' });
+          if (item.origUrl) URL.revokeObjectURL(item.origUrl);
+          if (item.compUrl) URL.revokeObjectURL(item.compUrl);
+
+          item.file = newFile;
+          item.origUrl = URL.createObjectURL(blob);
+          item.origSize = blob.size;
+          item.origW = enhancedCanvas.width;
+          item.origH = enhancedCanvas.height;
+          item.compBlob = null;
+          item.compUrl = null;
+          item.compSize = null;
+          item.status = 'pending';
+
+          closeEditor();
+          renderFileList();
+          updateUIState();
+        }, 'image/jpeg', 0.95);
+
+      } catch (err) {
+        console.error('Error applying edits', err);
+        alert('Could not apply edits: ' + err.message);
+      } finally {
+        btnEditorApply.disabled = false;
+        btnEditorApply.innerHTML = '<i class="ph-bold ph-check"></i> Apply &amp; Update Photo';
+      }
+    });
+  }
+
+  // ==========================================
   // Compression Execution
   // ==========================================
   compressBtn.addEventListener('click', async () => {
@@ -400,7 +678,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUIState();
     progressCard.classList.add('active');
 
-    // Calculate options
     const targetKB = state.unit === 'MB' ? state.targetSize * 1024 : state.targetSize;
     const format = formatSelect ? formatSelect.value : 'auto';
     const strictUnder = strictCheck ? strictCheck.checked : true;
@@ -448,7 +725,6 @@ document.addEventListener('DOMContentLoaded', () => {
     progressBarFill.style.width = '100%';
     progressStatus.textContent = `Completed! Successfully processed ${totalFiles} images.`;
 
-    // Auto-download single photo or trigger batch ZIP
     const doneItems = state.files.filter(f => f.status === 'done' && f.compBlob);
     if (doneItems.length === 1) {
       window.downloadSingle(doneItems[0].id);
@@ -482,7 +758,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const item = state.files.find(f => f.id === id);
     if (!item || !item.compBlob) return;
 
-    // Build nice filename: name-reduced-50kb.jpg
     const ext = item.compBlob.type === 'image/webp' ? '.webp' : (item.compBlob.type === 'image/png' ? '.png' : '.jpg');
     const baseName = item.file.name.replace(/\.[^/.]+$/, '');
     const filename = `${baseName}_reduced_${state.targetSize}${state.unit}${ext}`;
@@ -490,7 +765,6 @@ document.addEventListener('DOMContentLoaded', () => {
     triggerDownload(item.compUrl, filename);
   };
 
-  // 1-Click direct compress and download for individual cards
   window.compressAndDownloadSingle = async function(id) {
     const item = state.files.find(f => f.id === id);
     if (!item) return;
@@ -526,7 +800,6 @@ document.addEventListener('DOMContentLoaded', () => {
       item.status = 'done';
       renderFileList();
 
-      // Immediately trigger download
       window.downloadSingle(id);
     } catch (err) {
       console.error(err);
@@ -545,13 +818,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Multiple files: Zip them using local JSZip
     downloadAllBtn.disabled = true;
     downloadAllBtn.textContent = 'Creating ZIP...';
 
     try {
       if (typeof JSZip === 'undefined') {
-        // Fallback if JSZip is somehow missing: download each file
         doneItems.forEach((it, idx) => {
           setTimeout(() => window.downloadSingle(it.id), idx * 300);
         });

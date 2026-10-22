@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto Document Scanner &amp; Perspective Straightener — PhotoResize Pro</title>
+  <meta name="description" content="Scan and straighten tilted document photographs. 4-corner perspective correction, shadow removal, and scanner filters (Magic Color, B&W, Grayscale). Export as Image or PDF. 100% private.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
+          <i class="ph ph-list"></i>
+        </button>
+        <a href="index.html" class="brand-logo">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" aria-label="Toggle Language">
+          <span>🇮🇳</span> <span>हिंदी</span>
+        </button>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="saas-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-brand-title" data-i18n="cat_ai_smart">Smart Tools</span>
+      </div>
+      <div class="sidebar-menu-wrapper">
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
+          <a href="index.html" class="sidebar-nav-item"><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
+          <a href="passport-tool.html" class="sidebar-nav-item"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
+          <a href="government-resizer.html" class="sidebar-nav-item"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span></a>
+          <a href="id-card-studio.html" class="sidebar-nav-item"><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
+          <a href="increase-size.html" class="sidebar-nav-item"><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
+          <a href="background-remover.html" class="sidebar-nav-item"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span></a>
+          <a href="document-scanner.html" class="sidebar-nav-item active"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span> <span class="sidebar-badge new">Scan</span></a>
+          <a href="ocr-image-to-text.html" class="sidebar-nav-item"><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span></a>
+          <a href="image-to-excel.html" class="sidebar-nav-item"><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
+          <a href="pdf-studio.html" class="sidebar-nav-item"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span></a>
+          <a href="file-converter.html" class="sidebar-nav-item"><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Workspace -->
+    <main class="main-content" style="flex: 1; padding: 1.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%;">
+      
+      <section class="hero-section" style="margin-bottom: 2rem;">
+        <span class="trust-pill" style="margin-bottom: 0.75rem;"><i class="ph-bold ph-shield-check" style="color: var(--accent);"></i> 100% In-Browser Homography • Planar Rectification</span>
+        <h1 class="hero-title">Auto Document Scanner &amp; <span>Perspective Straightener</span></h1>
+        <p class="hero-subtitle">
+          Turn slanted mobile photos of marksheets, IDs, receipts, and certificates into crisp, flat rectangular scanned documents with shadow removal.
+        </p>
+      </section>
+
+      <!-- App Card -->
+      <div class="app-card">
+        
+        <!-- Upload Dropzone -->
+        <div class="dropzone" id="scanDropzone" style="cursor: pointer; padding: 2.5rem 1.5rem;">
+          <input type="file" id="scanFileInput" accept="image/*" style="display: none;">
+          <div class="dropzone-icon">
+            <i class="ph ph-scan" style="font-size: 2.8rem; color: var(--primary);"></i>
+          </div>
+          <h2 class="dropzone-title">Select Document Photo to Straighten &amp; Scan</h2>
+          <p class="dropzone-desc">Take a picture of any paper, marksheet, or certificate from your phone or computer</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin: 0.75rem auto;">
+            <span class="btn-select-file" style="margin: 0;"><i class="ph ph-folder-open"></i> Select Document</span>
+            <button type="button" class="button secondary" id="btnScanCamera" style="padding: 0.75rem 1.25rem; font-weight: 700; border-radius: var(--radius-full); cursor: pointer;">
+              <i class="ph ph-camera"></i> Camera
+            </button>
+          </div>
+          <p class="dropzone-hints">Automatic 4-Corner Edge Detection • Planar Warp Rectification</p>
+        </div>
+
+        <!-- Scanner Stage: 4-Corner Adjustment Mode -->
+        <div id="cornerAdjustStage" style="display: none; margin-top: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <span style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">
+              <i class="ph-bold ph-corners-out"></i> Adjust 4 Corners to Match Document Edges:
+            </span>
+            <button type="button" class="button primary small" id="btnExecuteWarp" style="padding: 0.6rem 1.25rem; font-weight: 800; cursor: pointer;">
+              <i class="ph-bold ph-check"></i> Straighten Document Now &rarr;
+            </button>
+          </div>
+
+          <!-- Interactive Corner Canvas Container -->
+          <div style="position: relative; background: #0b0f19; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 400px; user-select: none;">
+            <canvas id="rawCornerCanvas" style="max-height: 480px; max-width: 100%; display: block;"></canvas>
+            
+            <!-- Draggable Corner Handles -->
+            <div class="scanner-corner-handle" id="handleTL" title="Top-Left Corner"></div>
+            <div class="scanner-corner-handle" id="handleTR" title="Top-Right Corner"></div>
+            <div class="scanner-corner-handle" id="handleBR" title="Bottom-Right Corner"></div>
+            <div class="scanner-corner-handle" id="handleBL" title="Bottom-Left Corner"></div>
+          </div>
+          <small style="display: block; text-align: center; color: var(--text-muted); margin-top: 0.5rem; font-size: 0.8rem;">
+            Tip: Drag the green circle handles to the 4 corners of your paper.
+          </small>
+        </div>
+
+        <!-- Result Preview Stage (Warped & Filtered) -->
+        <div id="scanResultStage" style="display: none; margin-top: 1.5rem;">
+          <div style="display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start;">
+            
+            <!-- Left: Scanned Document Canvas -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Scanned Document</span>
+                <button type="button" class="button secondary small" id="btnReAdjustCorners">
+                  <i class="ph ph-corners-in"></i> Re-adjust Corners
+                </button>
+              </div>
+
+              <div style="background: #ffffff; border-radius: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); overflow: hidden; display: inline-block; max-width: 100%;">
+                <canvas id="warpedResultCanvas" style="max-height: 480px; max-width: 100%; display: block;"></canvas>
+              </div>
+            </div>
+
+            <!-- Right: Scanner Filter Presets & Downloads -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+              
+              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-sliders-horizontal" style="color: var(--primary);"></i> Scanner Enhancement Mode:
+              </div>
+
+              <!-- Filter Pills -->
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <button type="button" class="preset-btn active" data-filter="magic_color" style="padding: 0.7rem 1rem; text-align: left; border-radius: var(--radius-sm); font-weight: 700;">
+                  ✨ Magic Color (Auto Levels &amp; Shadow Clean)
+                </button>
+                <button type="button" class="preset-btn" data-filter="bw_scan" style="padding: 0.7rem 1rem; text-align: left; border-radius: var(--radius-sm); font-weight: 700;">
+                  📄 B&amp;W Document Scan (Clean Text)
+                </button>
+                <button type="button" class="preset-btn" data-filter="grayscale" style="padding: 0.7rem 1rem; text-align: left; border-radius: var(--radius-sm); font-weight: 700;">
+                  🔘 Grayscale (Photocopy Mode)
+                </button>
+                <button type="button" class="preset-btn" data-filter="original" style="padding: 0.7rem 1rem; text-align: left; border-radius: var(--radius-sm); font-weight: 700;">
+                  🖼️ Original Color
+                </button>
+              </div>
+
+              <!-- Download Actions -->
+              <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                <button class="button primary" id="btnDownloadScannedPdf" style="padding: 1rem; font-size: 1.05rem; font-weight: 800; box-shadow: 0 4px 16px var(--primary-glow); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;">
+                  <i class="ph-bold ph-file-pdf" style="font-size: 1.3rem; color: #ef4444;"></i>
+                  <span>Download Clean PDF</span>
+                </button>
+
+                <button class="button secondary" id="btnDownloadScannedJpg" style="padding: 0.85rem; font-size: 0.95rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;">
+                  <i class="ph-bold ph-download-simple"></i>
+                  <span>Download Image (JPG)</span>
+                </button>
+              </div>
+
+              <button class="button secondary small" id="btnScanAnother" style="margin-top: 0.25rem; cursor: pointer;">
+                <i class="ph ph-arrow-counter-clockwise"></i> Scan Another Document
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Mobile Camera Capture Modal -->
+  <div class="camera-modal-overlay" id="cameraModal">
+    <div class="camera-modal-box">
+      <div class="camera-modal-header">
+        <h3 style="font-size: 1.05rem; font-weight: 800;"><i class="ph ph-camera"></i> Document Camera Capture</h3>
+        <button type="button" class="modal-close-btn" id="btnCloseCamera">&times;</button>
+      </div>
+      <div class="camera-preview-wrapper">
+        <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+      </div>
+      <div class="camera-controls-bar">
+        <button type="button" class="btn-snap-photo" id="btnSnapPhoto" title="Snap Document">
+          <i class="ph-bold ph-camera"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Fast, secure, 100% browser-based suite of photo and document tools. Files never leave your computer.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Scanner Modes</h3>
+        <ul class="footer-links">
+          <li><a href="document-scanner.html">Magic Color Enhancement</a></li>
+          <li><a href="document-scanner.html">B&amp;W Document Scan</a></li>
+          <li><a href="document-scanner.html">Perspective Rectification</a></li>
+          <li><a href="document-scanner.html">Export Scanned PDF</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">All Utilities</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Size (KB)</a></li>
+          <li><a href="government-resizer.html">Govt Form Resizer</a></li>
+          <li><a href="ocr-image-to-text.html">Image to Text (OCR)</a></li>
+          <li><a href="pdf-studio.html">PDF Studio</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 PhotoResize Pro. Auto Document Scanner &amp; Perspective Straightener.</span>
+      <span class="made-by-badge"><i class="ph-bold ph-code"></i> Made by Roopkishor</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/modules/i18n.js"></script>
+  <script src="js/modules/doc-scanner-engine.js"></script>
+  <script src="js/document-scanner-app.js"></script>
+</body>
+</html>

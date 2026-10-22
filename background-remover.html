@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Background Remover &amp; Replacer — PhotoResize Pro</title>
+  <meta name="description" content="100% free, private in-browser AI background remover. Erase backgrounds, make photos transparent, or replace with white, blue, red, or custom image backgrounds.">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
+          <i class="ph ph-list"></i>
+        </button>
+        <a href="index.html" class="brand-logo">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="lang-toggle-btn" aria-label="Toggle Language">
+          <span>🇮🇳</span> <span>हिंदी</span>
+        </button>
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="saas-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="app-sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-brand-title" data-i18n="cat_ai_smart">AI Tools</span>
+      </div>
+      <div class="sidebar-menu-wrapper">
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
+          <a href="index.html" class="sidebar-nav-item"><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
+          <a href="passport-tool.html" class="sidebar-nav-item"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
+          <a href="government-resizer.html" class="sidebar-nav-item"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span></a>
+          <a href="id-card-studio.html" class="sidebar-nav-item"><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
+          <a href="increase-size.html" class="sidebar-nav-item"><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
+          <a href="background-remover.html" class="sidebar-nav-item active"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span> <span class="sidebar-badge ai">AI</span></a>
+          <a href="document-scanner.html" class="sidebar-nav-item"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span></a>
+          <a href="ocr-image-to-text.html" class="sidebar-nav-item"><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span></a>
+          <a href="image-to-excel.html" class="sidebar-nav-item"><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span></a>
+        </div>
+
+        <div class="sidebar-cat-group">
+          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
+          <a href="pdf-studio.html" class="sidebar-nav-item"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span></a>
+          <a href="file-converter.html" class="sidebar-nav-item"><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+        </div>
+      </div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Main Workspace -->
+    <main class="main-content" style="flex: 1; padding: 1.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; width: 100%;">
+      
+      <section class="hero-section" style="margin-bottom: 2rem;">
+        <span class="trust-pill" style="margin-bottom: 0.75rem;"><i class="ph-bold ph-shield-check" style="color: var(--accent);"></i> 100% In-Browser AI • Private &amp; Zero Server Uploads</span>
+        <h1 class="hero-title">AI Background <span>Remover &amp; Replacer</span></h1>
+        <p class="hero-subtitle">
+          Instantly remove photo backgrounds with artificial intelligence. Create transparent PNGs or replace backgrounds with official passport white, blue, red, or your custom picture.
+        </p>
+      </section>
+
+      <!-- App Card -->
+      <div class="app-card">
+        
+        <!-- Upload Dropzone -->
+        <div class="dropzone" id="bgDropzone" style="cursor: pointer; padding: 2.5rem 1.5rem;">
+          <input type="file" id="bgFileInput" accept="image/*" style="display: none;">
+          <div class="dropzone-icon">
+            <i class="ph ph-magic-wand" style="font-size: 2.8rem; color: var(--primary);"></i>
+          </div>
+          <h2 class="dropzone-title">Select Image to Remove Background</h2>
+          <p class="dropzone-desc">Drag &amp; drop portrait, product, or signature photo, or use camera</p>
+          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin: 0.75rem auto;">
+            <span class="btn-select-file" style="margin: 0;"><i class="ph ph-folder-open"></i> Select Photo</span>
+            <button type="button" class="button secondary" id="btnBgCamera" style="padding: 0.75rem 1.25rem; font-weight: 700; border-radius: var(--radius-full); cursor: pointer;">
+              <i class="ph ph-camera"></i> Camera
+            </button>
+          </div>
+          <p class="dropzone-hints">Neural network runs 100% on your device • Instant transparent cutout</p>
+        </div>
+
+        <!-- Processing Status Bar -->
+        <div class="progress-card" id="bgProgressCard">
+          <div class="spinner"></div>
+          <div class="progress-status" id="bgProgressText">Running AI neural model...</div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="bgProgressBar"></div></div>
+        </div>
+
+        <!-- AI Editor Workspace (Shown after removal) -->
+        <div id="bgWorkspace" style="display: none; margin-top: 1.5rem;">
+          
+          <div style="display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start;">
+            
+            <!-- Left: Checkerboard / Preview Canvas Stage -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; text-align: center;">
+              
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase;">Preview Result</span>
+                <button type="button" class="button secondary small" id="btnToggleCompareMode">
+                  <i class="ph ph-split-vertical"></i> Before / After Split
+                </button>
+              </div>
+
+              <!-- Canvas Container with transparency grid -->
+              <div style="background: repeating-conic-gradient(#cbd5e1 0% 25%, #f1f5f9 0% 50%) 50% / 20px 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 380px;">
+                <canvas id="bgResultCanvas" style="max-height: 420px; max-width: 100%; display: block;"></canvas>
+              </div>
+
+              <!-- Edge Refinement Slider -->
+              <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem; background: var(--bg-card); padding: 0.65rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">Edge Softness:</span>
+                <input type="range" id="edgeFeatherSlider" min="0" max="8" value="0" style="flex: 1; accent-color: var(--primary); cursor: pointer;">
+                <span id="edgeFeatherVal" style="font-size: 0.8rem; font-weight: 800;">0px</span>
+              </div>
+            </div>
+
+            <!-- Right: Background Replacement Controls & Download -->
+            <div style="background: var(--bg-card-secondary); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+              
+              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="ph-bold ph-palette" style="color: var(--primary);"></i> Choose New Background:
+              </div>
+
+              <!-- Color Preset Pills -->
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                <button type="button" class="preset-btn active" data-bg="transparent" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.6rem 0.5rem;">
+                  <span style="display: inline-block; width: 14px; height: 14px; border: 1px solid #94a3b8; background: repeating-conic-gradient(#cbd5e1 0% 25%, #fff 0% 50%) 50%/8px 8px; border-radius: 50%;"></span>
+                  Clear
+                </button>
+                <button type="button" class="preset-btn" data-bg="#ffffff" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.6rem 0.5rem;">
+                  <span style="display: inline-block; width: 14px; height: 14px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 50%;"></span>
+                  White
+                </button>
+                <button type="button" class="preset-btn" data-bg="#e0f2fe" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.6rem 0.5rem;">
+                  <span style="display: inline-block; width: 14px; height: 14px; background: #38bdf8; border-radius: 50%;"></span>
+                  Blue
+                </button>
+                <button type="button" class="preset-btn" data-bg="#fee2e2" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.6rem 0.5rem;">
+                  <span style="display: inline-block; width: 14px; height: 14px; background: #ef4444; border-radius: 50%;"></span>
+                  Red
+                </button>
+                <button type="button" class="preset-btn" data-bg="#f1f5f9" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.6rem 0.5rem;">
+                  <span style="display: inline-block; width: 14px; height: 14px; background: #64748b; border-radius: 50%;"></span>
+                  Gray
+                </button>
+                <button type="button" class="preset-btn" id="btnCustomColorPill" style="display: flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.6rem 0.5rem;">
+                  <input type="color" id="customColorPicker" value="#4f46e5" style="width: 16px; height: 16px; padding: 0; border: none; background: transparent; cursor: pointer;">
+                  Color
+                </button>
+              </div>
+
+              <!-- Upload Custom Background Image Option -->
+              <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">
+                  <i class="ph ph-image"></i> Or Upload Custom Picture Background:
+                </label>
+                <input type="file" id="customBgFileInput" accept="image/*" style="display: none;">
+                <button type="button" class="button secondary small w-full" id="btnSelectCustomBg" style="cursor: pointer;">
+                  <i class="ph ph-upload-simple"></i> Choose Background Image
+                </button>
+              </div>
+
+              <!-- Format Selection -->
+              <div style="border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">
+                  Export Format:
+                </label>
+                <select id="exportFormatSelect" class="select-input" style="width: 100%; padding: 0.55rem 0.75rem; font-size: 0.9rem;">
+                  <option value="image/png" selected>PNG (Recommended for Transparency)</option>
+                  <option value="image/jpeg">JPG / JPEG (Solid Color)</option>
+                  <option value="image/webp">WEBP (Compact Web Image)</option>
+                </select>
+              </div>
+
+              <!-- Direct Download Action Button -->
+              <button class="button primary" id="btnDownloadBgCutout" style="padding: 1.1rem; font-size: 1.1rem; font-weight: 800; box-shadow: 0 4px 16px var(--primary-glow); display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;">
+                <i class="ph-bold ph-download-simple" style="font-size: 1.4rem;"></i>
+                <span>Download Photo</span>
+              </button>
+
+              <button class="button secondary small" id="btnChangeOriginal" style="cursor: pointer;">
+                <i class="ph ph-arrow-counter-clockwise"></i> Upload Another Photo
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Mobile Camera Capture Modal -->
+  <div class="camera-modal-overlay" id="cameraModal">
+    <div class="camera-modal-box">
+      <div class="camera-modal-header">
+        <h3 style="font-size: 1.05rem; font-weight: 800;"><i class="ph ph-camera"></i> Live Camera Capture</h3>
+        <button type="button" class="modal-close-btn" id="btnCloseCamera">&times;</button>
+      </div>
+      <div class="camera-preview-wrapper">
+        <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+      </div>
+      <div class="camera-controls-bar">
+        <button type="button" class="btn-snap-photo" id="btnSnapPhoto" title="Take Photo">
+          <i class="ph-bold ph-camera"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 0.75rem;">
+          <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+          <div class="brand-text">PhotoResize <span>PRO</span></div>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          Professional image processing suite with on-device artificial intelligence.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Features</h3>
+        <ul class="footer-links">
+          <li><a href="background-remover.html">Transparent PNG Cutout</a></li>
+          <li><a href="background-remover.html">Passport White Background</a></li>
+          <li><a href="background-remover.html">Light Blue Studio Backdrop</a></li>
+          <li><a href="passport-tool.html">Passport Photo Maker</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">All Utilities</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Reduce Size (KB)</a></li>
+          <li><a href="government-resizer.html">Govt Form Resizer</a></li>
+          <li><a href="document-scanner.html">Document Scanner</a></li>
+          <li><a href="ocr-image-to-text.html">Image to Text (OCR)</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 PhotoResize Pro. AI Background Remover &amp; Replacer.</span>
+      <span class="made-by-badge"><i class="ph-bold ph-code"></i> Made by Roopkishor</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/modules/i18n.js"></script>
+  <script src="js/modules/ai-bg-remover.js"></script>
+  <script src="js/background-app.js"></script>
+</body>
+</html>
