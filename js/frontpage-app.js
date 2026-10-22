@@ -517,13 +517,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       } else {
         // JPEG
-        const tempBlob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.95));
+        let tKB = targetKB || 100;
+        if (unit === 'MB') tKB = (targetKB || 1) * 1024;
+        else if (unit === 'GB') tKB = (targetKB || 1) * 1024 * 1024;
+
+        const tempBlob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.98));
         const tempFile = new File([tempBlob], 'temp.jpg', { type: 'image/jpeg' });
 
         const res = await ImageCompressor.compressImage(tempFile, {
-          targetKB: targetKB || 100,
+          targetKB: tKB,
           format: 'image/jpeg',
-          strictUnder: true
+          strictUnder: true,
+          allowIncrease: true,
+          targetExact: true
         });
         blob = res.blob;
         filenameExt = '.jpg';
@@ -933,14 +939,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } else {
           // JPEG / WebP Precision Compression
-          const targetKB = state.unit === 'MB' ? state.targetSize * 1024 : state.targetSize;
-          const tempBlob = await new Promise(r => scaledCanvas.toBlob(r, state.format, 0.95));
+          let targetKB = state.targetSize;
+          if (state.unit === 'MB') targetKB = state.targetSize * 1024;
+          else if (state.unit === 'GB') targetKB = state.targetSize * 1024 * 1024;
+
+          const tempBlob = await new Promise(r => scaledCanvas.toBlob(r, state.format, 0.98));
           const tempFile = new File([tempBlob], 'temp', { type: state.format });
 
           const compressResult = await ImageCompressor.compressImage(tempFile, {
             targetKB,
             format: state.format,
             strictUnder: state.sizeMode === 'max',
+            allowIncrease: true,
+            targetExact: true,
             onProgress: (pct, msg) => {
               processingProgressFill.style.width = `${70 + Math.round((pct / 100) * 25)}%`;
               processingProgressText.textContent = msg;

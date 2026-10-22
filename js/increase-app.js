@@ -1,6 +1,6 @@
 /**
- * Increase Image Size in KB - Application Controller
- * Inspired by Pi7 "Increase Image Size In KB"
+ * Increase Image Size in KB/MB/GB - Application Controller
+ * High-performance padding engine guaranteeing exact requested file size.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,13 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     origUrl: null,
     paddedBlob: null,
     paddedUrl: null,
-    targetSize: 45, // default KB
+    targetSize: 100,
+    unit: 'KB',
     isProcessing: false
   };
 
   const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('fileInput');
   const sizeInput = document.getElementById('sizeInput');
+  const increaseUnitSelect = document.getElementById('increaseUnitSelect');
   const stepUpBtn = document.getElementById('stepUpBtn');
   const stepDownBtn = document.getElementById('stepDownBtn');
   const presetBtns = document.querySelectorAll('.preset-btn');
@@ -66,33 +68,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Presets & Size Input
   function updateTargetSize() {
-    let val = parseInt(sizeInput.value, 10);
-    if (isNaN(val) || val <= 1) val = 45;
+    let val = parseFloat(sizeInput.value);
+    if (isNaN(val) || val <= 0) val = 100;
     state.targetSize = val;
+    if (increaseUnitSelect) state.unit = increaseUnitSelect.value || 'KB';
+
     presetBtns.forEach(btn => {
-      if (parseInt(btn.dataset.size, 10) === val) {
+      const bSize = parseFloat(btn.dataset.size);
+      const bUnit = btn.dataset.unit || 'KB';
+      if (bSize === val && bUnit === state.unit) {
         btn.classList.add('active');
       } else {
         btn.classList.remove('active');
       }
     });
+
     const increaseBtnKbLabel = document.getElementById('increaseBtnKbLabel');
-    if (increaseBtnKbLabel) increaseBtnKbLabel.textContent = val;
+    if (increaseBtnKbLabel) increaseBtnKbLabel.textContent = `${val} ${state.unit}`;
+    if (targetSizeEl) targetSizeEl.textContent = `${val} ${state.unit}`;
   }
 
-  sizeInput.addEventListener('input', updateTargetSize);
-  stepUpBtn.addEventListener('click', () => {
-    sizeInput.value = parseInt(sizeInput.value || 0, 10) + 5;
-    updateTargetSize();
-  });
-  stepDownBtn.addEventListener('click', () => {
-    sizeInput.value = Math.max(5, parseInt(sizeInput.value || 0, 10) - 5);
-    updateTargetSize();
-  });
+  if (sizeInput) sizeInput.addEventListener('input', updateTargetSize);
+  if (increaseUnitSelect) increaseUnitSelect.addEventListener('change', updateTargetSize);
+
+  if (stepUpBtn) {
+    stepUpBtn.addEventListener('click', () => {
+      sizeInput.value = parseFloat(sizeInput.value || 0) + (state.unit === 'GB' ? 1 : (state.unit === 'MB' ? 1 : 10));
+      updateTargetSize();
+    });
+  }
+
+  if (stepDownBtn) {
+    stepDownBtn.addEventListener('click', () => {
+      const step = (state.unit === 'GB' ? 1 : (state.unit === 'MB' ? 1 : 10));
+      sizeInput.value = Math.max(1, parseFloat(sizeInput.value || 0) - step);
+      updateTargetSize();
+    });
+  }
 
   presetBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       sizeInput.value = btn.dataset.size;
+      if (btn.dataset.unit && increaseUnitSelect) {
+        increaseUnitSelect.value = btn.dataset.unit;
+      }
       updateTargetSize();
     });
   });
@@ -133,19 +152,22 @@ document.addEventListener('DOMContentLoaded', () => {
     state.paddedUrl = null;
     previewImg.src = state.origUrl;
     origSizeEl.textContent = ImageCompressor.formatBytes(file.size);
-    targetSizeEl.textContent = `${state.targetSize} KB`;
+    targetSizeEl.textContent = `${state.targetSize} ${state.unit}`;
     increaseBtn.disabled = false;
     resultCard.style.display = 'block';
     newSizeEl.textContent = 'Ready to download';
     downloadBtn.style.display = 'inline-flex';
 
     // If current file is already larger than target size, suggest a higher target
-    const currentKB = Math.ceil(file.size / 1024);
-    if (currentKB >= state.targetSize) {
-      const suggested = currentKB + 15;
+    let curUnitBytes = 1024;
+    if (state.unit === 'MB') curUnitBytes = 1024 * 1024;
+    else if (state.unit === 'GB') curUnitBytes = 1024 * 1024 * 1024;
+
+    const currentValInUnits = file.size / curUnitBytes;
+    if (currentValInUnits >= state.targetSize) {
+      const suggested = Math.ceil(currentValInUnits + (state.unit === 'KB' ? 20 : 1));
       sizeInput.value = suggested;
       updateTargetSize();
-      targetSizeEl.textContent = `${suggested} KB`;
     }
   }
 
@@ -153,16 +175,20 @@ document.addEventListener('DOMContentLoaded', () => {
   async function executeIncreaseAndDownload(autoTriggerDownload = true) {
     if (!state.file || state.isProcessing) return;
 
-    const targetBytes = Math.round(state.targetSize * 1024);
+    let targetBytes = state.targetSize * 1024;
+    if (state.unit === 'MB') targetBytes = state.targetSize * 1024 * 1024;
+    else if (state.unit === 'GB') targetBytes = state.targetSize * 1024 * 1024 * 1024;
+    targetBytes = Math.min(2147480000, Math.round(targetBytes));
+
     if (targetBytes <= state.file.size) {
-      alert(`Target size (${state.targetSize} KB) must be greater than current size (${ImageCompressor.formatBytes(state.file.size)}). Please increase target KB.`);
+      alert(`Target size (${state.targetSize} ${state.unit}) must be greater than current file size (${ImageCompressor.formatBytes(state.file.size)}). Please increase target.`);
       return;
     }
 
     state.isProcessing = true;
     increaseBtn.disabled = true;
     progressCard.classList.add('active');
-    progressStatus.textContent = 'Padding image file structure safely...';
+    progressStatus.textContent = `Safely expanding file structure to exactly ${ImageCompressor.formatBytes(targetBytes)}...`;
 
     try {
       const paddedBlob = await ImageCompressor.padJpegBlob(state.file, targetBytes);
@@ -182,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 400);
     } catch (e) {
       console.error(e);
-      alert('Failed to increase image size.');
+      alert('Failed to increase image size: ' + e.message);
       state.isProcessing = false;
       increaseBtn.disabled = false;
       progressCard.classList.remove('active');
@@ -194,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function triggerFileDownload() {
     if (!state.paddedUrl || !state.paddedBlob) return;
     const baseName = state.file.name.replace(/\.[^/.]+$/, '');
-    const filename = `${baseName}_increased_${state.targetSize}KB.jpg`;
+    const filename = `${baseName}_increased_${state.targetSize}${state.unit}.jpg`;
     const a = document.createElement('a');
     a.href = state.paddedUrl;
     a.download = filename;

@@ -126,26 +126,37 @@
       <div class="settings-panel">
         <div class="size-control-group">
           <div class="size-header-row">
-            <label class="setting-label" for="sizeInput">Target Minimum Size (KB):</label>
+            <label class="setting-label" for="sizeInput">Target Minimum Size:</label>
             <div class="size-input-wrapper">
               <div class="stepper-box">
-                <input type="number" id="sizeInput" class="size-number-input" value="45" min="5" max="5000">
+                <input type="number" id="sizeInput" class="size-number-input" value="100" min="1" max="99999999">
                 <div class="stepper-btns">
                   <button type="button" class="step-btn" id="stepUpBtn">▲</button>
                   <button type="button" class="step-btn" id="stepDownBtn">▼</button>
                 </div>
               </div>
-              <span style="font-weight: 700; color: var(--text-muted);">KB</span>
+              <select id="increaseUnitSelect" class="size-unit-select" style="padding: 0.45rem 0.65rem; font-weight: 800; border-radius: var(--radius-sm); border: 1.5px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-size: 0.95rem;">
+                <option value="KB" selected>KB</option>
+                <option value="MB">MB</option>
+                <option value="GB">GB</option>
+              </select>
             </div>
           </div>
 
-          <div class="presets-row">
+          <div class="presets-row" style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
             <span class="preset-title">Presets:</span>
-            <button type="button" class="preset-btn" data-size="20">20 KB (Min SSC Sign)</button>
-            <button type="button" class="preset-btn" data-size="30">30 KB</button>
-            <button type="button" class="preset-btn active" data-size="45">45 KB (Safe for 20-50KB portals)</button>
-            <button type="button" class="preset-btn" data-size="60">60 KB</button>
-            <button type="button" class="preset-btn" data-size="100">100 KB</button>
+            <button type="button" class="preset-btn" data-size="20" data-unit="KB">20 KB</button>
+            <button type="button" class="preset-btn" data-size="50" data-unit="KB">50 KB</button>
+            <button type="button" class="preset-btn active" data-size="100" data-unit="KB">100 KB</button>
+            <button type="button" class="preset-btn" data-size="200" data-unit="KB">200 KB</button>
+            <button type="button" class="preset-btn" data-size="500" data-unit="KB">500 KB</button>
+            <button type="button" class="preset-btn" data-size="1" data-unit="MB">1 MB</button>
+            <button type="button" class="preset-btn" data-size="2" data-unit="MB">2 MB</button>
+            <button type="button" class="preset-btn" data-size="5" data-unit="MB">5 MB</button>
+            <button type="button" class="preset-btn" data-size="10" data-unit="MB">10 MB</button>
+            <button type="button" class="preset-btn" data-size="50" data-unit="MB">50 MB</button>
+            <button type="button" class="preset-btn" data-size="100" data-unit="MB">100 MB</button>
+            <button type="button" class="preset-btn" data-size="1" data-unit="GB">1 GB</button>
           </div>
         </div>
 
