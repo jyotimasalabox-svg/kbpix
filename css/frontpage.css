@@ -178,6 +178,23 @@
   padding: 2.75rem 1.5rem 1.75rem;
   max-width: 920px;
   margin: 0 auto;
+  position: relative;
+}
+
+.hero-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  max-width: 95vw;
+  height: 240px;
+  background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.2) 0%, rgba(139, 92, 246, 0.16) 45%, rgba(236, 72, 153, 0.1) 70%, transparent 75%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 50%;
 }
 
 .hero-pill-badge {
@@ -231,6 +248,8 @@
 /* Upload Panel Box */
 .upload-card-box {
   background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 2.5px dashed #93c5fd;
   border-radius: var(--radius-xl);
   padding: 3.25rem 2rem;
@@ -238,7 +257,7 @@
   transition: all 0.25s ease;
   cursor: pointer;
   position: relative;
-  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.06);
+  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.08);
   margin-bottom: 2rem;
 }
 
@@ -385,6 +404,8 @@
 
 .goal-action-card {
   background: var(--bg-card-secondary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 2px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.15rem 1rem;
@@ -450,6 +471,8 @@
    ========================================================================== */
 .active-photo-card {
   background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-xl);
   padding: 1.5rem;

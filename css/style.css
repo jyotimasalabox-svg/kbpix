@@ -18,12 +18,12 @@
   --danger: #ef4444;
   --warning: #f59e0b;
   
-  --bg-body: #f8fafc;
-  --bg-card: #ffffff;
-  --bg-card-secondary: #f1f5f9;
-  --bg-card-tertiary: #f8fafc;
-  --bg-input: #ffffff;
-  --border-color: #e2e8f0;
+  --bg-body: #f4f7fd;
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-secondary: rgba(243, 246, 253, 0.85);
+  --bg-card-tertiary: rgba(255, 255, 255, 0.95);
+  --bg-input: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(219, 228, 243, 0.9);
   --border-hover: #cbd5e1;
   --border-focus: #4f46e5;
 
@@ -31,10 +31,10 @@
   --text-muted: #64748b;
   --text-light: #94a3b8;
   --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.07), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
-  --shadow-xl: 0 20px 30px -10px rgba(79, 70, 229, 0.16);
+  --shadow-sm: 0 2px 10px rgba(79, 70, 229, 0.06);
+  --shadow-md: 0 8px 25px rgba(79, 70, 229, 0.08);
+  --shadow-lg: 0 16px 40px rgba(79, 70, 229, 0.12);
+  --shadow-xl: 0 24px 48px rgba(79, 70, 229, 0.18);
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -50,29 +50,29 @@
   --primary-hover: #4f46e5;
   --primary-dark: #3730a3;
   --primary-light: #1e1b4b;
-  --primary-glow: rgba(99, 102, 241, 0.28);
-  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --primary-glow: rgba(99, 102, 241, 0.35);
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
 
   --accent: #10b981;
   --accent-light: #064e3b;
   --accent-cyan: #38bdf8;
   
-  --bg-body: #0b0f19;
-  --bg-card: #131c2e;
-  --bg-card-secondary: #1a253c;
-  --bg-card-tertiary: #22304d;
-  --bg-input: #0f172a;
-  --border-color: #26354f;
-  --border-hover: #3b4d6e;
+  --bg-body: #070b14;
+  --bg-card: rgba(18, 26, 44, 0.85);
+  --bg-card-secondary: rgba(24, 35, 58, 0.82);
+  --bg-card-tertiary: rgba(30, 44, 72, 0.88);
+  --bg-input: rgba(15, 23, 42, 0.9);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
   --border-focus: #6366f1;
 
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-light: #64748b;
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.55);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 16px 45px rgba(0, 0, 0, 0.65);
 }
 
 *, *::before, *::after {
@@ -87,9 +87,26 @@ html, body {
   width: 100%;
 }
 
+/* ==========================================================================
+   Vibrant Ambient Wallpaper & Aurora Backdrop System
+   ========================================================================== */
+
+/* Light Mode: Radiant Aurora Pastel Wallpaper */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--bg-body);
+  background-color: #f4f7fd;
+  background-image: 
+    /* Dot Matrix Micro-Grid */
+    radial-gradient(rgba(99, 102, 241, 0.08) 1.2px, transparent 1.2px),
+    /* Radiant Aurora Mesh Glows */
+    radial-gradient(ellipse 800px 520px at 10% 0%, rgba(99, 102, 241, 0.18), transparent 70%),
+    radial-gradient(ellipse 700px 500px at 90% 8%, rgba(236, 72, 153, 0.16), transparent 70%),
+    radial-gradient(circle 650px at 50% 38%, rgba(14, 165, 233, 0.14), transparent 65%),
+    radial-gradient(ellipse 850px 520px at 12% 75%, rgba(16, 185, 129, 0.14), transparent 70%),
+    radial-gradient(ellipse 800px 550px at 88% 88%, rgba(139, 92, 246, 0.18), transparent 70%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  background-attachment: fixed;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
   color: var(--text-main);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -99,11 +116,30 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Dark Mode: Cyber Aurora Nebula Wallpaper */
+[data-theme="dark"] body {
+  background-color: #070b14;
+  background-image: 
+    /* Tech Matrix Micro-Grid */
+    radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px),
+    /* Intense Cosmic Aurora Orbs */
+    radial-gradient(ellipse 850px 600px at 12% -5%, rgba(99, 102, 241, 0.32), transparent 70%),
+    radial-gradient(ellipse 800px 550px at 88% 5%, rgba(236, 72, 153, 0.24), transparent 70%),
+    radial-gradient(circle 700px at 45% 42%, rgba(14, 165, 233, 0.2), transparent 65%),
+    radial-gradient(ellipse 850px 550px at 8% 72%, rgba(16, 185, 129, 0.2), transparent 70%),
+    radial-gradient(ellipse 950px 650px at 88% 90%, rgba(168, 85, 247, 0.26), transparent 70%);
+  background-size: 30px 30px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+  background-attachment: fixed;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
 /* ==========================================================================
    Navigation Bar
    ========================================================================== */
 .navbar {
   background-color: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
@@ -231,6 +267,8 @@ body {
    ========================================================================== */
 .tool-switcher-bar {
   background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   padding: 0.5rem 1rem;
   width: 100%;
@@ -295,6 +333,23 @@ body {
 .hero-section {
   text-align: center;
   margin-bottom: 2rem;
+  position: relative;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 550px;
+  max-width: 90vw;
+  height: 220px;
+  background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.22) 0%, rgba(236, 72, 153, 0.15) 45%, transparent 70%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 50%;
 }
 
 .hero-title {
@@ -306,7 +361,12 @@ body {
 }
 
 .hero-title span {
-  color: var(--primary);
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
 }
 
 .hero-subtitle {
@@ -346,6 +406,8 @@ body {
    ========================================================================== */
 .app-card {
   background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -1736,6 +1798,8 @@ input, select, textarea {
 
 .preview-stage-panel {
   background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
@@ -1860,6 +1924,8 @@ input, select, textarea {
 /* Sidebar Controls */
 .studio-controls-sidebar {
   background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
