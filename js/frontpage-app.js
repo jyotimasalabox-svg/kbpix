@@ -1,13 +1,12 @@
 /**
- * PhotoResize Pro — Modern Front Page Application Controller
- * Handles image selection, camera capture, presets, file size compression,
- * dimension resizing, format selection (JPG/PNG/WebP/PDF), cropping, and instant download.
+ * PhotoResize Pro — High-Performance Front Page Controller
+ * Direct 1-Click Fast Downloads, Interactive Goal Selector, Auto-Download on Process.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  // --- Application State ---
+  // --- State ---
   const state = {
     file: null,
     image: null,
@@ -16,10 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     originalSize: 0,
     originalFormat: 'image/jpeg',
     
+    // Goal & Preset
+    activeGoal: 'reduce-kb',
+    
     // File Size Settings
     targetSize: 50,
     unit: 'KB',
-    sizeMode: 'max', // 'max' (Strict under limit) or 'target' (Exact target)
+    sizeMode: 'max', // 'max' or 'target'
     
     // Dimension Settings
     dimUnit: 'px', // 'px', '%', 'cm', 'mm', 'in'
@@ -39,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     webpLossless: false,
     
     // PDF Settings
-    pdfPageSize: 'a4', // 'a4', 'letter', 'fit'
-    pdfOrientation: 'portrait', // 'portrait', 'landscape'
+    pdfPageSize: 'a4',
+    pdfOrientation: 'portrait',
     pdfMarginMm: 10,
     pdfFitToPage: true,
 
@@ -63,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSelectPhoto = document.getElementById('btnSelectPhoto');
   const btnTakePhoto = document.getElementById('btnTakePhoto');
 
+  // Goal Cards
+  const goalActionCards = document.querySelectorAll('.goal-action-card');
+
   // Active Photo Card
   const activePhotoCard = document.getElementById('activePhotoCard');
   const activePhotoThumb = document.getElementById('activePhotoThumb');
@@ -73,11 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnReplacePhoto = document.getElementById('btnReplacePhoto');
   const btnRemovePhoto = document.getElementById('btnRemovePhoto');
 
+  // 1-Click Fast Download Buttons
+  const btnFastDl20kb = document.getElementById('btnFastDl20kb');
+  const btnFastDl50kb = document.getElementById('btnFastDl50kb');
+  const btnFastDl100kb = document.getElementById('btnFastDl100kb');
+  const btnFastDlPdf = document.getElementById('btnFastDlPdf');
+  const btnFastDlJpg = document.getElementById('btnFastDlJpg');
+  const btnFastDlPng = document.getElementById('btnFastDlPng');
+
   // Main Editor Card
   const editorSettingsCard = document.getElementById('editorSettingsCard');
-
-  // Presets
-  const presetChips = document.querySelectorAll('.preset-chip-btn');
 
   // File Size Elements
   const targetSizeInput = document.getElementById('targetSizeInput');
@@ -120,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cropper & Edit Elements
   const frontCropCanvas = document.getElementById('frontCropCanvas');
+  const cropDetailsSection = document.getElementById('cropDetailsSection');
   const cropRatioBtns = document.querySelectorAll('.crop-ratio-btn');
   const btnCropRotateCCW = document.getElementById('btnCropRotateCCW');
   const btnCropRotateCW = document.getElementById('btnCropRotateCW');
@@ -129,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cropFineRotateVal = document.getElementById('cropFineRotateVal');
   const btnCropReset = document.getElementById('btnCropReset');
 
-  // Process CTA
+  // Primary Action Button
   const btnProcessMain = document.getElementById('btnProcessMain');
   const processBtnLabel = document.getElementById('processBtnLabel');
   const processingProgressBar = document.getElementById('processingProgressBar');
@@ -150,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resCompareCompImg = document.getElementById('resCompareCompImg');
   const resCompareSliderLine = document.getElementById('resCompareSliderLine');
 
-  // Camera Modal Elements
+  // Camera Modal
   const cameraModal = document.getElementById('cameraModal');
   const cameraVideo = document.getElementById('cameraVideo');
   const btnCloseCamera = document.getElementById('btnCloseCamera');
@@ -165,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const themeText = document.getElementById('themeText');
 
   // =========================================================================
-  // 1. Theme & Localization
+  // 1. Theme Initialization
   // =========================================================================
   function initTheme() {
     const saved = localStorage.getItem('photo_theme') ||
@@ -289,6 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dimWidthInput.value = state.dimWidth;
       dimHeightInput.value = state.dimHeight;
       updateCalculatedPixels();
+      updateProcessButtonLabel();
 
       // Initialize Interactive Cropper
       if (window.InteractiveCropper && frontCropCanvas) {
@@ -296,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.cropper.loadImage(url);
       }
 
-      // Smooth scroll to settings
+      // Smooth scroll to active photo card
       activePhotoCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     };
     img.src = url;
@@ -388,87 +400,179 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 4. Quick Presets (Passport, Signature, Govt, etc.)
+  // 4. Interactive Goal Cards ("भैया, आपको फोटो किसमें बनानी है?")
   // =========================================================================
-  presetChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      presetChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
+  goalActionCards.forEach(card => {
+    card.addEventListener('click', () => {
+      goalActionCards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
 
-      const preset = chip.dataset.preset;
-      applyPresetConfig(preset);
+      const goal = card.dataset.goal;
+      state.activeGoal = goal;
+      applyGoalSelection(goal);
+
+      // If user hasn't uploaded a photo yet, prompt them to pick one
+      if (!state.image) {
+        mainFileInput.click();
+      }
     });
   });
 
-  function applyPresetConfig(preset) {
-    switch (preset) {
-      case 'passport':
-        setTargetSize(50, 'KB');
+  function applyGoalSelection(goal) {
+    switch (goal) {
+      case 'reduce-kb':
         setFormat('image/jpeg');
-        setDimensionUnit('cm');
-        dimWidthInput.value = '3.5';
-        dimHeightInput.value = '4.5';
-        state.dimDpi = 300;
-        if (dpiSelect) dpiSelect.value = '300';
-        updateCalculatedPixels();
-        if (state.cropper) state.cropper.setAspectRatio(3.5 / 4.5);
+        setTargetSize(50, 'KB');
         break;
 
-      case 'signature':
-        setTargetSize(20, 'KB');
+      case 'convert-jpg':
         setFormat('image/jpeg');
-        setDimensionUnit('px');
-        dimWidthInput.value = '280';
-        dimHeightInput.value = '120';
-        updateCalculatedPixels();
-        if (state.cropper) state.cropper.setAspectRatio(280 / 120);
         break;
 
-      case 'govt':
-        setTargetSize(50, 'KB');
+      case 'convert-pdf':
+        setFormat('application/pdf');
+        break;
+
+      case 'convert-png':
+        setFormat('image/png');
+        break;
+
+      case 'crop-rotate':
+        if (cropDetailsSection) cropDetailsSection.open = true;
+        cropDetailsSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        break;
+
+      case 'govt-exam':
         setFormat('image/jpeg');
+        setTargetSize(50, 'KB');
         setDimensionUnit('px');
         dimWidthInput.value = '800';
         dimHeightInput.value = '1000';
         updateCalculatedPixels();
         break;
 
-      case 'aadhaar':
-        setTargetSize(100, 'KB');
-        setFormat('image/jpeg');
-        setDimensionUnit('px');
-        dimWidthInput.value = '1200';
-        dimHeightInput.value = '1600';
-        updateCalculatedPixels();
-        break;
-
-      case 'job':
-        setTargetSize(100, 'KB');
-        setFormat('image/jpeg');
-        setDimensionUnit('px');
-        dimWidthInput.value = '600';
-        dimHeightInput.value = '800';
-        updateCalculatedPixels();
-        break;
-
-      case 'college':
-        setTargetSize(200, 'KB');
-        setFormat('image/jpeg');
-        setDimensionUnit('px');
-        dimWidthInput.value = '800';
-        dimHeightInput.value = '1000';
-        updateCalculatedPixels();
-        break;
-
-      default:
-        // Custom
-        setTargetSize(100, 'KB');
+      case 'convert-webp':
+        setFormat('image/webp');
         break;
     }
+    updateProcessButtonLabel();
   }
 
   // =========================================================================
-  // 5. File Size Controls
+  // 5. DIRECT 1-CLICK FAST DOWNLOAD PRESETS
+  // =========================================================================
+  async function triggerDirectDownload(presetOptions) {
+    if (!state.image) {
+      mainFileInput.click();
+      return;
+    }
+
+    const { targetKB, format, unit = 'KB' } = presetOptions;
+    btnProcessMain.disabled = true;
+    processingProgressBar.style.display = 'block';
+    processingProgressFill.style.width = '20%';
+    processingProgressText.textContent = `Instant Download: Preparing ${format.split('/')[1] || 'image'} (${targetKB ? targetKB + ' ' + unit : 'Original'})...`;
+
+    try {
+      let canvas = null;
+      if (state.cropper) {
+        canvas = state.cropper.getCroppedCanvas({ maxWidth: 2400 });
+      }
+      if (!canvas) {
+        canvas = document.createElement('canvas');
+        canvas.width = state.originalWidth;
+        canvas.height = state.originalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(state.image, 0, 0);
+      }
+
+      processingProgressFill.style.width = '60%';
+
+      let blob = null;
+      let filenameExt = '.jpg';
+
+      if (format === 'application/pdf') {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+        }
+        const doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        const imgData = canvas.toDataURL('image/jpeg', 0.92);
+        const pageW = doc.internal.pageSize.getWidth();
+        const pageH = doc.internal.pageSize.getHeight();
+        const ratio = canvas.width / canvas.height;
+        const availW = pageW - 20;
+        let drawW = availW;
+        let drawH = drawW / ratio;
+        if (drawH > pageH - 20) {
+          drawH = pageH - 20;
+          drawW = drawH * ratio;
+        }
+        doc.addImage(imgData, 'JPEG', 10, 10, drawW, drawH);
+        blob = doc.output('blob');
+        filenameExt = '.pdf';
+
+      } else if (format === 'image/png') {
+        blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+        filenameExt = '.png';
+
+      } else {
+        // JPEG
+        const tempBlob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.95));
+        const tempFile = new File([tempBlob], 'temp.jpg', { type: 'image/jpeg' });
+
+        const res = await ImageCompressor.compressImage(tempFile, {
+          targetKB: targetKB || 100,
+          format: 'image/jpeg',
+          strictUnder: true
+        });
+        blob = res.blob;
+        filenameExt = '.jpg';
+      }
+
+      processingProgressFill.style.width = '100%';
+      processingProgressText.textContent = 'Ready! Downloading now...';
+
+      // Immediate Download Trigger!
+      const base = state.file ? state.file.name.replace(/\.[^/.]+$/, '') : 'photo';
+      const label = targetKB ? `_${targetKB}${unit}` : '';
+      const filename = `${base}_resized${label}${filenameExt}`;
+
+      const dlUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = dlUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Also display result card
+      state.processedBlob = blob;
+      state.processedUrl = dlUrl;
+      state.processedSize = blob.size;
+      state.processedWidth = canvas.width;
+      state.processedHeight = canvas.height;
+      displayResultCard();
+
+    } catch (err) {
+      console.error(err);
+      alert('Error during instant download: ' + err.message);
+    } finally {
+      setTimeout(() => {
+        processingProgressBar.style.display = 'none';
+        btnProcessMain.disabled = false;
+      }, 500);
+    }
+  }
+
+  if (btnFastDl20kb) btnFastDl20kb.addEventListener('click', () => triggerDirectDownload({ targetKB: 20, format: 'image/jpeg', unit: 'KB' }));
+  if (btnFastDl50kb) btnFastDl50kb.addEventListener('click', () => triggerDirectDownload({ targetKB: 50, format: 'image/jpeg', unit: 'KB' }));
+  if (btnFastDl100kb) btnFastDl100kb.addEventListener('click', () => triggerDirectDownload({ targetKB: 100, format: 'image/jpeg', unit: 'KB' }));
+  if (btnFastDlPdf) btnFastDlPdf.addEventListener('click', () => triggerDirectDownload({ format: 'application/pdf' }));
+  if (btnFastDlJpg) btnFastDlJpg.addEventListener('click', () => triggerDirectDownload({ targetKB: state.targetSize || 100, format: 'image/jpeg' }));
+  if (btnFastDlPng) btnFastDlPng.addEventListener('click', () => triggerDirectDownload({ format: 'image/png' }));
+
+  // =========================================================================
+  // 6. File Size Controls
   // =========================================================================
   function setTargetSize(val, unit = 'KB') {
     state.targetSize = parseFloat(val) || 50;
@@ -476,17 +580,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (targetSizeInput) targetSizeInput.value = state.targetSize;
     if (targetUnitSelect) targetUnitSelect.value = state.unit;
     highlightMatchingSizePreset();
+    updateProcessButtonLabel();
   }
 
   function highlightMatchingSizePreset() {
     sizePresetBtns.forEach(btn => {
       const s = parseFloat(btn.dataset.size);
       const u = btn.dataset.unit;
-      if (s === state.targetSize && u === state.unit) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+      btn.classList.toggle('active', s === state.targetSize && u === state.unit);
     });
   }
 
@@ -496,6 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isNaN(v) || v <= 0) v = 50;
       state.targetSize = v;
       highlightMatchingSizePreset();
+      updateProcessButtonLabel();
     });
   }
 
@@ -503,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
     targetUnitSelect.addEventListener('change', () => {
       state.unit = targetUnitSelect.value;
       highlightMatchingSizePreset();
+      updateProcessButtonLabel();
     });
   }
 
@@ -521,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // =========================================================================
-  // 6. Dimension Settings & Calculation
+  // 7. Dimension Settings & Calculation
   // =========================================================================
   unitTabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -540,7 +643,6 @@ document.addEventListener('DOMContentLoaded', () => {
     dpiSelectorGroup.style.display = isPhysical ? 'flex' : 'none';
     percentShortcutRow.style.display = (unit === '%') ? 'flex' : 'none';
 
-    // Recalculate input values into the selected unit
     if (unit === 'px') {
       dimWidthInput.value = Math.round(state.dimWidth || state.originalWidth);
       dimHeightInput.value = Math.round(state.dimHeight || state.originalHeight);
@@ -561,7 +663,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCalculatedPixels();
   }
 
-  // Aspect ratio lock toggle
   if (btnToggleRatioLock) {
     btnToggleRatioLock.addEventListener('click', () => {
       state.aspectRatioLocked = !state.aspectRatioLocked;
@@ -643,16 +744,13 @@ document.addEventListener('DOMContentLoaded', () => {
       calculatedPixelsNote.textContent = `Result: ${pxW} × ${pxH} px (Aspect ${((pxW / pxH) || 1).toFixed(2)}:1)`;
     }
 
-    // Check enlargement warning
-    if (pxW > state.originalWidth || pxH > state.originalHeight) {
-      enlargementAlertBox.style.display = 'flex';
-    } else {
-      enlargementAlertBox.style.display = 'none';
+    if (enlargementAlertBox) {
+      enlargementAlertBox.style.display = (pxW > state.originalWidth || pxH > state.originalHeight) ? 'flex' : 'none';
     }
   }
 
   // =========================================================================
-  // 7. Output Format Selector (JPG, PNG, WebP, PDF)
+  // 8. Output Format Selector (JPG, PNG, WebP, PDF)
   // =========================================================================
   formatCardBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -666,15 +764,21 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.classList.toggle('active', btn.dataset.format === fmt);
     });
 
-    // Toggle format-specific panels
     optPanelJpg.style.display = (fmt === 'image/jpeg') ? 'block' : 'none';
     optPanelPng.style.display = (fmt === 'image/png') ? 'block' : 'none';
     optPanelWebp.style.display = (fmt === 'image/webp') ? 'block' : 'none';
     optPanelPdf.style.display = (fmt === 'application/pdf') ? 'block' : 'none';
 
-    // Update process button label
-    if (processBtnLabel) {
-      processBtnLabel.textContent = fmt === 'application/pdf' ? 'Process & Create PDF' : 'Process Image & Download';
+    updateProcessButtonLabel();
+  }
+
+  function updateProcessButtonLabel() {
+    if (!processBtnLabel) return;
+    if (state.format === 'application/pdf') {
+      processBtnLabel.innerHTML = '⚡ PDF में बदलें व डाउनलोड करें (CREATE &amp; DOWNLOAD PDF)';
+    } else {
+      const ext = state.format === 'image/png' ? 'PNG' : (state.format === 'image/webp' ? 'WebP' : 'JPG');
+      processBtnLabel.innerHTML = `⬇️ अभी डाउनलोड करें (PROCESS &amp; DOWNLOAD NOW — ${state.targetSize} ${state.unit} ${ext})`;
     }
   }
 
@@ -686,17 +790,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (jpgWhiteBgCheck) {
-    jpgWhiteBgCheck.addEventListener('change', (e) => {
-      state.jpgWhiteBg = e.target.checked;
-    });
-  }
-
-  if (pngTransparencyCheck) {
-    pngTransparencyCheck.addEventListener('change', (e) => {
-      state.pngPreserveTransparency = e.target.checked;
-    });
-  }
+  if (jpgWhiteBgCheck) jpgWhiteBgCheck.addEventListener('change', (e) => state.jpgWhiteBg = e.target.checked);
+  if (pngTransparencyCheck) pngTransparencyCheck.addEventListener('change', (e) => state.pngPreserveTransparency = e.target.checked);
 
   if (webpQualitySlider && webpQualityVal) {
     webpQualitySlider.addEventListener('input', (e) => {
@@ -706,38 +801,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  webpModeRadios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      state.webpLossless = radio.value === 'lossless';
-    });
-  });
+  webpModeRadios.forEach(r => r.addEventListener('change', () => state.webpLossless = r.value === 'lossless'));
 
-  if (pdfPageSizeSelect) {
-    pdfPageSizeSelect.addEventListener('change', () => {
-      state.pdfPageSize = pdfPageSizeSelect.value;
-    });
-  }
-
-  if (pdfOrientationSelect) {
-    pdfOrientationSelect.addEventListener('change', () => {
-      state.pdfOrientation = pdfOrientationSelect.value;
-    });
-  }
-
-  if (pdfMarginSelect) {
-    pdfMarginSelect.addEventListener('change', () => {
-      state.pdfMarginMm = parseInt(pdfMarginSelect.value, 10);
-    });
-  }
-
-  if (pdfFitCheck) {
-    pdfFitCheck.addEventListener('change', (e) => {
-      state.pdfFitToPage = e.target.checked;
-    });
-  }
+  if (pdfPageSizeSelect) pdfPageSizeSelect.addEventListener('change', () => state.pdfPageSize = pdfPageSizeSelect.value);
+  if (pdfOrientationSelect) pdfOrientationSelect.addEventListener('change', () => state.pdfOrientation = pdfOrientationSelect.value);
+  if (pdfMarginSelect) pdfMarginSelect.addEventListener('change', () => state.pdfMarginMm = parseInt(pdfMarginSelect.value, 10));
+  if (pdfFitCheck) pdfFitCheck.addEventListener('change', (e) => state.pdfFitToPage = e.target.checked);
 
   // =========================================================================
-  // 8. Smart Cropping & Editing Controls
+  // 9. Smart Cropping & Editing Controls
   // =========================================================================
   cropRatioBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -751,50 +823,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (btnCropRotateCCW) {
-    btnCropRotateCCW.addEventListener('click', () => {
-      if (state.cropper) {
-        state.cropper.rotate90(false);
-        state.cropModified = true;
-      }
-    });
-  }
-
-  if (btnCropRotateCW) {
-    btnCropRotateCW.addEventListener('click', () => {
-      if (state.cropper) {
-        state.cropper.rotate90(true);
-        state.cropModified = true;
-      }
-    });
-  }
-
-  if (btnCropFlipH) {
-    btnCropFlipH.addEventListener('click', () => {
-      if (state.cropper) {
-        state.cropper.toggleFlipH();
-        state.cropModified = true;
-      }
-    });
-  }
-
-  if (btnCropFlipV) {
-    btnCropFlipV.addEventListener('click', () => {
-      if (state.cropper) {
-        state.cropper.toggleFlipV();
-        state.cropModified = true;
-      }
-    });
-  }
+  if (btnCropRotateCCW) btnCropRotateCCW.addEventListener('click', () => state.cropper && state.cropper.rotate90(false));
+  if (btnCropRotateCW) btnCropRotateCW.addEventListener('click', () => state.cropper && state.cropper.rotate90(true));
+  if (btnCropFlipH) btnCropFlipH.addEventListener('click', () => state.cropper && state.cropper.toggleFlipH());
+  if (btnCropFlipV) btnCropFlipV.addEventListener('click', () => state.cropper && state.cropper.toggleFlipV());
 
   if (cropFineRotate && cropFineRotateVal) {
     cropFineRotate.addEventListener('input', (e) => {
       const deg = parseFloat(e.target.value);
       cropFineRotateVal.textContent = `${deg > 0 ? '+' : ''}${deg}°`;
-      if (state.cropper) {
-        state.cropper.setFineRotation(deg);
-        state.cropModified = true;
-      }
+      if (state.cropper) state.cropper.setFineRotation(deg);
     });
   }
 
@@ -802,7 +840,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCropReset.addEventListener('click', () => {
       if (state.cropper) {
         state.cropper.resetTransform();
-        state.cropModified = false;
         if (cropFineRotate) cropFineRotate.value = 0;
         if (cropFineRotateVal) cropFineRotateVal.textContent = '0°';
       }
@@ -810,7 +847,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 9. Primary Action: Process Image & Download
+  // 10. Primary Action: Process Image & Direct Download
   // =========================================================================
   if (btnProcessMain) {
     btnProcessMain.addEventListener('click', async () => {
@@ -819,16 +856,14 @@ document.addEventListener('DOMContentLoaded', () => {
       state.isProcessing = true;
       btnProcessMain.disabled = true;
       processingProgressBar.style.display = 'block';
-      processingProgressFill.style.width = '10%';
-      processingProgressText.textContent = 'Validating settings & preparing photo...';
+      processingProgressFill.style.width = '15%';
+      processingProgressText.textContent = 'Applying crop, transform & dimensions...';
 
       try {
-        // Step 1: Extract cropped canvas or use original image
         let workingCanvas = null;
         if (state.cropper) {
           workingCanvas = state.cropper.getCroppedCanvas({ maxWidth: 3000 });
         }
-
         if (!workingCanvas) {
           workingCanvas = document.createElement('canvas');
           workingCanvas.width = state.originalWidth;
@@ -837,10 +872,9 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.drawImage(state.image, 0, 0);
         }
 
-        processingProgressFill.style.width = '35%';
-        processingProgressText.textContent = 'Resizing dimensions to specified width and height...';
+        processingProgressFill.style.width = '40%';
+        processingProgressText.textContent = 'Scaling pixels & setting aspect ratio...';
 
-        // Step 2: Scale to specified dimensions
         const { pxW, pxH } = getCalculatedPixels();
         const scaledCanvas = document.createElement('canvas');
         scaledCanvas.width = pxW;
@@ -855,18 +889,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         sCtx.drawImage(workingCanvas, 0, 0, pxW, pxH);
 
-        processingProgressFill.style.width = '65%';
-        processingProgressText.textContent = `Optimizing compression and encoding ${state.format.split('/')[1] || 'output'}...`;
+        processingProgressFill.style.width = '70%';
+        processingProgressText.textContent = `Optimizing compression for ${state.format.split('/')[1] || 'output'}...`;
 
-        // Step 3: Handle Format & Compression
         let outBlob = null;
+        let ext = '.jpg';
 
         if (state.format === 'application/pdf') {
-          // --- PDF Generation via jsPDF ---
           if (!window.jspdf || !window.jspdf.jsPDF) {
             await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
           }
-
           const doc = new window.jspdf.jsPDF({
             orientation: state.pdfOrientation,
             unit: 'mm',
@@ -890,21 +922,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const posX = margin + (availW - drawW) / 2;
           const posY = margin + (availH - drawH) / 2;
-
           const imgData = scaledCanvas.toDataURL('image/jpeg', 0.92);
           doc.addImage(imgData, 'JPEG', posX, posY, drawW, drawH);
           outBlob = doc.output('blob');
+          ext = '.pdf';
 
         } else if (state.format === 'image/png') {
-          // --- PNG Export ---
-          outBlob = await new Promise(res => scaledCanvas.toBlob(res, 'image/png'));
+          outBlob = await new Promise(r => scaledCanvas.toBlob(r, 'image/png'));
+          ext = '.png';
 
         } else {
-          // --- JPEG / WebP Precision Compression ---
+          // JPEG / WebP Precision Compression
           const targetKB = state.unit === 'MB' ? state.targetSize * 1024 : state.targetSize;
-          
-          // Temporary image file to pass to ImageCompressor
-          const tempBlob = await new Promise(res => scaledCanvas.toBlob(res, state.format, 0.95));
+          const tempBlob = await new Promise(r => scaledCanvas.toBlob(r, state.format, 0.95));
           const tempFile = new File([tempBlob], 'temp', { type: state.format });
 
           const compressResult = await ImageCompressor.compressImage(tempFile, {
@@ -912,18 +942,18 @@ document.addEventListener('DOMContentLoaded', () => {
             format: state.format,
             strictUnder: state.sizeMode === 'max',
             onProgress: (pct, msg) => {
-              processingProgressFill.style.width = `${65 + Math.round((pct / 100) * 30)}%`;
+              processingProgressFill.style.width = `${70 + Math.round((pct / 100) * 25)}%`;
               processingProgressText.textContent = msg;
             }
           });
 
           outBlob = compressResult.blob;
+          ext = state.format === 'image/webp' ? '.webp' : '.jpg';
         }
 
         processingProgressFill.style.width = '100%';
-        processingProgressText.textContent = 'Processing completed successfully!';
+        processingProgressText.textContent = 'Completed! Starting direct download...';
 
-        // Update State
         state.processedBlob = outBlob;
         if (state.processedUrl) URL.revokeObjectURL(state.processedUrl);
         state.processedUrl = URL.createObjectURL(outBlob);
@@ -931,7 +961,17 @@ document.addEventListener('DOMContentLoaded', () => {
         state.processedHeight = pxH;
         state.processedSize = outBlob.size;
 
-        // Display Result Card
+        // DIRECT AUTOMATIC DOWNLOAD TRIGGER: No waiting, instant download!
+        const baseName = state.file ? state.file.name.replace(/\.[^/.]+$/, '') : 'photo';
+        const filename = `${baseName}_resized_${state.targetSize}${state.unit}${ext}`;
+        const a = document.createElement('a');
+        a.href = state.processedUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Display Result Card with comparison and re-download options
         displayResultCard();
 
       } catch (err) {
@@ -942,7 +982,7 @@ document.addEventListener('DOMContentLoaded', () => {
           processingProgressBar.style.display = 'none';
           btnProcessMain.disabled = false;
           state.isProcessing = false;
-        }, 600);
+        }, 500);
       }
     });
   }
@@ -950,28 +990,25 @@ document.addEventListener('DOMContentLoaded', () => {
   function displayResultCard() {
     resultDisplayCard.style.display = 'flex';
 
-    // Stats calculations
     const origKB = ImageCompressor.formatBytes(state.originalSize);
     const compKB = ImageCompressor.formatBytes(state.processedSize);
     let diffText = '';
 
     if (state.processedSize < state.originalSize) {
       const pct = Math.round(((state.originalSize - state.processedSize) / state.originalSize) * 100);
-      diffText = `<span class="saved-pill" style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 0.2rem 0.6rem; border-radius: 9999px;">${pct}% Saved</span>`;
+      diffText = `<span class="saved-pill" style="background: rgba(16, 185, 129, 0.15); color: #059669; padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight:800;">${pct}% Saved</span>`;
     }
 
     resultStatsSummary.innerHTML = `
       <span style="color: var(--text-muted);">Original: <strong>${origKB}</strong> (${state.originalWidth}×${state.originalHeight}px)</span>
-      <span style="color: #2563eb;">➔</span>
-      <span>Output: <strong style="color: var(--accent);">${compKB}</strong> (${state.processedWidth}×${state.processedHeight}px)</span>
+      <span style="color: #10b981;">➔</span>
+      <span>Output: <strong style="color: #059669;">${compKB}</strong> (${state.processedWidth}×${state.processedHeight}px)</span>
       ${diffText}
     `;
 
-    // Download button label
     const ext = state.format === 'application/pdf' ? 'PDF' : (state.format.split('/')[1] || 'Image').toUpperCase();
-    btnDownloadResultLabel.textContent = `Download ${ext} (${compKB})`;
+    btnDownloadResultLabel.textContent = `Download Again (${ext} - ${compKB})`;
 
-    // Comparison slider setup
     if (state.format !== 'application/pdf') {
       resCompareContainer.style.display = 'block';
       resCompareOrigImg.src = state.cropper ? state.cropper.canvas.toDataURL() : state.image.src;
@@ -981,12 +1018,11 @@ document.addEventListener('DOMContentLoaded', () => {
       resCompareContainer.style.display = 'none';
     }
 
-    // Scroll to result card
     resultDisplayCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   // =========================================================================
-  // 10. Instant Download Actions
+  // 11. Re-Download & Action Handlers
   // =========================================================================
   if (btnDownloadResult) {
     btnDownloadResult.addEventListener('click', () => {
@@ -999,7 +1035,6 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (state.format === 'application/pdf') ext = '.pdf';
 
       const filename = `${baseName}_resized_${state.targetSize}${state.unit}${ext}`;
-
       const a = document.createElement('a');
       a.href = state.processedUrl;
       a.download = filename;
@@ -1019,7 +1054,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btnStartNewPhoto.addEventListener('click', resetWorkspace);
   }
 
-  // Comparison slider dragging
   function setSliderPosition(percent) {
     percent = Math.max(0, Math.min(100, percent));
     resCompareSliderLine.style.left = percent + '%';
@@ -1051,7 +1085,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('touchend', () => { isDraggingSlider = false; });
   }
 
-  // Dynamic script loader helper
   function loadScript(src) {
     return new Promise((resolve, reject) => {
       const s = document.createElement('script');
