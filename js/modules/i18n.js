@@ -249,8 +249,49 @@ class I18nManager {
 
 // Global instance
 window.i18n = new I18nManager();
+
+// Universal Theme Manager
+window.ThemeManager = {
+  getTheme() {
+    return localStorage.getItem('photo_theme') || 'light';
+  },
+  apply(theme) {
+    const isDark = theme === 'dark';
+    if (isDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('photo_theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('photo_theme', 'light');
+    }
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
+    if (themeText) themeText.textContent = isDark ? 'Light' : 'Dark';
+  },
+  toggle() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    this.apply(isDark ? 'light' : 'dark');
+  },
+  init() {
+    this.apply(this.getTheme());
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn && !btn.dataset.themeBound) {
+      btn.dataset.themeBound = 'true';
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.ThemeManager.toggle();
+      });
+    }
+  }
+};
+
+// Immediate early run to prevent any theme flicker
+window.ThemeManager.apply(window.ThemeManager.getTheme());
+
 document.addEventListener('DOMContentLoaded', () => {
   window.i18n.init();
+  window.ThemeManager.init();
 
   // Universal Mobile Sidebar Handler across all tools
   const btnToggle = document.getElementById('btnToggleSidebar');

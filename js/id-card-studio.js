@@ -63,6 +63,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Print & Export
   const btnPrintA4 = document.getElementById('btnPrintIdA4');
+
+  // Theme Toggle Support
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeText = document.getElementById('themeText');
+
+  function applyTheme(t) {
+    if (t === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      if (themeIcon) themeIcon.textContent = '☀️';
+      if (themeText) themeText.textContent = 'Light';
+      localStorage.setItem('photo_theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+      if (themeIcon) themeIcon.textContent = '🌙';
+      if (themeText) themeText.textContent = 'Dark';
+      localStorage.setItem('photo_theme', 'light');
+    }
+  }
+
+  const savedTheme = localStorage.getItem('photo_theme') || 'light';
+  applyTheme(savedTheme);
+
+  if (themeToggleBtn && !themeToggleBtn.dataset.themeBound) {
+    themeToggleBtn.dataset.themeBound = 'true';
+    themeToggleBtn.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      applyTheme(isDark ? 'light' : 'dark');
+    });
+  }
   const btnExportPdf = document.getElementById('btnExportIdPdf');
   const btnDownloadImage = document.getElementById('btnDownloadIdImage');
 
