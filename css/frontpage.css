@@ -1147,3 +1147,114 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   Horizontal Scrollable Workspace Tabs (Size, Format, Crop, Dimensions)
+   ========================================================================== */
+.workspace-tabs-container {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.workspace-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0.25rem 0.2rem 0.5rem;
+}
+
+.workspace-tabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.ws-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.ws-tab-btn i {
+  font-size: 1.15rem;
+  color: var(--primary-blue);
+  transition: transform 0.2s ease;
+}
+
+.ws-tab-btn:hover {
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+  background: var(--primary-light);
+  transform: translateY(-1px);
+}
+
+.ws-tab-btn.active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.ws-tab-btn.active i {
+  color: #ffffff;
+}
+
+.ws-tab-pane {
+  animation: fadeInPane 0.25s ease-out;
+}
+
+@keyframes fadeInPane {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Camera Overlay Safeguard (Prevent inline floating box above footer) */
+.camera-modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(15, 23, 42, 0.78) !important;
+  backdrop-filter: blur(6px) !important;
+  z-index: 9999 !important;
+  display: none !important;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.camera-modal-overlay.active {
+  display: flex !important;
+}
+
+.camera-modal-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 620px;
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+}
+

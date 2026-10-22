@@ -65,9 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSelectPhoto = document.getElementById('btnSelectPhoto');
   const btnTakePhoto = document.getElementById('btnTakePhoto');
 
-  // Goal Cards
-  const goalActionCards = document.querySelectorAll('.goal-action-card');
-
   // Active Photo Card
   const activePhotoCard = document.getElementById('activePhotoCard');
   const activePhotoThumb = document.getElementById('activePhotoThumb');
@@ -207,6 +204,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initTheme();
 
+  // Sidebar Mobile Toggle
+  const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const appSidebar = document.getElementById('appSidebar');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+  function toggleSidebar() {
+    if (appSidebar) {
+      const isOpen = appSidebar.classList.toggle('drawer-open');
+      if (sidebarBackdrop) sidebarBackdrop.classList.toggle('active', isOpen);
+    }
+  }
+
+  function closeSidebar() {
+    if (appSidebar) appSidebar.classList.remove('drawer-open');
+    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
+  }
+
+  if (btnToggleSidebar) btnToggleSidebar.addEventListener('click', toggleSidebar);
+  if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', toggleSidebar);
+  if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
+
   // =========================================================================
   // 2. Upload & File Handling
   // =========================================================================
@@ -295,6 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
       editorSettingsCard.style.display = 'flex';
       uploadCardBox.style.display = 'none';
       resultDisplayCard.style.display = 'none';
+      switchWorkspaceTab('tab-size');
 
       // Initialize Dimension Inputs
       dimWidthInput.value = state.dimWidth;
@@ -400,63 +420,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // =========================================================================
-  // 4. Interactive Goal Cards ("भैया, आपको फोटो किसमें बनानी है?")
+  // 4. Horizontal Scrollable Workspace Tabs (Size, Format, Crop, Dimensions)
   // =========================================================================
-  goalActionCards.forEach(card => {
-    card.addEventListener('click', () => {
-      goalActionCards.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
+  const wsTabBtns = document.querySelectorAll('.ws-tab-btn');
+  const wsTabPanes = document.querySelectorAll('.ws-tab-pane');
 
-      const goal = card.dataset.goal;
-      state.activeGoal = goal;
-      applyGoalSelection(goal);
+  function switchWorkspaceTab(tabId) {
+    wsTabBtns.forEach(btn => {
+      const isTarget = btn.dataset.tab === tabId;
+      btn.classList.toggle('active', isTarget);
+      btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+    });
 
-      // If user hasn't uploaded a photo yet, prompt them to pick one
-      if (!state.image) {
-        mainFileInput.click();
+    wsTabPanes.forEach(pane => {
+      if (pane.id === tabId) {
+        pane.style.display = 'block';
+      } else {
+        pane.style.display = 'none';
       }
     });
-  });
 
-  function applyGoalSelection(goal) {
-    switch (goal) {
-      case 'reduce-kb':
-        setFormat('image/jpeg');
-        setTargetSize(50, 'KB');
-        break;
-
-      case 'convert-jpg':
-        setFormat('image/jpeg');
-        break;
-
-      case 'convert-pdf':
-        setFormat('application/pdf');
-        break;
-
-      case 'convert-png':
-        setFormat('image/png');
-        break;
-
-      case 'crop-rotate':
-        if (cropDetailsSection) cropDetailsSection.open = true;
-        cropDetailsSection?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        break;
-
-      case 'govt-exam':
-        setFormat('image/jpeg');
-        setTargetSize(50, 'KB');
-        setDimensionUnit('px');
-        dimWidthInput.value = '800';
-        dimHeightInput.value = '1000';
-        updateCalculatedPixels();
-        break;
-
-      case 'convert-webp':
-        setFormat('image/webp');
-        break;
+    if (tabId === 'tab-crop' && state.cropper) {
+      setTimeout(() => {
+        if (state.cropper && state.cropper.render) state.cropper.render();
+      }, 50);
     }
-    updateProcessButtonLabel();
   }
+
+  wsTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchWorkspaceTab(btn.dataset.tab);
+    });
+  });
 
   // =========================================================================
   // 5. DIRECT 1-CLICK FAST DOWNLOAD PRESETS
