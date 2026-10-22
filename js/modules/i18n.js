@@ -261,15 +261,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeSidebar() {
     if (sidebar) sidebar.classList.remove('drawer-open');
     if (backdrop) backdrop.classList.remove('active');
+    document.body.style.overflow = '';
   }
 
   function openSidebar() {
     if (sidebar) sidebar.classList.add('drawer-open');
     if (backdrop) backdrop.classList.add('active');
+    if (window.innerWidth <= 900) {
+      document.body.style.overflow = 'hidden';
+    }
   }
 
   if (btnToggle && sidebar) {
     btnToggle.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       if (sidebar.classList.contains('drawer-open')) closeSidebar();
       else openSidebar();
@@ -278,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnClose) {
     btnClose.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       closeSidebar();
     });
@@ -291,5 +297,9 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => {
       if (window.innerWidth <= 900) closeSidebar();
     });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSidebar();
   });
 });

@@ -86,16 +86,30 @@ class OCREngine {
       // In Tesseract v5, multi-language must be an array (e.g. ['eng', 'hin']) to download each traineddata
       const langParam = typeof lang === 'string' && lang.includes('+') ? lang.split('+') : lang;
 
-      const worker = await Tesseract.createWorker(langParam, 1, {
-        logger: m => {
-          if (m.status === 'recognizing text' && onProgress) {
-            const pct = Math.round(m.progress * 100);
-            onProgress(pct, `Scanning & recognizing text (${pct}%)...`);
-          } else if (onProgress && m.status) {
-            onProgress(25, `${m.status}...`);
+      let worker;
+      try {
+        worker = await Tesseract.createWorker(langParam, 1, {
+          logger: m => {
+            if (m.status === 'recognizing text' && onProgress) {
+              const pct = Math.round(m.progress * 100);
+              onProgress(pct, `Scanning & recognizing text (${pct}%)...`);
+            } else if (onProgress && m.status) {
+              onProgress(25, `${m.status}...`);
+            }
           }
-        }
-      });
+        });
+      } catch (multiLangErr) {
+        console.warn('Multi-lang worker failed, falling back to standard English engine:', multiLangErr);
+        if (onProgress) onProgress(20, 'Falling back to standard English OCR engine...');
+        worker = await Tesseract.createWorker('eng', 1, {
+          logger: m => {
+            if (m.status === 'recognizing text' && onProgress) {
+              const pct = Math.round(m.progress * 100);
+              onProgress(pct, `Scanning & recognizing text (${pct}%)...`);
+            }
+          }
+        });
+      }
 
       this.worker = worker;
       this.currentLanguage = lang;

@@ -666,6 +666,10 @@ body {
 }
 
 .adv-select, .adv-input {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 0.6rem 0.85rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-color);
@@ -673,6 +677,12 @@ body {
   color: var(--text-main);
   font-size: 0.9rem;
   outline: none;
+}
+
+input, select, textarea {
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 /* Action CTA */
@@ -1651,14 +1661,16 @@ body {
 
 .studio-grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 380px);
   gap: 1.5rem;
   align-items: start;
+  width: 100%;
+  max-width: 100%;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1050px) {
   .studio-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1671,6 +1683,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .preview-canvas-box {
@@ -1790,6 +1807,25 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .preview-stage-panel,
+  .studio-controls-sidebar {
+    padding: 1rem;
+  }
+}
+
+.control-section {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .control-section-header {
@@ -1808,6 +1844,58 @@ body {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+}
+
+/* Passport Custom Dimensions Grid */
+.passport-dim-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.passport-dim-inputs-grid .dim-col {
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.passport-dim-inputs-grid .dim-col label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.passport-dim-inputs-grid .dim-col input {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.42rem 0.4rem;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-input);
+  color: var(--text-main);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .passport-dim-inputs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .passport-dim-inputs-grid .dim-col:last-child {
+    grid-column: span 2;
+  }
 }
 
 /* Color Dot Palette Picker */
@@ -1851,11 +1939,15 @@ body {
 /* Retouch Sliders */
 .retouch-slider-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .slider-unit {
+  min-width: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -1867,10 +1959,20 @@ body {
   font-size: 0.78rem;
   color: var(--text-muted);
   font-weight: 600;
+  min-width: 0;
+}
+
+.slider-label-row span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .slider-range-input {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   accent-color: var(--primary);
   cursor: pointer;
 }
@@ -1884,13 +1986,18 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Preset Format Pills Grid */
 .format-pill-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 125px), 1fr));
   gap: 0.5rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .format-pill-btn {
@@ -1907,6 +2014,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .format-pill-btn:hover {
@@ -1919,6 +2030,15 @@ body {
   border-color: var(--primary);
   background: var(--primary);
   color: #ffffff;
+}
+
+.format-pill-btn span,
+.format-pill-btn small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  max-width: 100%;
 }
 
 .format-pill-btn small {

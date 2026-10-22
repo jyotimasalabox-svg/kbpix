@@ -164,13 +164,13 @@
           <!-- Mode Tabs & Scan Another -->
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
             <div class="doc-tab-bar">
-              <button type="button" class="doc-tab-btn active" id="tabRawText">
-                <i class="ph-bold ph-file-text"></i>
-                <span>📝 Extracted Text (टेक्स्ट निकालें व कॉपी करें)</span>
-              </button>
-              <button type="button" class="doc-tab-btn" id="tabInPlace">
+              <button type="button" class="doc-tab-btn active" id="tabInPlace">
                 <i class="ph-bold ph-note-pencil"></i>
                 <span>📄 Edit on Document (कागज पर एडिट करें)</span>
+              </button>
+              <button type="button" class="doc-tab-btn" id="tabRawText">
+                <i class="ph-bold ph-file-text"></i>
+                <span>📝 Extracted Text (टेक्स्ट निकालें व कॉपी करें)</span>
               </button>
             </div>
             <button type="button" class="button secondary small" id="btnOcrAnother" style="cursor: pointer; padding: 0.5rem 1rem;">
@@ -178,8 +178,8 @@
             </button>
           </div>
 
-          <!-- PANEL 1 (DEFAULT): Extracted Text Only with Instant Copy & Downloads -->
-          <div id="panelRawText" style="display: block;">
+          <!-- PANEL 1 (DEFAULT): In-Place Document Editor -->
+          <div id="panelRawText" style="display: none;">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start;" id="ocrSplitGrid">
               
               <!-- Left: Source Image Preview -->
@@ -226,8 +226,8 @@
             </div>
           </div>
 
-          <!-- PANEL 2: In-Place Document Editor (Secondary) -->
-          <div id="panelInPlace" class="doc-editor-workspace" style="display: none;">
+          <!-- PANEL 2: In-Place Document Editor -->
+          <div id="panelInPlace" class="doc-editor-workspace" style="display: block;">
             
             <!-- Editor Toolbar -->
             <div class="doc-editor-toolbar">
@@ -244,7 +244,7 @@
                 <button type="button" class="doc-tool-btn" id="btnWhiteout" title="Drag over any part of the paper to erase or white out">
                   <i class="ph-bold ph-eraser" style="color: #f59e0b;"></i> <span>Whiteout Eraser</span>
                 </button>
-                <button type="button" class="doc-tool-btn" id="btnToggleGuides" title="Show or hide outlines of detected text on document">
+                <button type="button" class="doc-tool-btn active" id="btnToggleGuides" title="Show or hide outlines of detected text on document">
                   <i class="ph-bold ph-bounding-box" style="color: #6366f1;"></i> <span>Show Guides</span>
                 </button>
               </div>
@@ -356,7 +356,12 @@
                     <i class="ph-bold ph-list-magnifying-glass" style="color: var(--primary);"></i>
                     <span>Recognized Fields (<span id="detectedFieldsCount">0</span>)</span>
                   </div>
-                  <span class="trust-pill" style="font-size: 0.72rem; padding: 0.2rem 0.5rem;">Click Edit to change</span>
+                  <button type="button" class="button secondary small" id="btnEditAllFields" style="font-size: 0.72rem; padding: 0.2rem 0.5rem; cursor: pointer;">
+                    <i class="ph-bold ph-pencil-simple"></i> Edit All
+                  </button>
+                </div>
+                <div style="padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border-color);">
+                  <input type="text" id="searchFieldInput" class="adv-input" placeholder="Search text on paper..." style="padding: 0.35rem 0.6rem; font-size: 0.82rem;">
                 </div>
                 <div class="doc-fields-list" id="detectedFieldsList">
                   <!-- Dynamically populated rows with [Edit on Document] buttons -->

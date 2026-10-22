@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     image: null,
     ocrResult: null,
     selectedLang: 'eng',
-    currentTab: 'rawtext', // Default to Extracted Text so user gets their text immediately!
+    currentTab: 'inplace', // Default to In-Place Document Editor so user edits directly on the paper!
     
     // Editor State
     docWidth: 0,
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scale: 1.0,
     activeOverlay: null,
     isWhiteoutMode: false,
-    showGuides: false,
+    showGuides: true,
     fontSize: 16,
     fontColor: '#000000',
     fontFamily: 'Arial, sans-serif',
@@ -98,36 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnSnapPhoto = document.getElementById('btnSnapPhoto');
   let mediaStream = null;
 
-  // Sidebar toggle
-  const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-  const btnCloseSidebar = document.getElementById('btnCloseSidebar');
-  const appSidebar = document.getElementById('appSidebar');
-  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-  function openSidebar() {
-    if (appSidebar) appSidebar.classList.add('drawer-open');
-    if (sidebarBackdrop) sidebarBackdrop.classList.add('active');
-  }
-
-  function closeSidebar() {
-    if (appSidebar) appSidebar.classList.remove('drawer-open');
-    if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
-  }
-
-  if (btnToggleSidebar && appSidebar) {
-    btnToggleSidebar.addEventListener('click', () => {
-      if (appSidebar.classList.contains('drawer-open')) closeSidebar();
-      else openSidebar();
-    });
-  }
-  if (btnCloseSidebar) btnCloseSidebar.addEventListener('click', closeSidebar);
-  if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', closeSidebar);
-
-  document.querySelectorAll('.sidebar-nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-      if (window.innerWidth <= 900) closeSidebar();
-    });
-  });
 
   // Theme
   const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -286,8 +257,9 @@ document.addEventListener('DOMContentLoaded', () => {
       ocrProgressCard.classList.remove('active');
       ocrWorkspace.style.display = 'block';
 
-      // Switch to Extracted Text by default so user gets their text instantly
-      switchTab('rawtext');
+      // Switch to In-Place Document Editor so user can edit right on the paper
+      switchTab('inplace');
+      setTimeout(() => zoomToFit(), 60);
 
     } catch (err) {
       console.error('OCR Error', err);
@@ -553,6 +525,86 @@ document.addEventListener('DOMContentLoaded', () => {
     if (fontSizeLabel) fontSizeLabel.textContent = `${state.activeOverlay.fontSize}px`;
     if (fontFamilySelect) fontFamilySelect.value = state.activeOverlay.fontFamily;
     if (btnToggleBold) btnToggleBold.classList.toggle('active', state.activeOverlay.isBold);
+  }
+
+  function addNewTextAtPosition(posX, posY) {
+    const newId = 'overlay_custom_' + Date.now();
+    const x = Math.max(10, Math.min(state.docWidth - 160, posX));
+    const y = Math.max(10, Math.min(state.docHeight - 40, posY));
+
+    const newItem = {
+      id: newId,
+      x: Math.round(x),
+      y: Math.round(y),
+      width: 140,
+      height: 28,
+      text: 'Click to type',
+      fontSize: state.fontSize || 16,
+      color: state.fontColor || '#000000',
+      fontFamily: state.fontFamily || 'Arial, sans-serif',
+      isBold: state.isBold || false,
+      bgFill: '#ffffff'
+    };
+
+    state.textOverlays.push(newItem);
+    renderTextOverlayElement(newItem);
+
+    const el = document.getElementById(newId);
+    if (el) {
+      el.focus();
+      selectElementContents(el);
+    }
+    updateGuidesDisplay();
+    syncExtractedText();
+  }
+
+  // Direct click anywhere on the document image to edit that text or add new text!
+  if (docCanvasWrapper) {
+    docCanvasWrapper.addEventListener('click', (e) => {
+      if (state.isWhiteoutMode) return;
+      if (e.target.closest('.doc-text-overlay') || e.target.closest('.doc-photo-overlay')) return;
+
+      const rect = docCanvasWrapper.getBoundingClientRect();
+      const clickX = (e.clientX - rect.left) / state.scale;
+      const clickY = (e.clientY - rect.top) / state.scale;
+
+      // Check if clicked near any detected line
+      const matchedLineIdx = state.detectedLines.findIndex(l => {
+        const b = l.bbox;
+        if (!b) return false;
+        return clickX >= (b.x0 - 8) && clickX <= (b.x1 + 8) &&
+               clickY >= (b.y0 - 6) && clickY <= (b.y1 + 6);
+      });
+
+      if (matchedLineIdx !== -1) {
+        activateTextOverlayForLine(state.detectedLines[matchedLineIdx], matchedLineIdx);
+      } else {
+        addNewTextAtPosition(Math.round(clickX), Math.round(clickY));
+      }
+    });
+  }
+
+  // Search Field Input Filter
+  const searchFieldInput = document.getElementById('searchFieldInput');
+  if (searchFieldInput) {
+    searchFieldInput.addEventListener('input', () => {
+      const q = searchFieldInput.value.toLowerCase().trim();
+      const rows = document.querySelectorAll('.doc-field-row');
+      rows.forEach(r => {
+        const txt = r.textContent.toLowerCase();
+        r.style.display = txt.includes(q) ? 'flex' : 'none';
+      });
+    });
+  }
+
+  // Edit All Fields Button
+  const btnEditAllFields = document.getElementById('btnEditAllFields');
+  if (btnEditAllFields) {
+    btnEditAllFields.addEventListener('click', () => {
+      (state.detectedLines || []).forEach((line, idx) => {
+        activateTextOverlayForLine(line, idx);
+      });
+    });
   }
 
   // =========================================================================

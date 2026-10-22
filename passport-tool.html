@@ -244,18 +244,18 @@
                 </div>
 
                 <!-- Custom Size & Target KB Inputs -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem;">
-                  <div>
-                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">Width (cm):</label>
-                    <input type="number" id="customWidthCm" class="adv-input" value="3.5" step="0.1" style="padding: 0.35rem 0.5rem; font-size: 0.82rem;">
+                <div class="passport-dim-inputs-grid">
+                  <div class="dim-col">
+                    <label>Width (cm):</label>
+                    <input type="number" id="customWidthCm" class="adv-input" value="3.5" step="0.1">
                   </div>
-                  <div>
-                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">Height (cm):</label>
-                    <input type="number" id="customHeightCm" class="adv-input" value="4.5" step="0.1" style="padding: 0.35rem 0.5rem; font-size: 0.82rem;">
+                  <div class="dim-col">
+                    <label>Height (cm):</label>
+                    <input type="number" id="customHeightCm" class="adv-input" value="4.5" step="0.1">
                   </div>
-                  <div>
-                    <label style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted);">Target KB:</label>
-                    <input type="number" id="passportTargetKb" class="adv-input" value="50" style="padding: 0.35rem 0.5rem; font-size: 0.82rem;">
+                  <div class="dim-col">
+                    <label>Target KB:</label>
+                    <input type="number" id="passportTargetKb" class="adv-input" value="50" step="1">
                   </div>
                 </div>
               </div>
@@ -448,33 +448,6 @@
 
   <script src="js/compressor.js"></script>
   <script src="js/passport-advanced.js"></script>
-
   <script src="js/modules/i18n.js"></script>
-  <script>
-    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
-    const btnCloseSidebar = document.getElementById('btnCloseSidebar');
-    const appSidebar = document.getElementById('appSidebar');
-    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-
-    function closeSidebar() {
-      if (appSidebar) appSidebar.classList.remove('drawer-open');
-      if (sidebarBackdrop) sidebarBackdrop.classList.remove('active');
-    }
-
-    if (btnToggleSidebar && appSidebar && sidebarBackdrop) {
-      btnToggleSidebar.addEventListener('click', () => {
-        const isOpen = appSidebar.classList.toggle('drawer-open');
-        sidebarBackdrop.classList.toggle('active', isOpen);
-      });
-      sidebarBackdrop.addEventListener('click', closeSidebar);
-      if (btnCloseSidebar) btnCloseSidebar.addEventListener('click', closeSidebar);
-      document.querySelectorAll('.sidebar-nav-item').forEach(item => {
-        item.addEventListener('click', () => {
-          if (window.innerWidth <= 900) closeSidebar();
-        });
-      });
-    }
-  </script>
-
 </body>
 </html>
