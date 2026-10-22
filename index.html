@@ -3,832 +3,620 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhotoResize Pro | Reduce Image Size In KB - Precision Photo Reducer</title>
-  <meta name="description" content="PhotoResize Pro: Free online tool to compress image size in KB for government portals, job applications, college admissions, SSC, UPSC, and IBPS. Reduce JPG, PNG to 20KB, 50KB, 100KB with high quality.">
+  <title>PhotoResize Pro | Resize, Compress &amp; Convert Images Online - 100% Free &amp; Private</title>
+  <meta name="description" content="Free online tool to resize, compress, crop, and convert images to exact KB, MB, and dimensions. Convert to JPG, PNG, WebP, and PDF with 100% client-side privacy.">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/dashboard.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234f46e5'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
+  <link rel="stylesheet" href="css/frontpage.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232563eb'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></svg>">
   <script defer src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <button class="mobile-menu-toggle" id="btnToggleSidebar" aria-label="Toggle Navigation Menu">
-          <i class="ph ph-list"></i>
-        </button>
-        <a href="index.html" class="brand-logo">
-          <span class="logo-badge">
-            <i class="ph-bold ph-aperture"></i> PRO
-          </span>
-          <div class="brand-text">PhotoResize <span>PRO</span></div>
+  <!-- 1. Compact, Professional Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <!-- Left: Logo & Website Name -->
+      <a href="index.html" class="brand-logo">
+        <span class="logo-badge"><i class="ph-bold ph-aperture"></i> PRO</span>
+        <div class="brand-text">PhotoResize <span>PRO</span></div>
+      </a>
+
+      <!-- Right: Clean Minimal Navigation -->
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link-btn active">
+          <i class="ph ph-house"></i> <span>Home</span>
         </a>
-      </div>
 
-      <ul class="nav-links" id="navLinks">
-        <li><a href="index.html" class="nav-link active"><i class="ph ph-squares-four"></i> <span data-i18n="nav_reduce_kb">Reduce KB</span></a></li>
-        <li><a href="government-resizer.html" class="nav-link"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Resizer</span></a></li>
-        <li><a href="background-remover.html" class="nav-link"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI BG Remover</span></a></li>
-        <li><a href="passport-tool.html" class="nav-link"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport</span></a></li>
-        <li><a href="document-scanner.html" class="nav-link"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Scanner</span></a></li>
-        <li><a href="pdf-studio.html" class="nav-link"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio</span></a></li>
-      </ul>
+        <!-- My Tools Dropdown -->
+        <div class="tools-dropdown-wrapper">
+          <button type="button" class="tools-dropdown-btn" aria-haspopup="true">
+            <i class="ph-bold ph-squares-four"></i> <span>My Tools</span> <i class="ph ph-caret-down"></i>
+          </button>
+          <div class="tools-dropdown-menu">
+            <a href="government-resizer.html" class="tools-menu-item">
+              <i class="ph ph-bank"></i>
+              <span>Govt Form Resizer</span>
+              <span class="tools-menu-badge">Exam</span>
+            </a>
+            <a href="background-remover.html" class="tools-menu-item">
+              <i class="ph ph-magic-wand"></i>
+              <span>AI Background Remover</span>
+              <span class="tools-menu-badge" style="background:#fce7f3;color:#ec4899;">AI</span>
+            </a>
+            <a href="passport-tool.html" class="tools-menu-item">
+              <i class="ph ph-user-focus"></i>
+              <span>Passport Photo Maker</span>
+            </a>
+            <a href="document-scanner.html" class="tools-menu-item">
+              <i class="ph ph-scan"></i>
+              <span>Document Scanner</span>
+            </a>
+            <a href="ocr-image-to-text.html" class="tools-menu-item">
+              <i class="ph ph-text-t"></i>
+              <span>Image to Text (OCR)</span>
+            </a>
+            <a href="image-to-excel.html" class="tools-menu-item">
+              <i class="ph ph-table"></i>
+              <span>Image to Excel / CSV</span>
+            </a>
+            <a href="pdf-studio.html" class="tools-menu-item">
+              <i class="ph ph-file-pdf"></i>
+              <span>PDF Studio (Merge/Split)</span>
+            </a>
+            <a href="id-card-studio.html" class="tools-menu-item">
+              <i class="ph ph-identification-card"></i>
+              <span>Smart ID Card Studio</span>
+            </a>
+            <a href="file-converter.html" class="tools-menu-item">
+              <i class="ph ph-file-arrow-up"></i>
+              <span>File Converter &amp; Pack</span>
+            </a>
+            <a href="increase-size.html" class="tools-menu-item">
+              <i class="ph ph-arrows-out-simple"></i>
+              <span>Increase Image KB</span>
+            </a>
+          </div>
+        </div>
 
-      <div class="nav-actions">
-        <!-- Language Switcher Pill -->
+        <!-- Light/Dark Mode Toggle -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Theme" style="padding:0.42rem 0.85rem; border-radius:var(--radius-full); border:1px solid var(--border-color); background:transparent; font-size:0.85rem; font-weight:700; cursor:pointer;">
+          <span id="themeIcon">🌙</span> <span id="themeText">Dark</span>
+        </button>
+
+        <!-- Hindi/English Selector -->
         <button class="lang-toggle-btn" aria-label="Toggle Language">
           <span>🇮🇳</span> <span>हिंदी</span>
         </button>
-        <!-- Dark Mode Toggle -->
-        <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle Dark Mode">
-          <span id="themeIcon">🌙</span>
-          <span id="themeText">Dark</span>
-        </button>
-      </div>
+      </nav>
     </div>
   </header>
 
-  <!-- SaaS Dashboard Layout -->
-  <div class="saas-layout">
-    <!-- Collapsible Sidebar Navigation -->
-    <aside class="app-sidebar" id="appSidebar">
-      <div class="sidebar-header">
-        <span class="sidebar-brand-title" data-i18n="cat_photo_tools">Photo Tools Suite</span>
+  <!-- 2. Main Hero Section -->
+  <section class="hero-wrapper">
+    <div class="hero-trust-row">
+      <span class="trust-badge-pill"><i class="ph-bold ph-shield-check"></i> 100% In-Browser Privacy • No Server Uploads</span>
+      <span class="trust-badge-pill"><i class="ph-bold ph-lightning"></i> Instant Client-Side Processing</span>
+      <span class="trust-badge-pill"><i class="ph-bold ph-seal-check"></i> Exact Target Size Guarantee</span>
+    </div>
+
+    <h1 class="hero-main-title">
+      Resize, Compress &amp; <span>Convert Images</span> Online
+    </h1>
+    <p class="hero-main-subtitle">
+      Select your photo, choose your settings, and download your image instantly.
+    </p>
+  </section>
+
+  <!-- Main Workstation Shell -->
+  <main class="front-app-shell">
+
+    <!-- Upload Panel (Visible initially) -->
+    <div class="upload-card-box" id="uploadCardBox">
+      <input type="file" id="mainFileInput" accept="image/*,.heic,.heif" style="display: none;">
+      
+      <div class="upload-icon-circle">
+        <i class="ph-bold ph-cloud-arrow-up"></i>
       </div>
-      <div class="sidebar-menu-wrapper">
-        <!-- Group 1: Photo & Image Tools -->
-        <div class="sidebar-cat-group">
-          <div class="sidebar-cat-title"><i class="ph ph-camera"></i> <span data-i18n="cat_photo_tools">Photo Tools</span></div>
-          <a href="index.html" class="sidebar-nav-item active"><i class="ph ph-arrows-in-simple"></i> <span data-i18n="nav_reduce_kb">Reduce Size (KB)</span></a>
-          <a href="government-resizer.html" class="sidebar-nav-item"><i class="ph ph-bank"></i> <span data-i18n="nav_govt_resizer">Govt Form Resizer</span> <span class="sidebar-badge new">Exam</span></a>
-          <a href="passport-tool.html" class="sidebar-nav-item"><i class="ph ph-user-focus"></i> <span data-i18n="nav_passport_maker">Passport Photo Maker</span></a>
-          <a href="id-card-studio.html" class="sidebar-nav-item"><i class="ph ph-identification-card"></i> <span data-i18n="nav_id_studio">Smart ID Studio</span></a>
-          <a href="increase-size.html" class="sidebar-nav-item"><i class="ph ph-arrows-out-simple"></i> <span data-i18n="nav_increase_kb">Increase KB</span></a>
-        </div>
 
-        <!-- Group 2: AI & Smart Tools -->
-        <div class="sidebar-cat-group">
-          <div class="sidebar-cat-title"><i class="ph ph-sparkle"></i> <span data-i18n="cat_ai_smart">AI &amp; Smart Tools</span></div>
-          <a href="background-remover.html" class="sidebar-nav-item"><i class="ph ph-magic-wand"></i> <span data-i18n="nav_bg_remover">AI Background Remover</span> <span class="sidebar-badge ai">AI</span></a>
-          <a href="document-scanner.html" class="sidebar-nav-item"><i class="ph ph-scan"></i> <span data-i18n="nav_doc_scanner">Document Scanner</span></a>
-          <a href="ocr-image-to-text.html" class="sidebar-nav-item"><i class="ph ph-text-t"></i> <span data-i18n="nav_img_to_text">Image to Text (OCR)</span></a>
-          <a href="image-to-excel.html" class="sidebar-nav-item"><i class="ph ph-table"></i> <span data-i18n="nav_img_to_excel">Image to Excel / CSV</span></a>
-        </div>
+      <h2 class="upload-title">Select Or Drag &amp; Drop Images Here</h2>
+      <p class="upload-desc">Choose a photo from your computer, phone, or capture directly with your camera.</p>
 
-        <!-- Group 3: PDF Suite -->
-        <div class="sidebar-cat-group">
-          <div class="sidebar-cat-title"><i class="ph ph-file-pdf"></i> <span data-i18n="cat_pdf_pack">PDF &amp; Pack Tools</span></div>
-          <a href="pdf-studio.html" class="sidebar-nav-item"><i class="ph ph-file-arrow-up"></i> <span data-i18n="nav_pdf_studio">PDF Studio (Convert/Merge)</span></a>
-          <a href="file-converter.html" class="sidebar-nav-item"><i class="ph ph-folder-notch-open"></i> <span data-i18n="nav_file_converter">Application Pack Builder</span></a>
+      <div class="upload-buttons-row">
+        <button type="button" class="btn-upload-primary" id="btnSelectPhoto">
+          <i class="ph-bold ph-folder-open"></i> SELECT PHOTO
+        </button>
+        <button type="button" class="btn-upload-secondary" id="btnTakePhoto">
+          <i class="ph-bold ph-camera"></i> TAKE PHOTO
+        </button>
+      </div>
+
+      <p class="upload-hints-text">
+        Supports <strong>JPG, JPEG, PNG, WebP</strong> &bull; Paste screenshot directly with <kbd>Ctrl + V</kbd> &bull; Up to 50MB
+      </p>
+    </div>
+
+    <!-- Active Image Info & Overview (Visible after photo selection) -->
+    <div class="active-photo-card" id="activePhotoCard" style="display: none;">
+      <div class="photo-preview-group">
+        <img id="activePhotoThumb" class="photo-thumb-img" alt="Selected Preview">
+        <div class="photo-details-meta">
+          <div class="photo-filename-title" id="activePhotoName">photo.jpg</div>
+          <div class="photo-badges-strip">
+            <span class="meta-badge highlight" id="metaOriginalSize">-- KB</span>
+            <span class="meta-badge" id="metaOriginalDim">-- × -- px</span>
+            <span class="meta-badge" id="metaOriginalFormat">JPG</span>
+          </div>
         </div>
       </div>
-    </aside>
-    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-    <!-- Main Container -->
-    <main class="main-content" style="flex: 1; min-width: 0;">
+      <div class="photo-card-actions">
+        <button type="button" class="button secondary small" id="btnReplacePhoto" style="cursor: pointer;">
+          <i class="ph-bold ph-arrows-clockwise"></i> Replace Photo
+        </button>
+        <button type="button" class="button secondary small" id="btnRemovePhoto" style="color: var(--danger); border-color: rgba(239,68,68,0.3); cursor: pointer;">
+          <i class="ph-bold ph-trash"></i> Remove
+        </button>
+      </div>
+    </div>
 
-      <!-- Professional Web Tools Hub Showcase Grid -->
-      <section class="hub-tools-section">
-        <div class="hub-section-header">
-          <span class="hub-section-tag"><i class="ph-bold ph-sparkle"></i> Professional Web Tools Suite</span>
-          <h2 class="hub-section-title">Photo & Document <span>Utilities Hub</span></h2>
-          <p class="hub-section-subtitle">
-            100% free, secure, on-device browser tools for students, job applicants, Pragya Kendra, CSC centers & cyber cafes.
-          </p>
+    <!-- Main Settings Panel (Visible after photo selection) -->
+    <div class="editor-settings-card" id="editorSettingsCard" style="display: none;">
+
+      <!-- Quick Photo Presets (Section 7) -->
+      <div class="settings-step-section">
+        <div class="step-header-row">
+          <span class="step-title-text"><i class="ph-bold ph-sparkle" style="color:#2563eb;"></i> Quick Exam &amp; Document Presets:</span>
+        </div>
+        <div class="presets-scroll-strip">
+          <button type="button" class="preset-chip-btn active" data-preset="custom">Custom (Manual)</button>
+          <button type="button" class="preset-chip-btn" data-preset="passport">Passport Photo (3.5×4.5 cm / 50KB)</button>
+          <button type="button" class="preset-chip-btn" data-preset="signature">Signature (4×2 cm / 20KB)</button>
+          <button type="button" class="preset-chip-btn" data-preset="govt">Government Form (Under 50KB)</button>
+          <button type="button" class="preset-chip-btn" data-preset="aadhaar">Aadhaar Document (Under 100KB)</button>
+          <button type="button" class="preset-chip-btn" data-preset="job">Job Application (Under 100KB)</button>
+          <button type="button" class="preset-chip-btn" data-preset="college">College Admission (Under 200KB)</button>
+        </div>
+      </div>
+
+      <!-- Step 1: File Size Settings (Section 3) -->
+      <div class="settings-step-section">
+        <div class="step-header-row">
+          <span class="step-title-text">
+            <span class="step-num-pill">1</span> What file size do you want?
+          </span>
         </div>
 
-        <div class="hub-grid">
-
-          <!-- Tool: Govt Form Resizer -->
-          <a href="government-resizer.html" class="hub-tool-card" style="border-top: 3px solid var(--primary);">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon"><i class="ph ph-bank"></i></div>
-              <span class="hub-card-badge">Govt Portals</span>
-            </div>
-            <h3 class="hub-tool-name">Govt Form Resizer</h3>
-            <p class="hub-tool-desc">
-              SSC, UPSC, RPSC, Railway, Police, Banking, NEET &amp; PAN card photo and signature sizing with verified portal rules.
-            </p>
-            <div class="hub-tool-cta">
-              Open Tool <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: AI Background Remover -->
-          <a href="background-remover.html" class="hub-tool-card" style="border-top: 3px solid #ec4899;">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(236, 72, 153, 0.12); color: #ec4899;"><i class="ph ph-magic-wand"></i></div>
-              <span class="hub-card-badge ai">AI Powered</span>
-            </div>
-            <h3 class="hub-tool-name">AI Background Remover</h3>
-            <p class="hub-tool-desc">
-              1-Click background removal, transparent cutout, solid colors (white, blue, red) and custom photo background replacement.
-            </p>
-            <div class="hub-tool-cta" style="color: #ec4899;">
-              Remove Background <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: Document Scanner -->
-          <a href="document-scanner.html" class="hub-tool-card" style="border-top: 3px solid var(--accent);">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--accent);"><i class="ph ph-scan"></i></div>
-              <span class="hub-card-badge" style="background: rgba(16, 185, 129, 0.12); color: var(--accent); border-color: rgba(16, 185, 129, 0.3);">Perspective Warp</span>
-            </div>
-            <h3 class="hub-tool-name">Auto Document Scanner</h3>
-            <p class="hub-tool-desc">
-              Straighten tilted document photos, correct perspective with 4-corner handles, apply Magic Color filters and export to PDF.
-            </p>
-            <div class="hub-tool-cta" style="color: var(--accent);">
-              Scan Document <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: OCR Image to Text -->
-          <a href="ocr-image-to-text.html" class="hub-tool-card" style="border-top: 3px solid #f59e0b;">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b;"><i class="ph ph-text-t"></i></div>
-              <span class="hub-card-badge" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">Hindi + English</span>
-            </div>
-            <h3 class="hub-tool-name">Image to Text (OCR)</h3>
-            <p class="hub-tool-desc">
-              Extract printed or scanned text in Hindi and English. Live editable editor, copy to clipboard, TXT and Word DOCX export.
-            </p>
-            <div class="hub-tool-cta" style="color: #f59e0b;">
-              Extract Text <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: Image to Excel -->
-          <a href="image-to-excel.html" class="hub-tool-card" style="border-top: 3px solid #10b981;">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(16, 185, 129, 0.12); color: #10b981;"><i class="ph ph-table"></i></div>
-              <span class="hub-card-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border-color: rgba(16, 185, 129, 0.3);">Table OCR</span>
-            </div>
-            <h3 class="hub-tool-name">Image to Excel / CSV</h3>
-            <p class="hub-tool-desc">
-              Detect tables and data grids in document photos. Preview with editable cells and download directly as Excel XLSX or CSV.
-            </p>
-            <div class="hub-tool-cta" style="color: #10b981;">
-              Extract Table <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: PDF Studio -->
-          <a href="pdf-studio.html" class="hub-tool-card" style="border-top: 3px solid #ef4444;">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(239, 68, 68, 0.12); color: #ef4444;"><i class="ph ph-file-arrow-up"></i></div>
-              <span class="hub-card-badge" style="background: rgba(239, 68, 68, 0.12); color: #ef4444; border-color: rgba(239, 68, 68, 0.3);">PDF Suite</span>
-            </div>
-            <h3 class="hub-tool-name">PDF Studio (Convert &amp; Merge)</h3>
-            <p class="hub-tool-desc">
-              Images to PDF with A4 margins, PDF to JPG/PNG images with custom DPI, PDF merge, and page extraction/split.
-            </p>
-            <div class="hub-tool-cta" style="color: #ef4444;">
-              Open PDF Studio <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: AI Passport Photo Maker -->
-          <a href="passport-tool.html" class="hub-tool-card">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon"><i class="ph ph-user-focus"></i></div>
-              <span class="hub-card-badge">Biometric &amp; Sheets</span>
-            </div>
-            <h3 class="hub-tool-name">AI Passport Photo Maker</h3>
-            <p class="hub-tool-desc">
-              Make biometric passport photos for India (3.5×4.5 cm), US Visa (2×2 in), PAN, and Aadhaar. 1-click A4/4x6 print sheets.
-            </p>
-            <div class="hub-tool-cta">
-              Open Tool <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: Smart ID Card Print Studio -->
-          <a href="id-card-studio.html" class="hub-tool-card">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--accent);"><i class="ph ph-identification-card"></i></div>
-              <span class="hub-card-badge" style="background: rgba(16, 185, 129, 0.12); color: var(--accent); border-color: rgba(16, 185, 129, 0.3);">CSC &amp; PVC Studio</span>
-            </div>
-            <h3 class="hub-tool-name">Smart ID Card Print Studio</h3>
-            <p class="hub-tool-desc">
-              Pragya Kendra &amp; CSC utility for Aadhaar, PAN, Voter ID &amp; Driving Licence. 1-click pouch fold layouts &amp; 1:1 A4 printing.
-            </p>
-            <div class="hub-tool-cta" style="color: var(--accent);">
-              Open Studio <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: Pro File Converter & Application Pack -->
-          <a href="file-converter.html" class="hub-tool-card">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(14, 165, 233, 0.12); color: var(--accent-cyan);"><i class="ph ph-file-arrow-up"></i></div>
-              <span class="hub-card-badge cyan">Multi-Doc &amp; PDF ZIP</span>
-            </div>
-            <h3 class="hub-tool-name">Pro File Converter &amp; Pack</h3>
-            <p class="hub-tool-desc">
-              Convert JPG, PNG, WEBP, and PDF. Assemble your full exam application pack, set target KB sizes, and download as 1 ZIP or merged PDF.
-            </p>
-            <div class="hub-tool-cta" style="color: var(--accent-cyan);">
-              Open Converter <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
-          <!-- Tool: Increase Image Size in KB -->
-          <a href="increase-size.html" class="hub-tool-card">
-            <div class="hub-card-header">
-              <div class="hub-tool-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--warning);"><i class="ph ph-arrows-out-simple"></i></div>
-              <span class="hub-card-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--warning); border-color: rgba(245, 158, 11, 0.3);">Portal Requirement</span>
-            </div>
-            <h3 class="hub-tool-name">Increase Image Size (KB)</h3>
-            <p class="hub-tool-desc">
-              Increase photo file size to meet minimum portal limits (e.g. min 50KB, 100KB) without altering pixels or degrading image visual quality.
-            </p>
-            <div class="hub-tool-cta" style="color: var(--warning);">
-              Increase KB <i class="ph ph-arrow-right"></i>
-            </div>
-          </a>
-
+        <div class="size-input-grid">
+          <div class="size-input-field-wrap">
+            <input type="number" id="targetSizeInput" class="size-input-native" value="50" min="1" max="99999" placeholder="Target size">
+            <select id="targetUnitSelect" class="size-unit-select">
+              <option value="KB" selected>KB</option>
+              <option value="MB">MB</option>
+            </select>
+          </div>
         </div>
-      </section>
 
-      <!-- Hero Header for Compressor -->
-      <section class="hero-section" id="compressor">
-        <h1 class="hero-title">Reduce Image Size In <span>KB</span></h1>
-        <p class="hero-subtitle">
-          Compress JPG, PNG, and WebP photos to <strong>20KB, 50KB, 100KB, 200KB</strong> or any target size while preserving crystal clear quality. Guaranteed size limit for Government Portals, SSC, UPSC, NEET, and Job forms.
-        </p>
-
-        <div class="trust-badges">
-          <span class="trust-pill"><i class="ph ph-shield-check"></i> 100% Private (Processed in Browser)</span>
-          <span class="trust-pill"><i class="ph ph-lightning"></i> Instant Speed</span>
-          <span class="trust-pill"><i class="ph ph-check-circle"></i> Exact Target Size Guarantee</span>
-          <span class="trust-pill"><i class="ph ph-stack"></i> Batch Multi-Image Support</span>
+        <!-- Quick Size Presets -->
+        <div style="display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-right: 0.25rem;">Quick Sizes:</span>
+          <button type="button" class="preset-chip-btn size-preset-chip" data-size="10" data-unit="KB">10 KB</button>
+          <button type="button" class="preset-chip-btn size-preset-chip" data-size="20" data-unit="KB">20 KB</button>
+          <button type="button" class="preset-chip-btn size-preset-chip active" data-size="50" data-unit="KB">50 KB</button>
+          <button type="button" class="preset-chip-btn size-preset-chip" data-size="100" data-unit="KB">100 KB</button>
+          <button type="button" class="preset-chip-btn size-preset-chip" data-size="200" data-unit="KB">200 KB</button>
+          <button type="button" class="preset-chip-btn size-preset-chip" data-size="500" data-unit="KB">500 KB</button>
+          <button type="button" class="preset-chip-btn size-preset-chip" data-size="1" data-unit="MB">1 MB</button>
+          <button type="button" class="preset-chip-btn size-preset-chip" data-size="2" data-unit="MB">2 MB</button>
         </div>
-      </section>
 
-      <!-- App Card -->
-      <div class="app-card">
+        <!-- Mode: Maximum File Size vs Target Size -->
+        <div class="size-mode-radios">
+          <label class="mode-radio-label">
+            <input type="radio" name="sizeMode" value="max" checked>
+            <span><strong>Maximum File Size</strong> (Strict portal limit guarantee)</span>
+          </label>
+          <label class="mode-radio-label">
+            <input type="radio" name="sizeMode" value="target">
+            <span><strong>Target File Size</strong> (Optimize for exact requested size)</span>
+          </label>
+        </div>
+      </div>
 
-        <!-- Dropzone -->
-        <div class="dropzone" id="dropzone">
-          <input type="file" id="fileInput" multiple accept="image/*,.heic,.heif" style="display: none;">
-          
-          <div class="dropzone-icon">
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="17 8 12 3 7 8"/>
-              <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
+      <!-- Step 2: Dimensions and Pixels (Section 4) -->
+      <div class="settings-step-section">
+        <div class="step-header-row">
+          <span class="step-title-text">
+            <span class="step-num-pill">2</span> What dimensions do you want?
+          </span>
+        </div>
+
+        <!-- Units Selector -->
+        <div class="dimension-units-tabs">
+          <button type="button" class="unit-tab-btn active" data-unit="px">Pixels (px)</button>
+          <button type="button" class="unit-tab-btn" data-unit="%">Percentage (%)</button>
+          <button type="button" class="unit-tab-btn" data-unit="cm">Centimeters (cm)</button>
+          <button type="button" class="unit-tab-btn" data-unit="mm">Millimeters (mm)</button>
+          <button type="button" class="unit-tab-btn" data-unit="in">Inches (in)</button>
+        </div>
+
+        <!-- Percentage Shortcuts (Shows only when % is active) -->
+        <div id="percentShortcutRow" style="display: none; gap: 0.5rem; margin-bottom: 0.75rem;">
+          <button type="button" class="preset-chip-btn percent-shortcut-btn active" data-percent="100">100% (Original)</button>
+          <button type="button" class="preset-chip-btn percent-shortcut-btn" data-percent="75">75%</button>
+          <button type="button" class="preset-chip-btn percent-shortcut-btn" data-percent="50">50%</button>
+          <button type="button" class="preset-chip-btn percent-shortcut-btn" data-percent="25">25%</button>
+        </div>
+
+        <!-- Width, Height & Ratio Lock -->
+        <div class="dimensions-input-row">
+          <div class="dim-field-box">
+            <label for="dimWidthInput">Width (<span id="dimWidthUnitLabel">px</span>):</label>
+            <input type="number" id="dimWidthInput" class="dim-input" value="800" min="1" step="any">
           </div>
 
-          <h2 class="dropzone-title">Select Or Drag &amp; Drop Images Here</h2>
-          <p class="dropzone-desc">Choose photos from your computer, phone, or drag them into this box</p>
-
-          <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-            <span class="btn-select-file">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              Select Images
-            </span>
-            <button type="button" class="btn-select-file" id="btnOpenMainCamera" style="background: var(--bg-card); color: var(--text-main); border: 1.5px solid var(--border-color); cursor: pointer;">
-              <i class="ph-bold ph-camera"></i> Take Photo
-            </button>
+          <div class="dim-field-box">
+            <label for="dimHeightInput">Height (<span id="dimHeightUnitLabel">px</span>):</label>
+            <input type="number" id="dimHeightInput" class="dim-input" value="1000" min="1" step="any">
           </div>
 
-          <p class="dropzone-hints" style="margin-top: 1rem;">
-            Supports <strong>JPG, JPEG, PNG, WEBP</strong> &bull; Paste screenshot directly with <kbd>Ctrl + V</kbd>
-          </p>
+          <button type="button" class="ratio-lock-btn locked" id="btnToggleRatioLock" title="Toggle Aspect Ratio Lock">
+            <i class="ph-bold ph-lock" id="ratioLockIcon"></i>
+            <span>Lock Ratio</span>
+          </button>
         </div>
 
-        <!-- Settings Panel -->
-        <div class="settings-panel">
-          <div class="settings-grid">
-            <div class="size-control-group">
-              <div class="size-header-row">
-                <label class="setting-label" for="sizeInput">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-                  Target File Size:
-                </label>
+        <!-- DPI Selector (For cm, mm, in) -->
+        <div id="dpiSelectorGroup" style="display: none; align-items: center; gap: 0.75rem; margin-top: 0.75rem;">
+          <label for="dpiSelect" style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Print DPI Quality:</label>
+          <select id="dpiSelect" class="unit-select" style="max-width: 220px;">
+            <option value="72">72 DPI (Web Screen)</option>
+            <option value="150">150 DPI (Standard)</option>
+            <option value="200">200 DPI (Govt / Exam Standard)</option>
+            <option value="300" selected>300 DPI (High-Quality Print)</option>
+          </select>
+        </div>
 
-                <div class="size-input-wrapper">
-                  <div class="stepper-box">
-                    <input type="number" id="sizeInput" class="size-number-input" value="100" min="1" max="99999" aria-label="Target Size">
-                    <div class="stepper-btns">
-                      <button type="button" class="step-btn" id="stepUpBtn" aria-label="Increase Size">▲</button>
-                      <button type="button" class="step-btn" id="stepDownBtn" aria-label="Decrease Size">▼</button>
-                    </div>
-                  </div>
+        <div style="font-size: 0.85rem; font-weight: 700; color: #2563eb; margin-top: 0.25rem;" id="calculatedPixelsNote">
+          Result: 800 × 1000 px
+        </div>
 
-                  <select id="unitSelect" class="unit-select" aria-label="Select Unit">
-                    <option value="KB" selected>KB</option>
-                    <option value="MB">MB</option>
-                  </select>
-                </div>
-              </div>
+        <!-- Enlargement Warning Notice -->
+        <div class="enlargement-alert-box" id="enlargementAlertBox">
+          <i class="ph-bold ph-warning"></i>
+          <span>Enlarging an image cannot recreate missing original detail. Quality may appear softer.</span>
+        </div>
+      </div>
 
-              <!-- Quick Presets -->
-              <div class="presets-row">
-                <span class="preset-title">Quick Presets:</span>
-                <button type="button" class="preset-btn" data-size="20" data-unit="KB">20 KB (Signature)</button>
-                <button type="button" class="preset-btn" data-size="50" data-unit="KB">50 KB (Passport)</button>
-                <button type="button" class="preset-btn active" data-size="100" data-unit="KB">100 KB</button>
-                <button type="button" class="preset-btn" data-size="200" data-unit="KB">200 KB</button>
-                <button type="button" class="preset-btn" data-size="500" data-unit="KB">500 KB</button>
-                <button type="button" class="preset-btn" data-size="1" data-unit="MB">1 MB</button>
-              </div>
+      <!-- Step 3: Output Format Selector (Section 5) -->
+      <div class="settings-step-section">
+        <div class="step-header-row">
+          <span class="step-title-text">
+            <span class="step-num-pill">3</span> Choose Output Format
+          </span>
+        </div>
 
-              <!-- Exam Presets -->
-              <div class="exam-select-box">
-                <span class="preset-title">Govt Exam Preset:</span>
-                <select id="examSelect" class="exam-select">
-                  <option value="">⚡ Select Exam / Portal Requirement...</option>
-                  <option value="ssc-photo">SSC CGL / CHSL / MTS Photo (Under 50 KB)</option>
-                  <option value="ssc-sign">SSC Signature (Under 20 KB)</option>
-                  <option value="upsc-photo">UPSC Civil Services Photo (Under 50 KB)</option>
-                  <option value="upsc-sign">UPSC Signature (Under 20 KB)</option>
-                  <option value="ibps-photo">IBPS / SBI Bank PO Photo (Under 50 KB)</option>
-                  <option value="ibps-sign">IBPS / SBI Bank Signature (Under 20 KB)</option>
-                  <option value="neet-photo">NEET / JEE Application Photo (Under 80 KB)</option>
-                  <option value="pan-photo">PAN Card / NSDL Portal (Under 45 KB)</option>
+        <!-- Horizontally Scrollable / Grid Format Selector -->
+        <div class="format-selector-row">
+          <button type="button" class="format-card-btn active" data-format="image/jpeg">
+            <i class="ph-bold ph-image format-card-icon"></i>
+            <span class="format-card-title">JPG / JPEG</span>
+            <span class="format-card-sub">Universal &amp; Smallest</span>
+          </button>
+
+          <button type="button" class="format-card-btn" data-format="image/png">
+            <i class="ph-bold ph-paint-brush format-card-icon" style="color:#10b981;"></i>
+            <span class="format-card-title">PNG</span>
+            <span class="format-card-sub">Sharp Transparency</span>
+          </button>
+
+          <button type="button" class="format-card-btn" data-format="image/webp">
+            <i class="ph-bold ph-lightning format-card-icon" style="color:#f59e0b;"></i>
+            <span class="format-card-title">WebP</span>
+            <span class="format-card-sub">Next-Gen Speed</span>
+          </button>
+
+          <button type="button" class="format-card-btn" data-format="application/pdf">
+            <i class="ph-bold ph-file-pdf format-card-icon" style="color:#ef4444;"></i>
+            <span class="format-card-title">PDF</span>
+            <span class="format-card-sub">Print Document</span>
+          </button>
+        </div>
+
+        <!-- Format-Specific Options -->
+        <div class="format-specific-options">
+          <!-- JPG Options -->
+          <div id="optPanelJpg">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap;">
+              <label for="jpgQualitySlider" style="font-size: 0.88rem; font-weight: 700;">JPEG Quality:</label>
+              <span id="jpgQualityVal" style="font-weight: 800; color: #2563eb;">85%</span>
+            </div>
+            <input type="range" id="jpgQualitySlider" min="10" max="100" value="85" style="width: 100%; accent-color: #2563eb;">
+            <div style="margin-top: 0.75rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" id="jpgWhiteBgCheck" checked style="accent-color: #2563eb; width: 16px; height: 16px;">
+                <span>White background for transparent source images</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- PNG Options -->
+          <div id="optPanelPng" style="display: none;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;">
+              <input type="checkbox" id="pngTransparencyCheck" checked style="accent-color: #2563eb; width: 16px; height: 16px;">
+              <span>Preserve transparent alpha channel (Lossless PNG Export)</span>
+            </label>
+          </div>
+
+          <!-- WebP Options -->
+          <div id="optPanelWebp" style="display: none;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap;">
+              <label for="webpQualitySlider" style="font-size: 0.88rem; font-weight: 700;">WebP Quality:</label>
+              <span id="webpQualityVal" style="font-weight: 800; color: #2563eb;">85%</span>
+            </div>
+            <input type="range" id="webpQualitySlider" min="10" max="100" value="85" style="width: 100%; accent-color: #2563eb;">
+            <div style="display: flex; gap: 1rem; margin-top: 0.75rem;">
+              <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                <input type="radio" name="webpMode" value="lossy" checked style="accent-color: #2563eb;"> Lossy (Smaller Size)
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                <input type="radio" name="webpMode" value="lossless" style="accent-color: #2563eb;"> Lossless (Exact Pixels)
+              </label>
+            </div>
+          </div>
+
+          <!-- PDF Options -->
+          <div id="optPanelPdf" style="display: none;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem;">
+              <div>
+                <label for="pdfPageSizeSelect" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Page Size:</label>
+                <select id="pdfPageSizeSelect" class="unit-select" style="width: 100%;">
+                  <option value="a4" selected>A4 (210 × 297 mm)</option>
+                  <option value="letter">Letter (8.5 × 11 in)</option>
+                  <option value="fit">Fit to Image Size</option>
                 </select>
               </div>
 
-              <!-- Advanced Accordion Toggle -->
-              <button type="button" class="accordion-toggle" id="accordionToggle">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                Advanced Settings (Format, Dimensions, Strict Limit)
-              </button>
-
-              <!-- Advanced Content -->
-              <div class="accordion-content" id="accordionContent">
-                <div class="adv-field">
-                  <label for="formatSelect">Output Format:</label>
-                  <select id="formatSelect" class="adv-select">
-                    <option value="auto" selected>Auto (Same as Original)</option>
-                    <option value="image/jpeg">JPG / JPEG</option>
-                    <option value="image/webp">WEBP (Highest Compression)</option>
-                    <option value="image/png">PNG</option>
-                  </select>
-                </div>
-
-                <div class="adv-field">
-                  <label for="maxWidthInput">Max Width (px, optional):</label>
-                  <input type="number" id="maxWidthInput" class="adv-input" placeholder="e.g. 1200">
-                </div>
-
-                <div class="adv-field">
-                  <label for="maxHeightInput">Max Height (px, optional):</label>
-                  <input type="number" id="maxHeightInput" class="adv-input" placeholder="e.g. 1600">
-                </div>
-
-                <div class="adv-field" style="justify-content: center;">
-                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-top: 1.25rem;">
-                    <input type="checkbox" id="strictCheck" checked style="width: 18px; height: 18px; accent-color: var(--primary);">
-                    Strictly under target KB (Govt Portals)
-                  </label>
-                </div>
+              <div>
+                <label for="pdfOrientationSelect" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Orientation:</label>
+                <select id="pdfOrientationSelect" class="unit-select" style="width: 100%;">
+                  <option value="portrait" selected>Portrait</option>
+                  <option value="landscape">Landscape</option>
+                </select>
               </div>
 
-            </div>
-          </div>
-
-          <!-- Action CTAs -->
-          <div class="action-cta-row" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-            <button type="button" class="btn-compress-now" id="compressBtn" disabled style="min-width: 280px; font-size: 1.15rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 1rem 2rem; cursor: pointer; box-shadow: 0 4px 16px var(--primary-glow);">
-              <i class="ph-bold ph-download-simple" style="font-size: 1.4rem;"></i>
-              <span>⚡ Compress &amp; Download (<span id="mainBtnKbLabel">100</span> KB)</span>
-            </button>
-            <button type="button" class="btn-clear-all" id="clearAllBtn" style="display: none; cursor: pointer;">
-              Clear All
-            </button>
-          </div>
-          <div id="quickDownloadHint" style="margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); text-align: center; display: none;">
-            <i class="ph-bold ph-check-circle" style="color: var(--accent);"></i> Click above or download directly from any photo card below.
-          </div>
-
-          <!-- Processing Indicator -->
-          <div class="progress-card" id="progressCard">
-            <div class="spinner"></div>
-            <div class="progress-status" id="progressStatus">Optimizing &amp; Compressing image...</div>
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" id="progressBarFill"></div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- Results Section -->
-      <section class="results-section" id="resultsSection">
-        <div class="results-header">
-          <h2 class="results-title">
-            Compressed Photos
-            <span class="file-badge-count" id="fileCountBadge">0 Images</span>
-          </h2>
-          <div class="batch-actions">
-            <button type="button" class="btn-download-all" id="downloadAllBtn" style="padding: 0.75rem 1.4rem; font-size: 1rem; font-weight: 800; background: var(--accent); color: white; border-radius: var(--radius-md); box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4); cursor: pointer; display: none; align-items: center; gap: 0.5rem;">
-              <i class="ph-bold ph-download-simple" style="font-size: 1.25rem;"></i>
-              <span>Download All (ZIP)</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="file-cards-list" id="fileCardsList">
-          <!-- Rendered dynamically by app.js -->
-        </div>
-      </section>
-
-      <!-- Visual Comparison Modal -->
-      <div class="modal-overlay" id="compareModal">
-        <div class="modal-card">
-          <div class="modal-header">
-            <div class="modal-title">Before &amp; After Quality Comparison</div>
-            <button type="button" class="modal-close-btn" id="compareCloseBtn">&times;</button>
-          </div>
-          <div class="modal-body">
-            <div class="compare-container" id="compareContainer">
-              <img id="compareCompImg" class="compare-img" alt="Compressed Image">
-              <img id="compareOrigImg" class="compare-img compare-img-orig" alt="Original Image">
-              <div class="compare-slider-line" id="compareSliderLine">
-                <div class="compare-slider-handle">↔</div>
+              <div>
+                <label for="pdfMarginSelect" style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Page Margins:</label>
+                <select id="pdfMarginSelect" class="unit-select" style="width: 100%;">
+                  <option value="0">None (0 mm)</option>
+                  <option value="5">Small (5 mm)</option>
+                  <option value="10" selected>Normal (10 mm)</option>
+                </select>
               </div>
-              <span class="compare-badge orig">Original</span>
-              <span class="compare-badge comp">Compressed</span>
             </div>
-            <div class="compare-info-bar">
-              <span id="compareOrigSize">Original: --</span>
-              <span id="compareCompSize">Compressed: --</span>
-              <span id="compareSavedPct" class="saved-pill">-- Saved</span>
+
+            <div style="margin-top: 0.85rem;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                <input type="checkbox" id="pdfFitCheck" checked style="accent-color: #2563eb; width: 16px; height: 16px;">
+                <span>Fit image to printable page &amp; maintain aspect ratio</span>
+              </label>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Interactive Photo Editor & Crop Modal -->
-      <div class="modal-overlay" id="editorModal" style="z-index: 1050;">
-        <div class="modal-card" style="max-width: 900px; width: 95%;">
-          <div class="modal-header">
-            <div class="modal-title" style="display: flex; align-items: center; gap: 0.5rem;">
-              <i class="ph-bold ph-crop" style="color: var(--primary);"></i>
-              <span>Smart Crop &amp; Photo Enhancer</span>
-            </div>
-            <button type="button" class="modal-close-btn" id="btnEditorClose">&times;</button>
+      <!-- Step 4: Smart Cropping & Photo Editing (Section 6) -->
+      <details class="settings-step-section" style="cursor: pointer;">
+        <summary class="step-title-text" style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="step-num-pill">4</span> Smart Cropping &amp; Transform (Optional)
+          </span>
+          <span style="font-size: 0.85rem; font-weight: 700; color: #2563eb;">Click to Expand <i class="ph ph-caret-down"></i></span>
+        </summary>
+
+        <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem; cursor: default;">
+          <!-- Aspect Ratio Presets -->
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted);">Aspect Ratio:</span>
+            <button type="button" class="preset-chip-btn crop-ratio-btn active" data-ratio="free">Free Crop</button>
+            <button type="button" class="preset-chip-btn crop-ratio-btn" data-ratio="1">1:1 Square</button>
+            <button type="button" class="preset-chip-btn crop-ratio-btn" data-ratio="1.3333">4:3</button>
+            <button type="button" class="preset-chip-btn crop-ratio-btn" data-ratio="1.7777">16:9</button>
+            <button type="button" class="preset-chip-btn crop-ratio-btn" data-ratio="0.7777">Passport (3.5×4.5)</button>
           </div>
-          <div class="modal-body" style="padding: 1.25rem;">
-            <!-- Cropper Canvas Container -->
-            <div class="interactive-crop-stage" style="min-height: 380px; position: relative;">
-              <canvas id="editorCanvas" class="crop-canvas"></canvas>
-            </div>
 
-            <!-- Toolbar Controls -->
-            <div style="margin-top: 1.25rem; display: flex; flex-direction: column; gap: 1rem;">
-              
-              <!-- Aspect Ratio Presets -->
-              <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
-                <span style="font-weight: 700; font-size: 0.85rem; color: var(--text-muted);">Aspect Ratio:</span>
-                <button type="button" class="button secondary small editor-ratio-btn active" data-ratio="free">Free</button>
-                <button type="button" class="button secondary small editor-ratio-btn" data-ratio="1">1:1 Square</button>
-                <button type="button" class="button secondary small editor-ratio-btn" data-ratio="1.3333">4:3</button>
-                <button type="button" class="button secondary small editor-ratio-btn" data-ratio="1.7777">16:9</button>
-                <button type="button" class="button secondary small editor-ratio-btn" data-ratio="0.7777">Passport (3.5×4.5)</button>
-              </div>
+          <!-- Rotate & Flip Controls -->
+          <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+            <button type="button" class="button secondary small" id="btnCropRotateCCW">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> 90° Left
+            </button>
+            <button type="button" class="button secondary small" id="btnCropRotateCW">
+              <i class="ph-bold ph-arrow-clockwise"></i> 90° Right
+            </button>
+            <button type="button" class="button secondary small" id="btnCropFlipH">
+              <i class="ph-bold ph-arrows-left-right"></i> Flip H
+            </button>
+            <button type="button" class="button secondary small" id="btnCropFlipV">
+              <i class="ph-bold ph-arrows-down-up"></i> Flip V
+            </button>
+            <button type="button" class="button secondary small" id="btnCropReset">
+              <i class="ph-bold ph-arrow-counter-clockwise"></i> Reset Transform
+            </button>
+          </div>
 
-              <!-- Rotate & Flip Buttons -->
-              <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
-                <button type="button" class="button secondary small" id="btnEditorRotateCCW"><i class="ph-bold ph-arrow-counter-clockwise"></i> 90° Left</button>
-                <button type="button" class="button secondary small" id="btnEditorRotateCW"><i class="ph-bold ph-arrow-clockwise"></i> 90° Right</button>
-                <button type="button" class="button secondary small" id="btnEditorFlipH"><i class="ph-bold ph-arrows-left-right"></i> Flip H</button>
-                <button type="button" class="button secondary small" id="btnEditorFlipV"><i class="ph-bold ph-arrows-down-up"></i> Flip V</button>
-                <button type="button" class="button secondary small" id="btnEditorZoomIn"><i class="ph-bold ph-magnifying-glass-plus"></i> Zoom +</button>
-                <button type="button" class="button secondary small" id="btnEditorZoomOut"><i class="ph-bold ph-magnifying-glass-minus"></i> Zoom -</button>
-                <button type="button" class="button secondary small" id="btnEditorUndo" title="Undo"><i class="ph-bold ph-arrow-u-up-left"></i> Undo</button>
-                <button type="button" class="button secondary small" id="btnEditorReset" title="Reset"><i class="ph-bold ph-arrow-counter-clockwise"></i> Reset</button>
-              </div>
+          <!-- Fine Rotation Slider (-45 to +45 deg) -->
+          <div class="fine-rotate-box">
+            <i class="ph-bold ph-compass" style="color: #2563eb; font-size: 1.15rem;"></i>
+            <label for="cropFineRotate" style="font-size: 0.85rem; font-weight: 700; min-width: 140px;">Fine Straighten (-45° to +45°):</label>
+            <input type="range" id="cropFineRotate" class="fine-rotate-slider" min="-45" max="45" value="0" step="0.5">
+            <span id="cropFineRotateVal" style="font-weight: 800; font-size: 0.85rem; min-width: 45px; text-align: right;">0°</span>
+          </div>
 
-              <!-- Fine Rotation Slider -->
-              <div class="fine-rotate-box">
-                <i class="ph-bold ph-compass" style="color: var(--primary); font-size: 1.15rem;"></i>
-                <label for="editorFineRotate" style="font-size: 0.85rem; font-weight: 700; min-width: 130px;">Fine Straighten:</label>
-                <input type="range" id="editorFineRotate" class="fine-rotate-slider" min="-45" max="45" value="0" step="0.5">
-                <span id="editorFineRotateVal" style="font-weight: 800; font-size: 0.85rem; min-width: 45px; text-align: right;">0°</span>
-              </div>
+          <!-- Interactive Canvas Preview -->
+          <div class="interactive-crop-stage" style="border-radius: var(--radius-md); overflow: hidden; background: #0b0f19; min-height: 320px;">
+            <canvas id="frontCropCanvas" class="crop-canvas"></canvas>
+          </div>
+        </div>
+      </details>
 
-              <!-- Photo Enhancement Accordion -->
-              <details style="background: var(--bg-card-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem 1rem;">
-                <summary style="font-weight: 700; font-size: 0.9rem; cursor: pointer; color: var(--text-main); display: flex; align-items: center; gap: 0.4rem;">
-                  <i class="ph-bold ph-sliders" style="color: var(--primary);"></i> Image Enhancements (Brightness, Contrast, Sharpness)
-                </summary>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                  <div>
-                    <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.25rem;">Brightness (-100 to 100):</label>
-                    <input type="range" id="enhBrightness" min="-100" max="100" value="0" style="width: 100%; accent-color: var(--primary);">
-                  </div>
-                  <div>
-                    <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.25rem;">Contrast (-100 to 100):</label>
-                    <input type="range" id="enhContrast" min="-100" max="100" value="0" style="width: 100%; accent-color: var(--primary);">
-                  </div>
-                  <div>
-                    <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.25rem;">Saturation (-100 to 100):</label>
-                    <input type="range" id="enhSaturation" min="-100" max="100" value="0" style="width: 100%; accent-color: var(--primary);">
-                  </div>
-                  <div>
-                    <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.25rem;">Sharpness (0 to 100):</label>
-                    <input type="range" id="enhSharpness" min="0" max="100" value="0" style="width: 100%; accent-color: var(--primary);">
-                  </div>
-                </div>
-                <div style="margin-top: 0.75rem; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-                  <button type="button" class="button secondary small" id="btnEnhAutoLevels">
-                    <i class="ph-bold ph-sparkle"></i> Auto Levels
-                  </button>
-                  <label style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; cursor: pointer;">
-                    <input type="checkbox" id="enhGrayscale" style="accent-color: var(--primary);"> Grayscale (B&amp;W)
-                  </label>
-                </div>
-              </details>
+      <!-- Primary Action: Process Button (Section 8) -->
+      <div class="process-cta-box">
+        <button type="button" class="btn-process-main" id="btnProcessMain">
+          <i class="ph-bold ph-lightning" style="font-size: 1.35rem;"></i>
+          <span id="processBtnLabel">PROCESS IMAGE &amp; DOWNLOAD</span>
+        </button>
 
-              <!-- Apply Button -->
-              <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 0.5rem;">
-                <button type="button" class="button secondary" id="btnEditorCancel">Cancel</button>
-                <button type="button" class="button primary" id="btnEditorApply" style="font-weight: 800; padding: 0.75rem 1.75rem;">
-                  <i class="ph-bold ph-check"></i> Apply &amp; Update Photo
-                </button>
-              </div>
-
-            </div>
+        <!-- Progress Indicator Bar -->
+        <div id="processingProgressBar" style="display: none; max-width: 480px; margin: 1rem auto 0;">
+          <div style="font-size: 0.88rem; font-weight: 700; color: #2563eb; margin-bottom: 0.4rem;" id="processingProgressText">
+            Optimizing and compressing image...
+          </div>
+          <div class="progress-bar-bg" style="height: 8px; border-radius: 9999px;">
+            <div class="progress-bar-fill" id="processingProgressFill" style="width: 0%; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, #2563eb, #10b981);"></div>
           </div>
         </div>
       </div>
 
-      <!-- Camera Capture Modal Overlay -->
-      <div class="camera-modal-overlay" id="mainCameraModal">
-        <div class="camera-modal-box">
-          <div class="camera-modal-header">
-            <h3 style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
-              <i class="ph-bold ph-camera" style="color: var(--primary);"></i> Take Photo
-            </h3>
-            <button type="button" class="modal-close-btn" id="btnCameraClose">&times;</button>
-          </div>
-          <div class="camera-preview-wrapper">
-            <video id="mainCameraVideo" class="camera-video" autoplay playsinline></video>
-          </div>
-          <div class="camera-controls-bar">
-            <button type="button" class="button secondary small" id="btnCameraSwitch" title="Switch Camera">
-              <i class="ph-bold ph-arrows-clockwise" style="font-size: 1.25rem;"></i> Switch
-            </button>
-            <button type="button" class="btn-snap-photo" id="btnCameraSnap" title="Capture Photo">
-              <i class="ph-bold ph-camera"></i>
-            </button>
-          </div>
+    </div>
+
+    <!-- Processed Result Card & Instant Download (Section 9) -->
+    <div class="result-display-card" id="resultDisplayCard">
+      <div class="result-header-row">
+        <div class="result-success-title">
+          <i class="ph-bold ph-check-circle" style="font-size: 1.5rem;"></i>
+          <span>Image Processed Successfully!</span>
         </div>
       </div>
 
-      <!-- Informational Article & Guide (Pi7 Style) -->
-      <section class="article-section">
-        <h2 class="section-heading">How to Reduce Image Size in KB Online</h2>
-        
-        <div class="steps-grid">
-          <div class="step-card">
-            <div class="step-number">1</div>
-            <h3 class="step-title">Upload Your Image</h3>
-            <p class="step-desc">Click "Select Images", drag and drop photos, take a photo with your camera, or paste directly with Ctrl+V from clipboard.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-number">2</div>
-            <h3 class="step-title">Set Target Size (KB)</h3>
-            <p class="step-desc">Enter your required size like 20 KB, 50 KB, 100 KB or pick an exam preset from the dropdown.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-number">3</div>
-            <h3 class="step-title">Click "Reduce Size"</h3>
-            <p class="step-desc">Our smart client-side algorithm optimizes image quality and downsizes file size in milliseconds.</p>
-          </div>
-          <div class="step-card">
-            <div class="step-number">4</div>
-            <h3 class="step-title">Download Photos</h3>
-            <p class="step-desc">Preview before/after quality with the slider and download single photos or a ZIP package.</p>
-          </div>
+      <div class="result-stats-strip" id="resultStatsSummary">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Before & After Comparison Slider -->
+      <div class="compare-container" id="resCompareContainer" style="display: block; max-width: 720px; margin: 0 auto; min-height: 280px;">
+        <img id="resCompareCompImg" class="compare-img" alt="Processed Result">
+        <img id="resCompareOrigImg" class="compare-img compare-img-orig" alt="Original Photo">
+        <div class="compare-slider-line" id="resCompareSliderLine">
+          <div class="compare-slider-handle">↔</div>
         </div>
+        <span class="compare-badge orig">Original</span>
+        <span class="compare-badge comp">Result</span>
+      </div>
 
-        <h2 class="section-heading">Why Choose Our Image Reducer Tool?</h2>
+      <!-- Instant Download Actions -->
+      <div class="download-actions-grid">
+        <button type="button" class="btn-download-primary" id="btnDownloadResult">
+          <i class="ph-bold ph-download-simple"></i>
+          <span id="btnDownloadResultLabel">Download Image</span>
+        </button>
+        <button type="button" class="btn-upload-secondary" id="btnEditAgain">
+          <i class="ph-bold ph-pencil-simple"></i> Edit Again
+        </button>
+        <button type="button" class="btn-upload-secondary" id="btnStartNewPhoto">
+          <i class="ph-bold ph-plus-circle"></i> Start New Photo
+        </button>
+      </div>
+    </div>
 
-        <div class="features-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
-            <div>
-              <h3 class="feature-title">100% Private &amp; Secure</h3>
-              <p class="feature-desc">All compression happens locally inside your browser. No files are ever sent to any remote server.</p>
-            </div>
-          </div>
+  </main>
 
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-              <h3 class="feature-title">Strict Target Size Guarantee</h3>
-              <p class="feature-desc">Ensures the file size never exceeds the maximum portal limit (e.g. 50 KB will never be 51 KB).</p>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
-            </div>
-            <div>
-              <h3 class="feature-title">Lightning-Fast Processing</h3>
-              <p class="feature-desc">Using HTML5 Canvas hardware acceleration, compress multiple photos in less than 2 seconds.</p>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            </div>
-            <div>
-              <h3 class="feature-title">High Quality Preserved</h3>
-              <p class="feature-desc">Adaptive binary-search algorithms maximize resolution clarity while shedding excess bytes.</p>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-            </div>
-            <div>
-              <h3 class="feature-title">Batch Compression &amp; ZIP</h3>
-              <p class="feature-desc">Upload multiple files at once, compress together, and download everything in one organized ZIP file.</p>
-            </div>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </div>
-            <div>
-              <h3 class="feature-title">No Watermarks &amp; Free Forever</h3>
-              <p class="feature-desc">Clean photos with no watermark, no registration, no subscription, and unlimited daily usage.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Govt Exam Portal Guidelines Table -->
-        <h2 class="section-heading">Government Portal Photo &amp; Signature Guidelines</h2>
-        <div class="guidelines-card">
-          <table class="guidelines-table">
-            <thead>
-              <tr>
-                <th>Exam / Portal Name</th>
-                <th>Passport Photo Size</th>
-                <th>Signature Size</th>
-                <th>Supported Formats</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>SSC (CGL, CHSL, MTS, GD)</strong></td>
-                <td>20 KB to 50 KB (3.5 × 4.5 cm)</td>
-                <td>10 KB to 20 KB (4.0 × 2.0 cm)</td>
-                <td>JPEG / JPG</td>
-              </tr>
-              <tr>
-                <td><strong>UPSC Civil Services / NDA / CDS</strong></td>
-                <td>20 KB to 50 KB (Min 350 × 350 px)</td>
-                <td>10 KB to 20 KB (Min 350 × 350 px)</td>
-                <td>JPEG / JPG</td>
-              </tr>
-              <tr>
-                <td><strong>IBPS / SBI (PO, Clerk, SO)</strong></td>
-                <td>20 KB to 50 KB (200 × 230 px)</td>
-                <td>10 KB to 20 KB (140 × 60 px)</td>
-                <td>JPEG / JPG</td>
-              </tr>
-              <tr>
-                <td><strong>NEET / JEE / NTA Portals</strong></td>
-                <td>10 KB to 200 KB</td>
-                <td>4 KB to 30 KB</td>
-                <td>JPG / JPEG</td>
-              </tr>
-              <tr>
-                <td><strong>PAN Card (NSDL / UTIITSL)</strong></td>
-                <td>Less than 50 KB (200 DPI, 2.5×3.5 cm)</td>
-                <td>Less than 20 KB (200 DPI, 4.5×2 cm)</td>
-                <td>JPEG</td>
-              </tr>
-              <tr>
-                <td><strong>Passport Seva Kendra</strong></td>
-                <td>Under 200 KB (4.5 × 3.5 cm)</td>
-                <td>Under 100 KB</td>
-                <td>JPEG / JPG</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- FAQ Section -->
-        <h2 class="section-heading">Frequently Asked Questions (FAQ)</h2>
-        <div class="faq-list">
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>How do I reduce an image size to exactly 20 KB or 50 KB?</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-              Simply upload your photo into the dropzone, click the "20 KB" or "50 KB" preset button (or type the number manually), and click "Reduce Size Now". The tool automatically adjusts image quality and dimensions so the resulting file is guaranteed to be within the target size without losing clarity.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>Are my photos uploaded to your server? Is it safe?</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-              No! Your photos are processed 100% locally on your computer or phone using modern browser technology (HTML5 Canvas). Your sensitive documents, signatures, and photos never leave your device.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>What should I do if a government portal says "File size too small"?</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-              Many portals (like SSC or UPSC) have a minimum requirement of 20 KB. If your photo is only 12 KB, switch to our <a href="increase-size.html" style="color: var(--primary); font-weight: 600;">Increase Image Size in KB</a> tool. It safely inflates the file size to 25 KB or 45 KB without altering any pixels!
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>Can I compress multiple images together and download as a ZIP?</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </button>
-            <div class="faq-answer">
-              Yes! You can select multiple images or drag-and-drop a whole folder of photos. Once compressed, click the "Download All (ZIP)" button to download all files in a single archive.
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-    </main>
+  <!-- Camera Capture Modal Overlay -->
+  <div class="camera-modal-overlay" id="cameraModal">
+    <div class="camera-modal-box">
+      <div class="camera-modal-header">
+        <h3 style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="ph-bold ph-camera" style="color: #2563eb;"></i> Take Photo
+        </h3>
+        <button type="button" class="modal-close-btn" id="btnCloseCamera">&times;</button>
+      </div>
+      <div class="camera-preview-wrapper">
+        <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+      </div>
+      <div class="camera-controls-bar">
+        <button type="button" class="button secondary small" id="btnSwitchCamera" title="Switch Front/Rear Camera">
+          <i class="ph-bold ph-arrows-clockwise" style="font-size: 1.15rem;"></i> Switch
+        </button>
+        <button type="button" class="btn-snap-photo" id="btnCapturePhoto" title="Capture Photo">
+          <i class="ph-bold ph-camera"></i>
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-about">
-        <div class="brand-logo">
-          <span class="logo-badge">PRO</span>
-          <div class="brand-text">PhotoResize <span>PRO</span></div>
-        </div>
-        <p>
-          PhotoResize Pro: The fastest and most reliable image reducer for online applications, exam forms, and web optimization. 100% private, client-side photo processing.
-        </p>
-      </div>
-
-      <div class="footer-col">
-        <h4>Professional Tools</h4>
-        <ul class="footer-links">
-          <li><a href="#compressor">Reduce Image KB</a></li>
-          <li><a href="government-resizer.html">Govt Form Resizer</a></li>
-          <li><a href="background-remover.html">AI Background Remover</a></li>
+  <!-- 12. Additional Information in the Footer -->
+  <footer class="comprehensive-footer">
+    <div class="footer-inner-grid">
+      <!-- Col 1: IMAGE TOOLS -->
+      <div>
+        <h4 class="footer-col-title">Image Tools</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">Image Compressor (KB)</a></li>
+          <li><a href="index.html">Image Resizer</a></li>
+          <li><a href="background-remover.html">Background Remover</a></li>
           <li><a href="passport-tool.html">Passport Photo Maker</a></li>
-          <li><a href="document-scanner.html">Auto Document Scanner</a></li>
-          <li><a href="pdf-studio.html">PDF Studio &amp; Merge</a></li>
-          <li><a href="id-card-studio.html">Smart ID Print Studio</a></li>
+          <li><a href="government-resizer.html">Signature Resizer</a></li>
           <li><a href="increase-size.html">Increase Image KB</a></li>
         </ul>
       </div>
 
-      <div class="footer-col">
-        <h4>CSC &amp; Cyber Cafe</h4>
-        <ul class="footer-links">
-          <li><a href="id-card-studio.html">Aadhaar Card Print Studio</a></li>
-          <li><a href="id-card-studio.html">PAN Card Pouch Fold</a></li>
-          <li><a href="passport-tool.html">A4 / 4x6 Passport Sheet</a></li>
-          <li><a href="file-converter.html">Application Document Pack</a></li>
+      <!-- Col 2: CONVERTERS -->
+      <div>
+        <h4 class="footer-col-title">Converters</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html">JPG to PNG</a></li>
+          <li><a href="index.html">PNG to JPG</a></li>
+          <li><a href="index.html">Image to WebP</a></li>
+          <li><a href="index.html">Image to PDF</a></li>
+          <li><a href="pdf-studio.html">PDF to JPG Converter</a></li>
+          <li><a href="pdf-studio.html">PDF to PNG Converter</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: DOCUMENT TOOLS -->
+      <div>
+        <h4 class="footer-col-title">Document Tools</h4>
+        <ul class="footer-links-list">
+          <li><a href="ocr-image-to-text.html">Image to Text (OCR)</a></li>
+          <li><a href="image-to-excel.html">Image to Excel / CSV</a></li>
+          <li><a href="document-scanner.html">Document Scanner</a></li>
+          <li><a href="pdf-studio.html">PDF Merge Tool</a></li>
+          <li><a href="pdf-studio.html">PDF Split Tool</a></li>
+          <li><a href="id-card-studio.html">Smart ID PVC Studio</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: INFORMATION -->
+      <div>
+        <h4 class="footer-col-title">Information</h4>
+        <ul class="footer-links-list">
+          <li><a href="index.html#compressor">About PhotoResize Pro</a></li>
+          <li><a href="government-resizer.html">Govt Portal Guidelines</a></li>
+          <li><a href="index.html">Frequently Asked Questions</a></li>
+          <li><a href="index.html">Terms of Use</a></li>
+          <li><a href="index.html">Privacy Policy</a></li>
         </ul>
       </div>
     </div>
 
-    <div class="footer-bottom">
-      <span>&copy; 2026 PhotoResize Pro. Free, fast and private precision image compression.</span>
+    <!-- Privacy Notice Banner -->
+    <div class="privacy-notice-bar">
+      <i class="ph-bold ph-shield-check" style="font-size: 1.4rem; color: #10b981; flex-shrink: 0;"></i>
+      <span>
+        <strong>100% Client-Side Privacy:</strong> Your photos and documents are processed entirely inside your browser using HTML5 Canvas &amp; WebAssembly. No files are ever sent to any remote server or stored in the cloud.
+      </span>
+    </div>
+
+    <!-- Bottom Attribution Bar -->
+    <div class="footer-bottom-row">
+      <span>&copy; 2026 PhotoResize Pro. Free, fast and private precision image editing and conversion.</span>
       <span class="made-by-badge"><i class="ph-bold ph-code"></i> Made by Roopkishor</span>
     </div>
   </footer>
 
   <!-- Scripts -->
-  <script src="js/jszip.min.js"></script>
   <script src="js/compressor.js"></script>
   <script src="js/modules/i18n.js"></script>
   <script src="js/modules/cropper-engine.js"></script>
-  <script src="js/modules/image-enhancer.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/frontpage-app.js"></script>
 </body>
 </html>
