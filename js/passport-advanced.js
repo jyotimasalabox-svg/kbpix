@@ -181,6 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Event: File Upload ---
   if (dropzone && fileInput) {
+    const btnSelectFile = dropzone.querySelector('.btn-select-file');
+    if (btnSelectFile) {
+      btnSelectFile.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+
     dropzone.addEventListener('click', () => fileInput.click());
     
     ['dragenter', 'dragover'].forEach(name => {
@@ -206,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files[0]) {
         loadInputFile(e.target.files[0]);
+        fileInput.value = '';
       }
     });
   }

@@ -73,6 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- File Upload Event Listeners ---
   if (dropzone && fileInput) {
+    const btnSelect = dropzone.querySelector('.btn-select-file');
+    if (btnSelect) {
+      btnSelect.addEventListener('click', (e) => {
+        e.stopPropagation();
+        fileInput.click();
+      });
+    }
+
     dropzone.addEventListener('click', () => fileInput.click());
 
     ['dragenter', 'dragover'].forEach(n => {
@@ -98,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInput.addEventListener('change', (e) => {
       if (e.target.files && e.target.files.length > 0) {
         addFiles(Array.from(e.target.files));
+        fileInput.value = '';
       }
     });
   }

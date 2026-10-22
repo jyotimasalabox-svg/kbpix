@@ -531,7 +531,29 @@ body::before {
   margin-bottom: 1.25rem;
 }
 
+/* Bulletproof Accessible File Inputs (Ensures browser click() is never suppressed) */
+input[type="file"].hidden-file-input,
+.dropzone input[type="file"],
+.upload-card-box input[type="file"],
+.id-dual-upload-grid input[type="file"],
+.control-section input[type="file"] {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  display: block !important;
+}
+
 .btn-select-file {
+  cursor: pointer;
+  user-select: none;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;

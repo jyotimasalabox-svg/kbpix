@@ -101,7 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.dataTransfer.files && e.dataTransfer.files[0]) processTable(e.dataTransfer.files[0]);
   });
   fileInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) processTable(e.target.files[0]);
+    if (e.target.files && e.target.files[0]) {
+      processTable(e.target.files[0]);
+      fileInput.value = '';
+    }
   });
 
   if (btnAnother) {

@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initTheme();
   }
-  initTheme();
 
   // Presets & Size Input
   function updateTargetSize() {
@@ -123,30 +122,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Dropzone
-  dropzone.addEventListener('click', () => fileInput.click());
-  ['dragenter', 'dragover'].forEach(name => {
-    dropzone.addEventListener(name, (e) => {
-      e.preventDefault();
-      dropzone.classList.add('drag-active');
+  // Dropzone & Select File Button
+  const btnSelectFile = dropzone ? dropzone.querySelector('.btn-select-file') : null;
+  if (btnSelectFile) {
+    btnSelectFile.addEventListener('click', (e) => {
+      e.stopPropagation();
+      fileInput.click();
     });
-  });
-  ['dragleave', 'drop'].forEach(name => {
-    dropzone.addEventListener(name, (e) => {
-      e.preventDefault();
-      dropzone.classList.remove('drag-active');
+  }
+  if (dropzone) {
+    dropzone.addEventListener('click', () => fileInput.click());
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('drag-active');
+      });
     });
-  });
-  dropzone.addEventListener('drop', (e) => {
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files[0]);
-    }
-  });
-  fileInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) {
-      handleFile(e.target.files[0]);
-    }
-  });
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('drag-active');
+      });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+  }
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFile(e.target.files[0]);
+        fileInput.value = '';
+      }
+    });
+  }
 
   function handleFile(file) {
     if (!file.type.startsWith('image/')) {

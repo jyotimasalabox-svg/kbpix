@@ -186,7 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.dataTransfer.files && e.dataTransfer.files[0]) startSmartOCR(e.dataTransfer.files[0]);
   });
   ocrFileInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) startSmartOCR(e.target.files[0]);
+    if (e.target.files && e.target.files[0]) {
+      startSmartOCR(e.target.files[0]);
+      ocrFileInput.value = '';
+    }
   });
 
   if (btnOcrAnother) {

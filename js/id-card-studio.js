@@ -111,7 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
     frontSlot.addEventListener('click', () => frontInput.click());
     setupSlotDrop(frontSlot, (file) => loadCardImage(file, 'front'));
     frontInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) loadCardImage(e.target.files[0], 'front');
+      if (e.target.files && e.target.files[0]) {
+        loadCardImage(e.target.files[0], 'front');
+        frontInput.value = '';
+      }
     });
   }
 
@@ -119,7 +122,10 @@ document.addEventListener('DOMContentLoaded', () => {
     backSlot.addEventListener('click', () => backInput.click());
     setupSlotDrop(backSlot, (file) => loadCardImage(file, 'back'));
     backInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) loadCardImage(e.target.files[0], 'back');
+      if (e.target.files && e.target.files[0]) {
+        loadCardImage(e.target.files[0], 'back');
+        backInput.value = '';
+      }
     });
   }
 

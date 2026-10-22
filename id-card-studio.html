@@ -198,10 +198,12 @@
               <span><i class="ph ph-identification-badge"></i> Upload Card Images</span>
             </div>
 
+            <input type="file" id="idInputFront" accept="image/*" style="display: none;">
+            <input type="file" id="idInputBack" accept="image/*" style="display: none;">
+
             <div class="id-dual-upload-grid">
               <!-- Front Slot -->
               <div class="id-card-slot" id="idSlotFront">
-                <input type="file" id="idInputFront" accept="image/*" style="display: none;">
                 <div style="font-size: 1.8rem; color: var(--primary); margin-bottom: 0.35rem;"><i class="ph ph-identification-badge"></i></div>
                 <h4 style="font-size: 0.9rem; font-weight: 700;">Front Side</h4>
                 <p style="font-size: 0.75rem; color: var(--text-muted);">Click to upload</p>
@@ -209,7 +211,6 @@
 
               <!-- Back Slot -->
               <div class="id-card-slot" id="idSlotBack">
-                <input type="file" id="idInputBack" accept="image/*" style="display: none;">
                 <div style="font-size: 1.8rem; color: var(--primary); margin-bottom: 0.35rem;"><i class="ph ph-credit-card"></i></div>
                 <h4 style="font-size: 0.9rem; font-weight: 700;">Back Side</h4>
                 <p style="font-size: 0.75rem; color: var(--text-muted);">(Optional for single)</p>

@@ -111,7 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   imgPdfFileInput.addEventListener('change', (e) => {
-    if (e.target.files) handleNewImages(Array.from(e.target.files));
+    if (e.target.files) {
+      handleNewImages(Array.from(e.target.files));
+      imgPdfFileInput.value = '';
+    }
   });
 
   if (btnAddMoreImgPdf) btnAddMoreImgPdf.addEventListener('click', () => imgPdfFileInput.click());
@@ -208,7 +211,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   pdfImgDropzone.addEventListener('click', () => pdfImgFileInput.click());
   pdfImgFileInput.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) renderPdfToImages(e.target.files[0]);
+    if (e.target.files && e.target.files[0]) {
+      renderPdfToImages(e.target.files[0]);
+      pdfImgFileInput.value = '';
+    }
   });
 
   async function renderPdfToImages(file) {
@@ -304,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       renderMergeList();
+      mergePdfFileInput.value = '';
     }
   });
 
@@ -379,6 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
   splitPdfFileInput.addEventListener('change', async (e) => {
     if (e.target.files && e.target.files[0]) {
       loadedSplitPdf = e.target.files[0];
+      splitPdfFileInput.value = '';
       splitFileName.textContent = loadedSplitPdf.name;
       splitPdfDropzone.style.display = 'none';
       splitPdfWorkspace.style.display = 'block';

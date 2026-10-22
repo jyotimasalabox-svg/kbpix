@@ -48,8 +48,8 @@ const translations = {
     "btn_clear_all": "Clear All",
     "btn_reset": "Reset",
     "btn_compare": "Compare",
-    "btn_zoom_in": "Zoom In",
-    "btn_zoom_out": "Zoom Out",
+    "btn_zoom_in": "Zoom In (+)",
+    "btn_zoom_out": "Zoom Out (-)",
     "btn_rotate_left": "Rotate -90°",
     "btn_rotate_right": "Rotate +90°",
     "btn_flip_h": "Flip Horizontal",
@@ -87,84 +87,84 @@ const translations = {
   },
   hi: {
     // Brand & Taglines
-    "brand_name": "फोटो रिसाइज़ प्रो",
-    "brand_tagline": "प्रोफेशनल फोटो व डॉक्यूमेंट प्रोसेसिंग का ऑल-इन-वन प्लेटफॉर्म",
-    "made_by": "मेड बाय रूपकिशोर",
-    "free_private": "100% मुफ्त व पूर्णतः सुरक्षित (ब्राउज़र में प्रोसेस)",
+    "brand_name": "फोटो रिसाइज़र प्रो",
+    "brand_tagline": "ऑल-इन-वन प्रोफेशनल फोटो एवं डॉक्यूमेंट प्रोसेसिंग प्लेटफॉर्म",
+    "made_by": "रूपकिशोर द्वारा निर्मित",
+    "free_private": "100% मुफ़्त एवं सुरक्षित (ब्राउज़र आधारित)",
 
     // Navigation & Tool Titles
     "nav_all_tools": "सभी टूल्स",
-    "nav_reduce_kb": "साइज कम करें (KB)",
+    "nav_reduce_kb": "साइज़ घटाएं (KB)",
     "nav_crop_resize": "स्मार्ट क्रॉप व रिसाइज़",
     "nav_passport_maker": "पासपोर्ट फोटो मेकर",
-    "nav_govt_resizer": "सरकारी फॉर्म रिसाइज़र",
-    "nav_id_studio": "स्मार्ट आईडी प्रिंट स्टूडियो",
+    "nav_govt_resizer": "सरकारी फॉर्म फोटो रिसाइज़र",
+    "nav_id_studio": "स्मार्ट ID कार्ड प्रिंट स्टूडियो",
     "nav_bg_remover": "AI बैकग्राउंड रिमूवर",
     "nav_doc_scanner": "डॉक्यूमेंट स्कैनर",
     "nav_img_to_text": "फोटो से टेक्स्ट (OCR)",
     "nav_img_to_excel": "फोटो से एक्सेल / CSV",
     "nav_pdf_studio": "PDF स्टूडियो",
-    "nav_increase_kb": "साइज बढ़ाएं (KB)",
-    "nav_file_converter": "फाइल कन्वर्टर व पैक",
+    "nav_increase_kb": "KB बढ़ाएं (Increase KB)",
+    "nav_file_converter": "फाइल कन्वर्टर एवं पैक",
 
     // Categories in Sidebar
     "cat_photo_tools": "फोटो व इमेज टूल्स",
-    "cat_govt_exams": "सरकारी व परीक्षा फॉर्म टूल्स",
-    "cat_ai_smart": "AI व स्मार्ट टूल्स",
+    "cat_govt_exams": "सरकारी व परीक्षा पोर्टल टूल्स",
+    "cat_ai_smart": "AI एवं स्मार्ट सुविधाएं",
     "cat_pdf_pack": "PDF व डॉक्यूमेंट पैक",
 
     // Upload & Dropzone
-    "dropzone_title": "फोटो चुनें, ड्रैग व ड्रॉप करें या कैमरा से खींचे",
-    "dropzone_subtitle": "कंप्यूटर, मोबाइल गैलरी से फोटो चुनें या सीधा कैमरा खोलें",
-    "btn_select_images": "फोटो चुनें",
-    "btn_open_camera": "कैमरा इस्तेमाल करें",
-    "dropzone_hints": "JPG, PNG, WEBP, HEIC, PDF सपोर्टेड • 100% सुरक्षित (फाइलें आपके डिवाइस पर ही रहती हैं)",
+    "dropzone_title": "फोटो चुनें, ड्रैग व ड्रॉप करें या कैमरा खोलें",
+    "dropzone_subtitle": "अपने कंप्यूटर, मोबाइल से फोटो चुनें या सीधे कैमरे से फोटो लें",
+    "btn_select_images": "फोटो चुनें (Select Images)",
+    "btn_open_camera": "कैमरा खोलें",
+    "dropzone_hints": "JPG, PNG, WEBP, HEIC, PDF समर्थित • 100% प्राइवेट (फाइलें आपके डिवाइस में ही रहती हैं)",
 
     // Common Buttons & Actions
     "btn_download": "डाउनलोड",
     "btn_download_photo": "फोटो डाउनलोड करें",
     "btn_download_all_zip": "सभी डाउनलोड करें (ZIP)",
     "btn_compress_download": "⚡ कंप्रेस व डाउनलोड करें",
-    "btn_increase_download": "⚡ साइज बढ़ाएं व डाउनलोड करें",
-    "btn_clear_all": "सब साफ करें",
+    "btn_increase_download": "⚡ साइज़ बढ़ाएं व डाउनलोड करें",
+    "btn_clear_all": "सब साफ़ करें",
     "btn_reset": "रीसेट करें",
     "btn_compare": "तुलना करें",
     "btn_zoom_in": "ज़ूम इन (+)",
     "btn_zoom_out": "ज़ूम आउट (-)",
     "btn_rotate_left": "घुमाएं -90°",
     "btn_rotate_right": "घुमाएं +90°",
-    "btn_flip_h": "बाएं-दाएं पलटें",
+    "btn_flip_h": "दाएं-बाएं पलटें",
     "btn_flip_v": "ऊपर-नीचे पलटें",
     "btn_undo": "पूर्ववत (Undo)",
-    "btn_redo": "फिर से करें (Redo)",
+    "btn_redo": "दोहराएं (Redo)",
     "btn_copy_text": "टेक्स्ट कॉपी करें",
     "btn_export_pdf": "PDF एक्सपोर्ट करें",
     "btn_export_docx": "DOCX डाउनलोड करें",
     "btn_export_txt": "TXT डाउनलोड करें",
-    "btn_export_xlsx": "एक्सेल (.xlsx) डाउनलोड करें",
+    "btn_export_xlsx": "Excel (.xlsx) डाउनलोड करें",
     "btn_export_csv": "CSV डाउनलोड करें",
     "btn_print": "प्रिंट करें (1:1 सही नाप)",
 
     // Settings & Controls
-    "target_file_size": "टारगेट फाइल साइज:",
-    "quick_presets": "त्वरित प्रीसेट:",
-    "govt_exam_presets": "सरकारी परीक्षा व पोर्टल प्रीसेट:",
-    "select_govt_preset": "⚡ परीक्षा या पोर्टल चुनें...",
+    "target_file_size": "लक्षित फाइल साइज़:",
+    "quick_presets": "त्वरित प्रीसेट्स:",
+    "govt_exam_presets": "सरकारी परीक्षा / पोर्टल प्रीसेट्स:",
+    "select_govt_preset": "⚡ परीक्षा / पोर्टल की आवश्यकता चुनें...",
     "original": "मूल (Original)",
     "compressed": "कंप्रेस्ड",
     "result": "परिणाम",
-    "dimensions": "डायमेंशन (नाप)",
+    "dimensions": "आयाम (नाप)",
     "format": "फॉर्मेट",
-    "quality": "क्वालिटी",
+    "quality": "गुणवत्ता",
     "units": "इकाई",
-    "lock_aspect": "आस्पेक्ट रेश्यो लॉक करें",
-    "strict_kb_guarantee": "टारगेट KB से कम साइज की 100% गारंटी (सरकारी पोर्टल हेतु)",
+    "lock_aspect": "पहलू अनुपात लॉक करें",
+    "strict_kb_guarantee": "लक्षित KB से कम साइज की 100% गारंटी (सरकारी पोर्टल हेतु)",
 
     // Status
-    "status_ready": "डाउनलोड के लिए तैयार",
-    "status_processing": "ब्राउज़र में प्रोसेस हो रहा है...",
-    "status_done": "सफल! फाइल तैयार है।",
-    "status_copied": "टेक्स्ट क्लिपबोर्ड में कॉपी हो गया!"
+    "status_ready": "डाउनलोड हेतु तैयार",
+    "status_processing": "ब्राउज़र में सुरक्षित प्रोसेस हो रहा है...",
+    "status_done": "संपन्न! सफलतापूर्वक प्रोसेस हो गया।",
+    "status_copied": "क्लिपबोर्ड पर कॉपी हो गया!"
   }
 };
 
@@ -203,7 +203,6 @@ class I18nManager {
       const key = el.getAttribute('data-i18n');
       const val = this.t(key);
       if (val) {
-        // If element has nested icon, update only the text node if possible, or el.innerHTML
         if (el.querySelector('i, svg')) {
           const icon = el.querySelector('i, svg').outerHTML;
           el.innerHTML = icon + ' ' + val;
@@ -239,16 +238,20 @@ class I18nManager {
 
   bindLanguageToggles() {
     document.querySelectorAll('.lang-toggle-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.toggleLanguage();
-      });
+      if (!btn.dataset.langBound) {
+        btn.dataset.langBound = 'true';
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.toggleLanguage();
+        });
+      }
     });
   }
 }
 
 // Global instance
 window.i18n = new I18nManager();
+window.I18nManager = window.i18n;
 
 // Universal Theme Manager
 window.ThemeManager = {
@@ -266,7 +269,7 @@ window.ThemeManager = {
     }
     const themeIcon = document.getElementById('themeIcon');
     const themeText = document.getElementById('themeText');
-    if (themeIcon) themeIcon.textContent = isDark ? '☀️' : '🌙';
+    if (themeIcon) themeIcon.textContent = isDark ? '🌙' : '☀️';
     if (themeText) themeText.textContent = isDark ? 'Light' : 'Dark';
     window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: isDark ? 'dark' : 'light' } }));
   },
